@@ -1,0 +1,106 @@
+# Offer Requirements
+
+Boons whose offer requirements differ from the base game. Where a boon has several groups (sub-bullets), it needs one boon from each.
+
+- **All Together**
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush
+  - Bridal Glow, Uncommon Grace, Extended Family
+  - Hereditary Bane, Dying Wish, Rousing Reception
+- **Arterial Spray**
+  - Vicious Strike, Vicious Flourish, Sword Ring, Stabbing Rush, Grisly Gain
+  - Wave Strike, Wave Flourish, Breaker Rush
+- **Beach Ball**
+  - Blinding Rush, Breaker Rush
+  - Wave Strike, Wave Flourish, Breaker Rush
+  - Nova Strike, Nova Flourish, Blinding Rush
+- **Brave Face**
+  - Extended Family, Bridal Glow, Uncommon Grace
+  - Trusty Shield, Heavy Metal, Security System, Uncanny Fortitude
+- **Burning Meteor**
+  - Flame Strike, Flame Flourish, Smolder Ring
+  - Glowing Coal, Controlled Burn, Volcanic Crown
+  - Flash Fry, Hot Pot
+- **Carnal Pleasure**
+  - Grisly Gain, Visceral Impact, Meat Grinder, Profuse Bleeding
+  - Heart Breaker
+- **Chain Reaction**
+  - Volcanic Strike, Volcanic Flourish
+  - Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, Cardio Gain
+- **Coffin Nail**
+  - Sword Ring, Stabbing Rush, Cut Above
+  - Volcanic Strike, Volcanic Flourish, Anvil Ring, Smithy Rush, Tough Gain
+- **Cryo Pounder**
+  - Furnace Blast, Anvil Ring, Smithy Rush
+  - Ice Strike, Ice Flourish, Arctic Ring
+- **Cutting Edge**
+  - Sword Ring, Stabbing Rush, Cut Above
+  - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain
+- **Dazzling Display** — Nova Strike or Nova Flourish.
+- **Dying Wish** — Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush or Rousing Reception.
+- **Ecstatic Obsession**
+  - Flutter Strike, Flutter Flourish
+  - Glamour Gain, Passion Rush, Rapture Ring
+  - Sweet Surrender, Broken Resolve
+- **Fourth Degree**
+  - Vicious Strike, Vicious Flourish
+  - Glowing Coal, Controlled Burn, Volcanic Crown
+- **Furnace Blast** — Volcanic Strike or Volcanic Flourish.
+- **Glorious Disaster**
+  - Prominence Flare
+  - Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Ionic Gain
+- **Grand Caldera** — Volcanic Strike or Volcanic Flourish.
+- **Hereditary Bane** — Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush or Rousing Reception.
+- **Hostile Environment**
+  - Meat Grinder, Sword Ring
+  - Arctic Gale, Arctic Ring
+- **Incandescent Aura**
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Rousing Reception
+  - Flame Strike, Flame Flourish, Smolder Ring, Heat Rush, Cardio Gain
+- **Island Getaway**
+  - Wave Strike, Wave Flourish, Tidal Ring, Breaker Rush, Flood Gain
+  - Flutter Strike, Flutter Flourish, Glamour Gain
+- **Killer Current**
+  - Tidal Ring, Slippery Slope
+  - Heaven Strike, Heaven Flourish
+- **King Tide**
+  - Wave Strike, Wave Flourish, Breaker Rush
+  - Slippery Slope, Tidal Ring
+  - Geyser Spout, High Surf, Ocean Swell
+- **Nervous Wreck**
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
+  - Glamour Gain, Passion Rush, Rapture Ring
+- **Post Haste** — Death Warrant, Defensive Posture, Phalanx Shot, Bottomless Drink, Happy Haze, Volcanic Strike, Volcanic Flourish, Flood Gain, Ionic Gain, Heinous Affront or Unseen Ire. With MoreDuos installed, also Land Mine, Solar Eclipse, Winter Solstice or Distress Call.
+- **Premium Service**
+  - Volcanic Strike, Volcanic Flourish
+  - Heavy Metal, Trusty Shield, Security System
+  - Grand Caldera, Molten Touch, Furnace Blast
+- **Profuse Bleeding** — Vicious Strike or Vicious Flourish.
+- **Rousing Reception** — Engagement Ring.
+- **Rude Awakening**
+  - Volcanic Strike, Volcanic Flourish
+  - Solar Ring, Blinding Rush, Light Smite, Dazzling Display
+- **Sanguinary Savor**
+  - Vicious Strike, Vicious Flourish
+  - Grisly Gain, Visceral Impact, Meat Grinder, Profuse Bleeding
+  - Blood Spree, Grievous Blow, Mutual Destruction
+- **Scalding Vapor**
+  - Tidal Ring, Slippery Slope
+  - Glowing Coal, Controlled Burn, Volcanic Crown
+- **Second Wind** — Nimble Limbs, Racing Thoughts, Winner's Circle, Nitro Boost, Stutter Step, Hasty Retreat, Post Haste, Quick Buck, Mean Streak, Travel Deal or Success Rate, or while holding Metallic Droplet.
+- **Seismic Hammer**
+  - Volcanic Strike, Volcanic Flourish
+  - Geyser Spout
+- **Slippery Slope** — Wave Strike, Wave Flourish or Breaker Rush.
+- **Smoldering Forge**
+  - Flutter Strike, Flutter Flourish, Rapture Ring, Passion Rush, Glamour Gain
+  - Furnace Blast, Anvil Ring, Smithy Rush
+- **Success Rate** — Sea Star, Tidal Ring, Slippery Slope, Divine Vengeance, Double Strike, Shocking Loss, Extra Dose, Pressure Points, Vital Signs, Lethal Snare, Death Warrant, Killing Stroke, Shadow Pounce, Whispered Prayer, Grisly Gain, Visceral Impact, Mutual Destruction, Grievous Blow, Ripple Effect, Chain Reaction, Meat Grinder, Profuse Bleeding, Blood Spree, Killer Current, Ecstatic Obsession, Smoldering Forge or Sun Worshiper.
+- **Sun Worshiper**
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
+  - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain
+- **Universal Donor**
+  - Grisly Gain, Visceral Impact, Meat Grinder, Profuse Bleeding
+  - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
+- **Warm Breeze**
+  - Solar Ring, Blinding Rush, Light Smite, Dazzling Display
+  - Hot Pot, Flash Fry, Volcanic Crown
