@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-23
+
 ### Changed
 
 - Sun Worshiper: extra summons now capped at 10 per location instead of per encounter
@@ -18,5 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.0...HEAD
+[unreleased]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/63a0cb096ca3526e4447959dde16a870a14e4507...1.0.0
