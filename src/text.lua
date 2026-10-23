@@ -668,8 +668,8 @@ if boon_edit_on('ThermalDynamics') then
 	boon_text({
 		Traits = {
 			EchoBurnBoon = {
-				Description = 'Your {$Keywords.Echo} effects also inflict {$Keywords.Burn} for the damage ' ..
-					'they deal.',
+				Description = 'Your lightning effects from Zeus (except chain lightning) also inflict {$Keywords.Burn} ' ..
+					'for a share of the damage they deal.',
 			},
 		},
 		StatLines = {

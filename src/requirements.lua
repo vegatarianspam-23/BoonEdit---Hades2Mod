@@ -172,6 +172,10 @@ BOON_EDIT_REQUIREMENTS = {
 		{ 'ApolloExCastBoon' },
 		{ 'ZeusWeaponBoon', 'ZeusSpecialBoon', 'ZeusCastBoon', 'ZeusSprintBoon', 'ZeusManaBoon' },
 	} } },
+	{ Trait = 'EchoBurnBoon', When = { 'ThermalDynamics' }, Set = { OneFromEachSet = {
+		Group('ZeusCoreTraits'),
+		Group('HestiaBurnTraits'),
+	} } },
 	{ Trait = 'SteamBoon', When = { 'ScaldingVapor' }, Set = { OneFromEachSet = {
 		Group('PoseidonKnockbackAmplifyTraits'),
 		Group('SWuFireballTraits'),

@@ -388,7 +388,20 @@ mod.tuning.KillerCurrent = {
 }
 
 mod.tuning.ThermalDynamics = {
-	ScorchFraction = 1.00,
+	ScorchFraction = 0.30,
+
+	Lightning = {
+		'ZeusEchoStrike',
+		'ZeusCastStrike',
+		'ZeusRootStrike',
+		'ZeusSprintStrike',
+		'ZeusZeroManaStrike',
+		'ZeusRetaliateStrike',
+		'ZeusCastAnywhereBlast',
+		'ZeusApolloSynergyStrike',
+		'ZeusPolymorphStrike',
+		'ZeusManaBolt',
+	},
 }
 
 mod.tuning.HarmForTheAfflicted = {
