@@ -5,7 +5,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "SWu"
 name = "BoonEdits"
-versionNumber = "1.0.1"
+versionNumber = "1.0.3"
 description = "Reworks and edits to over 30 Hades II boons, each configurable."
 websiteUrl = "https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod"
 containsNsfwContent = false

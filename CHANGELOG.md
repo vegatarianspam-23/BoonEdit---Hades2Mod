@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-10-23
+
 ### Changed
 
 - Chain Reaction: recharge skip chance lowered to 25% (was 30%)
@@ -25,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.1...HEAD
+[unreleased]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.3...HEAD
+[1.0.3]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.1...1.0.3
 [1.0.1]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/63a0cb096ca3526e4447959dde16a870a14e4507...1.0.0
