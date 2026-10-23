@@ -22,3 +22,4 @@ Each entry can be switched on in the config, under `Experimental`.
 - **Concave Stone** (Echo) — New Effect: Chance to copy your next Boon or Hammer instead.
 - **Metallic Droplet** (Hermes) — Now keeps half its move/strike/cast speed boost once the timer runs out while held.
 - **White Antler** (Artemis) — Keeps its effects as long as its held.
+- **Olympian Keepsakes** — New Heroic rarity, can transform boons of any rarity into Legendary (or Heroic, if Legendary is already offered / held) instead.

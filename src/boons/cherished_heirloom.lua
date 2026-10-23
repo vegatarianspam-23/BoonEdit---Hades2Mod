@@ -322,7 +322,8 @@ end
 
 once('CherishedHeirloomForceGod', function()
 	modutil.mod.Path.Wrap('UpgradeMouseOverUpgradeChoice', function(base, screen, button)
-		if not boon_edit_on('CherishedHeirloom') or not screen or screen.MouseOverButton == nil then
+		if not boon_edit_on('CherishedHeirloom') or not boon_edit_on('OlympianKeepsakes')
+			or not screen or screen.MouseOverButton == nil then
 			return base(screen, button)
 		end
 
@@ -375,11 +376,13 @@ once('CherishedHeirloom', function()
 	if boon_edit_on('CherishedHeirloom') then
 		game.TraitData.KeepsakeLevelBoon.AcquireFunctionName = _PLUGIN.guid .. '.CherishedHeirloomAcquire'
 
-		game.TraitData.BaseBoonUpgradeKeepsake.RarityLevels.Heroic = { Multiplier = 3 }
-		for keepsakeName in pairs(HEIRLOOM_FORCE_GOD_DATA) do
-			local keepsake = game.TraitData[keepsakeName]
-			if keepsake and keepsake.RarityLevels then
-				keepsake.RarityLevels.Heroic = keepsake.RarityLevels.Heroic or { Multiplier = 3 }
+		if boon_edit_on('OlympianKeepsakes') then
+			game.TraitData.BaseBoonUpgradeKeepsake.RarityLevels.Heroic = { Multiplier = 3 }
+			for keepsakeName in pairs(HEIRLOOM_FORCE_GOD_DATA) do
+				local keepsake = game.TraitData[keepsakeName]
+				if keepsake and keepsake.RarityLevels then
+					keepsake.RarityLevels.Heroic = keepsake.RarityLevels.Heroic or { Multiplier = 3 }
+				end
 			end
 		end
 	end

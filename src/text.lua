@@ -435,22 +435,24 @@ if boon_edit_on('CherishedHeirloom') then
 		},
 	})
 
-	local olympianKeepsakes = {}
-	for keepsakeName, god in pairs({
-		ForceZeusBoonKeepsake = { 'Zeus', 'his' }, ForceHeraBoonKeepsake = { 'Hera', 'her' },
-		ForceAresBoonKeepsake = { 'Ares', 'his' }, ForcePoseidonBoonKeepsake = { 'Poseidon', 'his' },
-		ForceApolloBoonKeepsake = { 'Apollo', 'his' }, ForceDemeterBoonKeepsake = { 'Demeter', 'her' },
-		ForceAphroditeBoonKeepsake = { 'Aphrodite', 'her' }, ForceHephaestusBoonKeepsake = { 'Hephaestus', 'his' },
-		ForceHestiaBoonKeepsake = { 'Hestia', 'her' },
-	}) do
-		local name, pronoun = god[1], god[2]
-		olympianKeepsakes[keepsakeName] = {
-			Description = 'A {$Keywords.GodBoon} of {#BoldFormat}' .. name .. ' {#Prev}is likely. You can {$Keywords.RarityUpgrade} ' ..
-				pronoun .. ' {#AltUpgradeFormat}{$TooltipData.ExtractData.RarityLevel} {#Prev}blessings once this night. ' ..
-				'At {#BoldFormat}Heroic{#Prev}, turn any of ' .. pronoun .. ' blessings into ' .. pronoun .. ' Legendary instead.',
-		}
+	if boon_edit_on('OlympianKeepsakes') then
+		local olympianKeepsakes = {}
+		for keepsakeName, god in pairs({
+			ForceZeusBoonKeepsake = { 'Zeus', 'his' }, ForceHeraBoonKeepsake = { 'Hera', 'her' },
+			ForceAresBoonKeepsake = { 'Ares', 'his' }, ForcePoseidonBoonKeepsake = { 'Poseidon', 'his' },
+			ForceApolloBoonKeepsake = { 'Apollo', 'his' }, ForceDemeterBoonKeepsake = { 'Demeter', 'her' },
+			ForceAphroditeBoonKeepsake = { 'Aphrodite', 'her' }, ForceHephaestusBoonKeepsake = { 'Hephaestus', 'his' },
+			ForceHestiaBoonKeepsake = { 'Hestia', 'her' },
+		}) do
+			local name, pronoun = god[1], god[2]
+			olympianKeepsakes[keepsakeName] = {
+				Description = 'A {$Keywords.GodBoon} of {#BoldFormat}' .. name .. ' {#Prev}is likely. You can {$Keywords.RarityUpgrade} ' ..
+					pronoun .. ' {#AltUpgradeFormat}{$TooltipData.ExtractData.RarityLevel} {#Prev}blessings once this night. ' ..
+					'At {#BoldFormat}Heroic{#Prev}, turn any of ' .. pronoun .. ' blessings into ' .. pronoun .. ' Legendary instead.',
+			}
+		end
+		boon_text({ Traits = olympianKeepsakes })
 	end
-	boon_text({ Traits = olympianKeepsakes })
 end
 
 if boon_edit_on('ConcaveStone') then

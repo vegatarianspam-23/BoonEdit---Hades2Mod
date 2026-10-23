@@ -51,12 +51,15 @@ function sun_worshiper_should_repeat()
 	if not boon_edit_on('SunWorshiper') then return false end
 	if not game.MapState.RaiseDeadCount then return false end
 
-	local raised = game.MapState.BoonEditSunWorshiperRepeats or 0
+	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+	if not room then return false end
+
+	local raised = room.BoonEditSunWorshiperRepeats or 0
 	if raised >= mod.tuning.SunWorshiper.MaxRepeats then return false end
 
 	if not rolls(mod.tuning.SunWorshiper.RepeatChance) then return false end
 
-	game.MapState.BoonEditSunWorshiperRepeats = raised + 1
+	room.BoonEditSunWorshiperRepeats = raised + 1
 	return true
 end
 

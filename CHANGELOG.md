@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Sun Worshiper: extra summons now capped at 10 per location instead of per encounter
+- Olympian keepsakes: new Heroic rarity moved to Experimental, off by default (`Experimental.Keepsakes.OlympianKeepsakes` in config)
+
 ## [1.0.0] - 2026-10-22
 
 ### Added

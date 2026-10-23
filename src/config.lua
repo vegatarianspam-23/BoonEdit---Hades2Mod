@@ -143,6 +143,7 @@ local config = {
     Keepsakes = {
       ConcaveStone = false;
       MetallicDroplet = false;
+      OlympianKeepsakes = false;
       WhiteAntler = false;
     };
 
