@@ -600,7 +600,8 @@ if boon_edit_on('RippleEffect') then
 	boon_text({
 		Traits = {
 			MoneyDamageBoon = {
-				Description = 'The bonus effects your {$Keywords.Omega} trigger may occur again, up to ' ..
+				Description = 'The bonus effects your {$Keywords.Omega} trigger, {#BoldFormatGraft}Phalanx Shot {#Prev}and ' ..
+					'{#BoldFormatGraft}Support Fire {#Prev}may occur again, up to ' ..
 					'{#BoldFormatGraft}{$TooltipData.ExtractData.TooltipMaxRepeats} {#Prev}more times.',
 			},
 		},

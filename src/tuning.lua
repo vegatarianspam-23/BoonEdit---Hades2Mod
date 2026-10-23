@@ -226,7 +226,7 @@ mod.tuning.DazzlingDisplay = {
 }
 
 mod.tuning.ChainReaction = {
-	SkipChance = 0.30,
+	SkipChance = 0.25,
 
 	ExtraCooldowns = { 'SWuLandMine', 'SWuSolarEclipse', 'SWuWinterSolstice', 'SWuDistressCall', 'BoonEditShockingLossGuardian' },
 

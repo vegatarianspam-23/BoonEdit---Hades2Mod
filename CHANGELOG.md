@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Chain Reaction: recharge skip chance lowered to 25% (was 30%)
+- Ripple Effect: Phalanx Shot and Support Fire projectiles can now repeat
+
 ## [1.0.1] - 2026-10-23
 
 ### Changed

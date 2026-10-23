@@ -87,7 +87,7 @@
 - **Beach Ball** (Apollo × Poseidon) — Is now considered a Splash Boon, and max damage increased to 400.
 - **Brave Face** (Hephaestus × Hera) — Resists up to 50% of any damage rather than 30%, and each point resisted costs 5 Magick instead of 10.
 - **Burning Desire** — additionally lifts the ceiling on Scorch, from vanilla's 999.
-- **Chain Reaction** (Hestia × Hephaestus) — New Effect: Boon effect cooldowns have a 30% chance of being skipped.
+- **Chain Reaction** (Hestia × Hephaestus) — New Effect: Boon effect cooldowns have a 25% chance of being skipped.
 - **Carnal Pleasure** (Aphrodite × Ares) — Reworked: each Plasma collected counts as 20 Magick used toward Heart Breaker, and Heartthrobs gain +1 power for each Plasma you have.
 - **Cherished Heirloom** (Demeter × Hera) — Every keepsake is upgraded by one rarity this night, and your current one is refreshed at its new rarity. Additionally, choose another to keep for the rest of the night on pickup. Zagreus' Journey support is experimental and off by default (`Experimental.Mods.WrathOfOlympus` in config).
 - **Cryo Pounder** (Demeter × Hephaestus) — Reworked: Frozen foes with Glow take 50% extra damage.
@@ -98,7 +98,7 @@
 - **Killer Current** (Zeus × Poseidon) — New Effect: Froth-afflicted foes have a 30% chance of being struck by lightning after taking damage (30 damage per bolt).
 - **Love Handles** replaced with **Smoldering Forge** (Aphrodite × Hephaestus) — striking a foe with Glow with Weapon has a 25% chance to create a Heartthrob.
 - **Natural Selection** (Demeter × Poseidon) — New Effect: on pickup, gain 3 triple-poms. Every 8 encounters, gain another one.
-- **Ripple Effect** (Hera × Poseidon): Projectile repeat effect has a 50% chance to strike again, and again with 25% / 12.5% / 6.25%, up to 4 times total. Repeatable projectile list is expanded to include Ocean Swell, Fine Line, Easy Shot and Controlled Burn.
+- **Ripple Effect** (Hera × Poseidon): Projectile repeat effect has a 50% chance to strike again, and again with 25% / 12.5% / 6.25%, up to 4 times total. Repeatable projectile list is expanded to include Ocean Swell, Fine Line, Easy Shot, Controlled Burn, Phalanx Shot and Support Fire.
 - **Seismic Servo** replaed with **Seismic Hammer** (Hephaestus × Poseidon) — Replaced: your Cast erupts into your Omega Cast after being struck by a Hephaestus blast. Also flatly reduces the cooldowns of Volcanic Strike and Volcanic Flourish by 1 second.
 - **Sun Worshiper** (Apollo × Hera) — Additional foes have a 30% chance to also be summoned in combat after being slain, up to 10 per location.
 - **Scalding Vapor** (Hestia × Poseidon) — Reworked: Steam no longer consumes Froth when activated, and steam damage can stack up to 5 times per foe + proc Froth. Steam can now only be created by Fireballs instead of any fire source.

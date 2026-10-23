@@ -36,6 +36,8 @@ local RIPPLE_PROJECTILES = {
 	ProjectileHeraOmega = true,
 	ArtemisCastVolley = true,
 	ProjectileFireball = true,
+	AthenaDeflectingProjectile = true,
+	ArtemisSupportingFire = true,
 }
 
 
