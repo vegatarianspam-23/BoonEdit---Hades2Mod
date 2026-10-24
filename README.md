@@ -20,7 +20,9 @@ Hell2Modding, ENVY, Chalk, ReLoad, SJSON and ModUtil.
 
 ## Configuration
 
-Launch the game once to generate `ReturnOfModding/config/SWu-BoonEdits.cfg`, then configure (enable/disable) any boon edits. 
+Launch the game once to generate `ReturnOfModding/config/SWu-BoonEdits.cfg`, then configure (enable/disable) any boon edits. The easiest way is your mod manager's **Config editor** (Thunderstore Mod Manager or r2modman), or open the `.cfg` file directly.
+
+Don't edit the mod's `config.lua`: once the `.cfg` exists its values take priority, and `config.lua` is overwritten whenever the mod updates.
 
 `Experimental` changes are off by default (includes limited support for Zagreus' Journey and Wrath of Olympus) -- enable at your own risk!
 
