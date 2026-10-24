@@ -113,7 +113,7 @@ mod.tuning.SwordRing = {
 }
 
 mod.tuning.IonicGain = {
-	ManaPerSecond = 6,
+	ManaPerSecond = 12,
 
 	Range = 450,
 	Interval = 0.25,
