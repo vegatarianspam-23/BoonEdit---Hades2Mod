@@ -75,5 +75,11 @@ function scalding_vapor_fireball(triggerArgs)
 	if triggerArgs == nil or triggerArgs.EffectName ~= nil then return false end
 
 	local projectile = triggerArgs.SourceProjectile
-	return projectile ~= nil and game.Contains(fireball_projectiles(), projectile)
+	if projectile == nil then return false end
+
+	local steam = game.GetHeroTrait('SteamBoon')
+	local lookup = steam and steam.OnEnemyDamagedAction and steam.OnEnemyDamagedAction.ValidProjectilesLookup
+	if lookup and lookup[projectile] then return true end
+
+	return game.Contains(fireball_projectiles(), projectile)
 end
