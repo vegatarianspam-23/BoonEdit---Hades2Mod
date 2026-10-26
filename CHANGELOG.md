@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-10-26
+
 ### Changed
 
 - Ionic Gain: the Aether Font's area is 50% larger (marked by a yellow ring), and its lightning now strikes only foes inside that same area
@@ -45,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.0.6]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.1...1.0.3
