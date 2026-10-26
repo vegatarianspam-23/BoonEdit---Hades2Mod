@@ -7,9 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Ionic Gain: the Aether Font's area is 50% larger, and its lightning now strikes only foes inside that same area
-- Ionic Gain: a yellow ring around the Aether Font now marks that area
-- Ionic Gain: the Font's lightning now strikes only foes that can be hit, skipping invulnerable, untargetable and allied units and familiars
+- Ionic Gain: the Aether Font's area is 50% larger (marked by a yellow ring), and its lightning now strikes only foes inside that same area
 
 ## [1.0.5] - 2026-10-24
 
