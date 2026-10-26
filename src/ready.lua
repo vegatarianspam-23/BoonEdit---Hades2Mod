@@ -31,6 +31,11 @@ sjson.hook(poseidonVfx, function(data)
 	return sjson_PoseidonVfx(data)
 end)
 
+local hestiaVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Hestia_VFX.sjson')
+sjson.hook(hestiaVfx, function(data)
+	return sjson_HestiaVfx(data)
+end)
+
 
 modutil.mod.Path.Wrap("SetupMap", function(base, ...)
 	prefix_SetupMap()

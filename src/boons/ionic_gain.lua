@@ -44,47 +44,89 @@ local function ionic_gain_font(heroId)
 end
 
 
-function ionic_gain_regen()
+local function ionic_gain_ring_fonts(ringed)
 	local tuning = mod.tuning.IonicGain
-	local carried = 0
+	if not tuning.RingFx then return end
 
-	while ionic_gain_active() do
-		local nearest = nil
-		if ionic_gain_held() then
-			local _, distance = ionic_gain_font(game.CurrentRun.Hero.ObjectId)
-			nearest = distance
+	for _, id in ipairs(game.GetIdsByType({ Name = 'ManaDropZeus' }) or {}) do
+		if not ringed[id] then
+			ringed[id] = true
+			game.CreateAnimation({
+				Name = tuning.RingFx,
+				DestinationId = id,
+				ScaleRadius = tuning.Range,
+			})
 		end
-
-		if nearest and nearest <= tuning.Range then
-			local rate = ionic_gain_rate()
-			if rate > 0 then
-
-				carried = carried + rate * tuning.Interval
-				local whole = math.floor(carried)
-				if whole > 0 then
-					carried = carried - whole
-					game.ManaDelta(whole, { Silent = false, SWuManaDrip = true })
-				end
-			end
-		else
-			carried = 0
-		end
-
-		game.wait(tuning.Interval, game.RoomThreadName)
 	end
 end
 
 
-local function ionic_gain_target(fontId)
-	local range = mod.tuning.IonicGain.StrikeRange
-	local candidates = {}
+function ionic_gain_regen_tick(state)
+	local tuning = mod.tuning.IonicGain
+	local nearest = nil
+	if ionic_gain_held() then
+		ionic_gain_ring_fonts(state.Ringed)
+		local _, distance = ionic_gain_font(game.CurrentRun.Hero.ObjectId)
+		nearest = distance
+	end
 
-	for _, unit in pairs(game.ActiveEnemies or {}) do
-		if unit and unit.ObjectId and not unit.IsDead and not is_allied_summon(unit) then
-			local distance = game.GetDistance({ Id = unit.ObjectId, DestinationId = fontId })
-			if distance and distance <= range then
-				table.insert(candidates, unit)
+	if nearest and nearest <= tuning.Range then
+		local rate = ionic_gain_rate()
+		if rate > 0 then
+			state.Carried = state.Carried + rate * tuning.Interval
+			local whole = math.floor(state.Carried)
+			if whole > 0 then
+				state.Carried = state.Carried - whole
+				game.ManaDelta(whole, { Silent = false, SWuManaDrip = true })
 			end
+		end
+	else
+		state.Carried = 0
+	end
+
+	return tuning.Interval
+end
+
+
+function ionic_gain_regen()
+	local state = { Carried = 0, Ringed = {} }
+
+	while ionic_gain_active() do
+		game.wait(ionic_gain_regen_tick(state), game.RoomThreadName)
+	end
+end
+
+
+local function ionic_gain_foe(unit)
+	if not unit or not unit.ObjectId or unit.IsDead then return false end
+	if boon_ignores(unit) or is_allied_summon(unit) then return false end
+	if unit.IgnoreInvisibility or not unit.TriggersOnHitEffects then return false end
+
+	if not game.GetThingDataValue({ Id = unit.ObjectId, Property = 'StopsProjectiles' }) then return false end
+	if game.IsInvulnerable({ Id = unit.ObjectId }) then return false end
+	if game.IsUntargetable({ Id = unit.ObjectId }) then return false end
+	if unit.InvulnerableFlags and not game.IsEmpty(unit.InvulnerableFlags) then return false end
+
+	return true
+end
+
+
+local function ionic_gain_target(fontId)
+	local nearby = game.GetClosestIds({
+		Id = fontId,
+		DestinationName = 'EnemyTeam',
+		IgnoreInvulnerable = true,
+		StopsProjectiles = true,
+		IgnoreHomingIneligible = true,
+		Distance = mod.tuning.IonicGain.Range,
+		PreciseCollision = true,
+	}) or {}
+
+	local candidates = {}
+	for _, id in ipairs(nearby) do
+		local unit = game.ActiveEnemies and game.ActiveEnemies[id]
+		if ionic_gain_foe(unit) then
+			table.insert(candidates, unit)
 		end
 	end
 
@@ -113,19 +155,22 @@ local function ionic_gain_bolt(victim)
 end
 
 
+function ionic_gain_strike_tick()
+	local fontId = ionic_gain_held() and ionic_gain_font(game.CurrentRun.Hero.ObjectId)
+
+	local victim = fontId and ionic_gain_target(fontId)
+	if victim then
+		ionic_gain_bolt(victim)
+	end
+
+	local recharge = game.GetTotalHeroTraitValue('OlympianRechargeMultiplier', { IsMultiplier = true })
+	return mod.tuning.IonicGain.StrikeInterval * recharge
+end
+
+
 function ionic_gain_strikes()
-	local tuning = mod.tuning.IonicGain
-
 	while ionic_gain_active() do
-		local fontId = ionic_gain_held() and ionic_gain_font(game.CurrentRun.Hero.ObjectId)
-
-		local victim = fontId and ionic_gain_target(fontId)
-		if victim then
-			ionic_gain_bolt(victim)
-		end
-
-		local recharge = game.GetTotalHeroTraitValue('OlympianRechargeMultiplier', { IsMultiplier = true })
-		game.wait(tuning.StrikeInterval * recharge, game.RoomThreadName)
+		game.wait(ionic_gain_strike_tick(), game.RoomThreadName)
 	end
 end
 

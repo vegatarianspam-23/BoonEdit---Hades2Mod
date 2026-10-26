@@ -115,7 +115,7 @@ mod.tuning.SwordRing = {
 mod.tuning.IonicGain = {
 	ManaPerSecond = 6,
 
-	Range = 450,
+	Range = 675,
 	Interval = 0.25,
 
 	RarityScale = {
@@ -132,8 +132,10 @@ mod.tuning.IonicGain = {
 		Heroic = 30,
 	},
 
-	StrikeRange = 700,
 	StrikeInterval = 1,
+
+	RingFx = 'SWuIonicGainRing',
+	RingHue = 0.1,
 }
 
 mod.tuning.BeachBall = {

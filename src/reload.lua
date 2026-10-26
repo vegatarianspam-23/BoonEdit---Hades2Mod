@@ -359,6 +359,39 @@ function sjson_PoseidonVfx(data)
 end
 
 
+function sjson_HestiaVfx(data)
+	if not data or not data.Animations then return end
+
+	local tuning = mod.tuning.IonicGain
+	for _, animation in ipairs(data.Animations) do
+		if animation.Name == tuning.RingFx then return end
+	end
+
+	table.insert(data.Animations, sjson.to_object({
+		Name = tuning.RingFx,
+		InheritFrom = 'HestiaCastDefenseCircleA',
+		ScaleRadius = tuning.Range,
+		Loop = true,
+		Duration = 3600,
+		RandomDurationMin = 3600,
+		RandomDurationMax = 3600,
+		StartAlpha = 1,
+		EndAlpha = 1,
+		EaseIn = 0,
+		EaseOut = 0,
+		PingPongColor = false,
+		ColorFromOwner = 'Ignore',
+		StartRed = 1,
+		StartGreen = 1,
+		StartBlue = 1,
+		EndRed = 1,
+		EndGreen = 1,
+		EndBlue = 1,
+		Hue = tuning.RingHue,
+	}, { 'Name', 'InheritFrom' }))
+end
+
+
 function sjson_CastVfx(data)
 	if not data or not data.Animations then return end
 
