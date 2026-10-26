@@ -32,10 +32,21 @@ local function ionic_gain_rate()
 end
 
 
+local function ionic_gain_distance(heroId, fontId)
+	local hero = game.GetLocation({ Id = heroId })
+	local font = game.GetLocation({ Id = fontId })
+	if not hero or not font then return nil end
+
+	local dx = hero.X - font.X
+	local dy = (hero.Y - font.Y) / mod.tuning.IonicGain.RangeScaleY
+	return math.sqrt(dx * dx + dy * dy)
+end
+
+
 local function ionic_gain_font(heroId)
 	local nearestId, nearest = nil, nil
 	for _, id in ipairs(game.GetIdsByType({ Name = 'ManaDropZeus' }) or {}) do
-		local distance = game.GetDistance({ Id = heroId, DestinationId = id })
+		local distance = ionic_gain_distance(heroId, id)
 		if distance and (not nearest or distance < nearest) then
 			nearestId, nearest = id, distance
 		end
@@ -48,13 +59,17 @@ local function ionic_gain_ring_fonts(ringed)
 	local tuning = mod.tuning.IonicGain
 	if not tuning.RingFx then return end
 
+	local scale = tuning.Range / tuning.RingArtRadius
 	for _, id in ipairs(game.GetIdsByType({ Name = 'ManaDropZeus' }) or {}) do
-		if not ringed[id] then
-			ringed[id] = true
+		if ringed[id] ~= scale then
+			if ringed[id] then
+				game.StopAnimation({ Name = tuning.RingFx, DestinationId = id })
+			end
+			ringed[id] = scale
 			game.CreateAnimation({
 				Name = tuning.RingFx,
 				DestinationId = id,
-				ScaleRadius = tuning.Range,
+				Scale = scale,
 			})
 		end
 	end
@@ -119,6 +134,7 @@ local function ionic_gain_target(fontId)
 		StopsProjectiles = true,
 		IgnoreHomingIneligible = true,
 		Distance = mod.tuning.IonicGain.Range,
+		ScaleY = mod.tuning.IonicGain.RangeScaleY,
 		PreciseCollision = true,
 	}) or {}
 

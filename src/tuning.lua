@@ -134,7 +134,10 @@ mod.tuning.IonicGain = {
 
 	StrikeInterval = 1,
 
+	RangeScaleY = 0.5,
+
 	RingFx = 'SWuIonicGainRing',
+	RingArtRadius = 391,
 	RingHue = 0.1,
 }
 

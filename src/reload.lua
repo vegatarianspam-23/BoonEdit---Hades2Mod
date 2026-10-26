@@ -370,7 +370,7 @@ function sjson_HestiaVfx(data)
 	table.insert(data.Animations, sjson.to_object({
 		Name = tuning.RingFx,
 		InheritFrom = 'HestiaCastDefenseCircleA',
-		ScaleRadius = tuning.Range,
+		Scale = 1,
 		Loop = true,
 		Duration = 3600,
 		RandomDurationMin = 3600,
