@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2026-10-27
+
 ### Changed
 
 - Ecstatic Obsession: Charm chance lowered to 25% (was 30%), and duration on bosses is halved to 2.5 seconds. Charming Typhon no longer interrupts his current attack, and cap of 5 charmed foes at a time.
@@ -61,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.0.7]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.6...1.0.7
 [1.0.6]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.3...1.0.4
