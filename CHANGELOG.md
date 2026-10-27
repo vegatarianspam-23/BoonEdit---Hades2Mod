@@ -7,8 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Ecstatic Obsession: Charm chance lowered to 25% (was 30%). Charming Typhon no longer interrupts his current attack (invulnerability to Charmed foes' attacks still apply).
-- Ecstatic Obsession: Charm on bosses lasts 2.5 seconds (was 5), still with 5 seconds before it can land on them again. At most 5 foes can be Charmed at once
+- Ecstatic Obsession: Charm chance lowered to 25% (was 30%), and duration on bosses is halved to 2.5 seconds. Charming Typhon no longer interrupts his current attack, and cap of 5 charmed foes at a time.
 - Mean Streak: the timer now pauses while a menu or the pause screen is open, following Vow of Time's logic
 - Steady Growth: also upgrades a random boon's rarity on pickup
 - Enfeeblement of Cowards: foes' ranged shots are slowed by 60% (was 40%)
