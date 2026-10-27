@@ -4,6 +4,16 @@
 local ANTLER = 'LowHealthCritKeepsake'
 
 
+once('WhiteAntler', function()
+	if not boon_edit_on('WhiteAntler') then return end
+
+	local antler = game.TraitData[ANTLER]
+	if not antler then return end
+
+	antler.CapMaxHealth = mod.tuning.WhiteAntler.MaxHealth
+end)
+
+
 function white_antler_active()
 	return boon_edit_on('WhiteAntler') and game.HeroHasTrait(ANTLER)
 end

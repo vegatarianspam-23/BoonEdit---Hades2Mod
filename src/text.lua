@@ -257,6 +257,16 @@ if boon_edit_on('SnowQueen') then
 	})
 end
 
+if boon_edit_on('SteadyGrowth') then
+	boon_text({
+		Traits = {
+			BoonGrowthBoon = {
+				Description = 'A random {$Keywords.GodBoon} you have gains {$Keywords.Rarity} now, and again whenever you clear enough {$Keywords.EncounterPlural}.',
+			},
+		},
+	})
+end
+
 if boon_edit_on('TranquilGain') then
 	boon_text({
 		Traits = {
@@ -475,6 +485,16 @@ if boon_edit_on('WhiteAntler') then
 	})
 end
 
+if boon_edit_on('EvilEye') then
+	boon_text({
+		Traits = {
+			DeathVengeanceKeepsake = {
+				Description = 'Deal {#AltUpgradeFormat}{$TooltipData.ExtractData.Damage:P} {#Prev}damage to the last foe that struck you.',
+			},
+		},
+	})
+end
+
 if boon_edit_on('MetallicDroplet') then
 	boon_text({
 		Traits = {
@@ -668,7 +688,7 @@ if boon_edit_on('ThermalDynamics') then
 	boon_text({
 		Traits = {
 			EchoBurnBoon = {
-				Description = 'Your lightning effects from Zeus (except chain lightning) also inflict {$Keywords.Burn} ' ..
+				Description = 'Your lightning bolts from Zeus also inflict {$Keywords.Burn} ' ..
 					'for a share of the damage they deal.',
 			},
 		},

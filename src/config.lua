@@ -31,6 +31,7 @@ local config = {
       ArcticGale = true;
       LocalClimate = true;
       SnowQueen = true;
+      SteadyGrowth = true;
       TranquilGain = true;
       WeedKiller = true;
     };
@@ -69,6 +70,7 @@ local config = {
     };
 
     Medea = {
+      EnfeeblementOfCowards = true;
       HarmForTheAfflicted = true;
     };
 
@@ -96,6 +98,7 @@ local config = {
       ChainReaction = true;
       CherishedHeirloom = true;
       CryoPounder = true;
+      CuttingEdge = true;
       EcstaticObsession = true;
       GloriousDisaster = true;
       HeartyAppetite = true;
@@ -127,6 +130,7 @@ local config = {
 
   Systems = {
     OfferRequirements = true;
+    ScytheSlows = true;
   };
 
   Experimental = {
@@ -142,6 +146,7 @@ local config = {
 
     Keepsakes = {
       ConcaveStone = false;
+      EvilEye = false;
       MetallicDroplet = false;
       OlympianKeepsakes = false;
       WhiteAntler = false;

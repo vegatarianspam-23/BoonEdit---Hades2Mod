@@ -76,15 +76,28 @@ mod.tuning.SmolderingForge = {
 	HeartthrobChance = 0.25,
 }
 
+mod.tuning.CuttingEdge = {
+	BladeSpacing = 0.3,
+}
+
 mod.tuning.EcstaticObsession = {
-	CharmChance = 0.30,
+	CharmChance = 0.25,
 	CharmDuration = 5,
 	InterruptCooldown = 5,
 
 	CharmedDamageMultiplier = 10,
 	CharmedFriendlyFireMultiplier = 0,
 
+	GuardianCharmDuration = 2.5,
 	GuardianCharmCooldown = 5,
+	MaxCharmed = 5,
+	InterruptBossAttacks = false,
+	SoftCharmUnits = { 'TyphonHead' },
+
+	BossCharmFlashColor = 'AphroditeDamage',
+	BossCharmFlashSpeed = 0.8,
+	BossCharmFlashStrength = 0.6,
+
 	DamagePerFriendly = 0.10,
 	MaxDamageBonus = 0.50,
 
@@ -184,6 +197,11 @@ mod.tuning.NaturalSelection = {
 
 	LevelsPerPom = 3,
 	EncountersPerPom = 8,
+}
+
+mod.tuning.SteadyGrowth = {
+	RarityOnPickup = 1,
+	PickupDelay = 0.5,
 }
 
 mod.tuning.UnseenIre = {
@@ -337,6 +355,11 @@ mod.tuning.ScaldingVapor = {
 	MaxClouds = 5,
 }
 
+mod.tuning.MeanStreak = {
+	PauseInMenus = true,
+	Tick = 0.1,
+}
+
 mod.tuning.StutterStep = {
 	RushInterval = 0.8,
 }
@@ -409,6 +432,10 @@ mod.tuning.ThermalDynamics = {
 	},
 }
 
+mod.tuning.EnfeeblementOfCowards = {
+	ProjectileSpeed = 0.40,
+}
+
 mod.tuning.HarmForTheAfflicted = {
 	Interval = 0.3,
 }
@@ -419,8 +446,26 @@ mod.tuning.ConcaveStone = {
 
 mod.tuning.CallingCard = {}
 
+mod.tuning.EvilEye = {
+	MatchWholeType = false,
+}
+
+mod.tuning.ScytheSlows = {
+	Projectiles = {
+		'ChronosScytheThrow',
+		'ChronosScytheThrowReverse',
+		'ChronosScytheThrowLarge',
+		'ChronosScytheThrowClose',
+		'ChronosScytheThrowMid',
+		'ChronosScytheThrowFar',
+	},
+
+	Interval = 0.03,
+}
+
 mod.tuning.WhiteAntler = {
 	HeirloomOnly = true,
+	MaxHealth = 30,
 }
 
 mod.tuning.AromaticPhial = {

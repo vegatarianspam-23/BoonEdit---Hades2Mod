@@ -506,6 +506,7 @@ import 'boons/stabbing_rush.lua'
 import 'boons/profuse_bleeding.lua'
 import 'boons/meat_grinder.lua'
 import 'boons/sword_ring.lua'
+import 'boons/cutting_edge.lua'
 import 'boons/hostile_environment.lua'
 import 'boons/blood_spree.lua'
 import 'boons/grape_juice.lua'
@@ -525,6 +526,7 @@ import 'boons/cryo_pounder.lua'
 import 'boons/arctic_gale.lua'
 import 'boons/weed_killer.lua'
 import 'boons/snow_queen.lua'
+import 'boons/steady_growth.lua'
 
 import 'boons/unseen_ire.lua'
 import 'boons/old_grudge.lua'
@@ -569,6 +571,7 @@ import 'boons/arc_flash.lua'
 import 'boons/thermal_dynamics.lua'
 
 import 'boons/harm_for_the_afflicted.lua'
+import 'boons/enfeeblement_of_cowards.lua'
 
 import 'boons/preparation.lua'
 
@@ -579,6 +582,7 @@ import 'keepsakes/aromatic_phial.lua'
 import 'keepsakes/concave_stone.lua'
 import 'keepsakes/calling_card.lua'
 import 'keepsakes/white_antler.lua'
+import 'keepsakes/evil_eye.lua'
 import 'keepsakes/metallic_droplet.lua'
 
 import 'aspects/aspect_of_supay.lua'
@@ -591,6 +595,8 @@ import 'hammeredit/hidden_knives.lua'
 import 'hammeredit/rising_helix.lua'
 import 'hammeredit/whirling_helix.lua'
 
+
+import 'systems/scythe_slows.lua'
 
 import 'requirements.lua'
 import 'text.lua'

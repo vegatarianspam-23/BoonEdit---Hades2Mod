@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Changed
+
+- Ecstatic Obsession: Charm chance lowered to 25% (was 30%). Charming Typhon no longer interrupts his current attack (invulnerability to Charmed foes' attacks still apply).
+- Ecstatic Obsession: Charm on bosses lasts 2.5 seconds (was 5), still with 5 seconds before it can land on them again. At most 5 foes can be Charmed at once
+- Mean Streak: the timer now pauses while a menu or the pause screen is open, following Vow of Time's logic
+- Steady Growth: also upgrades a random boon's rarity on pickup
+- Enfeeblement of Cowards: foes' ranged shots are slowed by 60% (was 40%)
+- Evil Eye (experimental): the damage bonus now applies to the last foe that struck you
+- White Antler (experimental): max health limit set to 30
+
+### Fixed
+
+- Cutting Edge: the extra blade from Cut Above now deals its damage, instead of usually landing inside the first blade's hit immunity
+- Chronos' spinning scythe throws are now slowed by ranged-shot slows, which the game skipped for them: Enfeeblement of Cowards, Demeter's Sprint and Cast gusts, and More Duos' Air Control rings
+
 ## [1.0.6] - 2026-10-26
 
 ### Changed

@@ -28,6 +28,7 @@
 
 - **Local Climate** — Also applies to your normal cast.
 - **Snow Queen** — Fires at the start of each encounter instead of each location, without priming more mana.
+- **Steady Growth** — Also upgrades one random boon's rarity on pickup.
 - **Tranquil Gain** — New Effect: when channeling your Omega moves for 0.5 seconds, rapidly restore mana.
 - **Weed Killer** — Also applies to omega special.
 
@@ -53,7 +54,7 @@
 
 ## Hermes
 
-- **Mean Streak** — Its damage bonus applies to all damage, not just Attack and Special.
+- **Mean Streak** — Its damage bonus applies to all damage, not just Attack and Special. Its timer pauses during menus and the pause screen.
 - **Hard Target** replaced with: **Post Haste**: reduces boon effect cooldowns by 20%/25%/30%/35%.
 
 ## Hestia
@@ -64,6 +65,7 @@
 
 ## Medea
 
+- **Enfeeblement of Cowards** — Foes' ranged shots are slowed by 60% (was 40%).
 - **Harm for the Afflicted** — Curse damage triggers on every new curse inflicted on each foe.
 
 ## Poseidon
@@ -91,6 +93,7 @@
 - **Carnal Pleasure** (Aphrodite × Ares) — Reworked: each Plasma collected counts as 20 Magick used toward Heart Breaker, and Heartthrobs gain +1 power for each Plasma you have.
 - **Cherished Heirloom** (Demeter × Hera) — Every keepsake is upgraded by one rarity this night, and your current one is refreshed at its new rarity. Additionally, choose another to keep for the rest of the night on pickup. Zagreus' Journey support is experimental and off by default (`Experimental.Mods.WrathOfOlympus` in config).
 - **Cryo Pounder** (Demeter × Hephaestus) — Reworked: Frozen foes with Glow take 50% extra damage.
+- **Cutting Edge** (Apollo × Ares) — Fixed: Cut Above's second blade now deals damage.
 - **Ecstatic Obsession** replaced with **Nervous Wreck** (Aphrodite x Hera): same effect as before (as Aphrodite's legendary), but kept Ecstatic Obession's old requirements.
 - **Glorious Disaster** (Apollo × Zeus) — No longer needs the extra channeled Magick, and bolts hit for 50 each (up fro 20).
 - **Hearty Appetite** — Additionally grants a large healing drop on pickup, and again every 5 encounters, and all healing is improved by 50% tonight.
@@ -102,7 +105,7 @@
 - **Seismic Servo** replaed with **Seismic Hammer** (Hephaestus × Poseidon) — Replaced: your Cast erupts into your Omega Cast after being struck by a Hephaestus blast. Also flatly reduces the cooldowns of Volcanic Strike and Volcanic Flourish by 1 second.
 - **Sun Worshiper** (Apollo × Hera) — Additional foes have a 30% chance to also be summoned in combat after being slain, up to 10 per location.
 - **Scalding Vapor** (Hestia × Poseidon) — Reworked: Steam no longer consumes Froth when activated, and steam damage can stack up to 5 times per foe + proc Froth. Steam can now only be created by Fireballs instead of any fire source.
-- **Thermal Dynamics** (Hestia × Zeus) — All lightning from Zeus (except chain lightning) inflicts Scorch equal to 30% of its damage. Any core Zeus boon now qualifies.
+- **Thermal Dynamics** (Hestia × Zeus) — Lightning bolts from Zeus inflict Scorch equal to 30% of its damage. Any core Zeus boon now qualifies.
 
 
 ## Legendary Boons
@@ -123,3 +126,4 @@
 ## Other
 - **Anvil of Fates** — Instead of random chance, choose from up to 3 hammer upgrades to sacrifice / gain.
 - **Glow** — Now stacks: each further stack makes the target take 5% more damage, up to 35%, and expires independently.
+- **Chronos' scythe throws** — His spinning scythes are now slowed by ranged-shot slows (Enfeeblement of Cowards, Demeter's gusts, More Duos' Air Control), which the game skipped for them.
