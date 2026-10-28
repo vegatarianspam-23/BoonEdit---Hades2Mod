@@ -19,8 +19,8 @@ Each entry can be switched on in the config, under `Experimental`.
 - **Aspect of Supay** (Umbral Flames) — Rush-boon damage bonus restored to EA levels.
 
 ## Keepsakes
-- **Concave Stone** (Echo) — New Effect: Chance to copy your next Boon or Hammer instead.
-- **Evil Eye** (Nemesis) — Its damage bonus now applies to the last foe that struck you, instead of the last foe that slew you.
+- **Concave Stone** (Echo) — New Effect: Chance to copy your next Boon or Hammer reward instead.
+- **Evil Eye** (Nemesis) — Damage bonus now applied to the last foe that hit you.
 - **Metallic Droplet** (Hermes) — Now keeps half its move/strike/cast speed boost once the timer runs out while held.
-- **White Antler** (Artemis) — Keeps its effects as long as its held, and limits you to 30 max health.
+- **White Antler** (Artemis) — Keeps its effects as long as its held. Max health increased to 30.
 - **Olympian Keepsakes** — New Heroic rarity, can transform boons of any rarity into Legendary (or Heroic, if Legendary is already offered / held) instead.

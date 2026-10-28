@@ -98,6 +98,9 @@ Boons whose offer requirements differ from the base game. Where a boon has sever
 - **Sun Worshiper**
   - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
   - Nova Strike, Nova Flourish, Solar Ring, Blinding Rush, Lucid Gain
+- **Thermal Dynamics**
+  - Heaven Strike, Heaven Flourish, Storm Ring, Thunder Rush, Ionic Gain
+  - Flame Strike, Flame Flourish, Smolder Ring
 - **Universal Donor**
   - Grisly Gain, Visceral Impact, Meat Grinder, Profuse Bleeding
   - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
