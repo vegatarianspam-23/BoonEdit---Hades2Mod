@@ -87,6 +87,7 @@ local config = {
       ArcFlash = true;
       IonicGain = true;
       PowerSurge = true;
+      ThunderRush = true;
     };
 
     Duos = {
@@ -131,6 +132,7 @@ local config = {
   Systems = {
     OfferRequirements = true;
     ScytheSlows = true;
+    SprintFollowsMoveSpeed = true;
   };
 
   Experimental = {

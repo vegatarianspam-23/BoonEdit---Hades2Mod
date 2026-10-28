@@ -7,9 +7,7 @@ once('FestiveFogShelterStat', function()
 	local fog = game.TraitData.FogDamageBonusBoon
 	if not fog then return end
 
-	fog.BoonEditShelter = mod.tuning.FestiveFog.Shelter - 1
-	boon_edit_add_stat('FogDamageBonusBoon', 'BoonEditFestiveFogShelterStatDisplay',
-		{ Key = 'BoonEditShelter', ExtractAs = 'TooltipShelter', Format = 'Percent' })
+	fog.StatLines = { 'BoonEditFestiveFogStatDisplay' }
 end)
 
 
@@ -44,10 +42,17 @@ function festive_fog_shelter(on)
 		return
 	end
 
-	local shelter = mod.tuning.FestiveFog.Shelter
-	if type(shelter) ~= 'number' or shelter <= 0 then return end
+	festive_fog_set(on and festive_fog_multiplier() or 1)
+end
 
-	festive_fog_set(on and shelter or 1)
+
+function festive_fog_multiplier()
+	local trait = game.GetHeroTrait('FogDamageBonusBoon')
+	local modifier = trait and trait.AddOutgoingDamageModifiers
+	local bonus = modifier and modifier.RequiredSelfEffectsMultiplier
+	if type(bonus) ~= 'number' then return 1 end
+
+	return math.max(0, 1 - (bonus - 1) * mod.tuning.FestiveFog.ShelterPerBonus)
 end
 
 

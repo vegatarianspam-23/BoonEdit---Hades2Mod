@@ -16,7 +16,23 @@ once('StutterStepRushTrails', function()
 		ChangeType = 'Multiply',
 		ReportValues = { BoonEditRushInterval = 'ChangeValue' },
 	})
+
+	modutil.mod.Path.Wrap('ZeusSprintZap', function(base, weaponData, functionArgs, triggerArgs)
+		return base(weaponData, stutter_step_zap_args(functionArgs), triggerArgs)
+	end)
 end)
+
+
+function stutter_step_zap_args(functionArgs)
+	if not functionArgs or type(functionArgs.Cooldown) ~= 'number' then return functionArgs end
+
+	local cooldown = stutter_step_interval(functionArgs.Cooldown)
+	if cooldown == functionArgs.Cooldown then return functionArgs end
+
+	local scaled = game.ShallowCopyTable(functionArgs)
+	scaled.Cooldown = cooldown
+	return scaled
+end
 
 
 function stutter_step_interval(seconds)

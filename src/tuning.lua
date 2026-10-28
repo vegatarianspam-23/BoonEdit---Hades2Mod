@@ -50,7 +50,7 @@ mod.tuning.CarnalPleasure = {
 }
 
 mod.tuning.FestiveFog = {
-	Shelter = 0.60,
+	ShelterPerBonus = 1,
 }
 
 mod.tuning.GrapeJuice = {
@@ -413,6 +413,10 @@ mod.tuning.KillerCurrent = {
 	BoltPower = 30,
 
 	BoltCooldown = 0.5,
+}
+
+mod.tuning.ThunderRush = {
+	FireRate = 1.5,
 }
 
 mod.tuning.ThermalDynamics = {

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Changed
+
+- Happy Haze: damage taken in the fog is reduced by the same amount as its damage bonus (was a flat 40%), shown together on one stat line
+- Thunder Rush: strikes 50% more often (every 0.23 seconds, was 0.35), and Stutter Step makes it strike more often still
+- Ripple Effect: Beach Ball can now repeat too.
+
+### Fixed
+
+- Sprint speed now also rises with move-speed bonuses that only raised run speed (Ignited Ichor, Word of Smaller Stature, Toula), and Plasma now raises Sprint speed by the same proportion as run speed, so running can't outpace Sprinting
+- Pop-up text over Melinoe and foes (like Perfect Image or Untouchable Glow being lost) now stacks upward instead of overlapping when several show at once
+
 ## [1.0.7] - 2026-10-27
 
 ### Changed

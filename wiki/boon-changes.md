@@ -34,7 +34,7 @@
 
 ## Dionysus
 
-- **Festive Fog** — Also reduces taken damage by 40% while standing in the fog.
+- **Happy Haze** — Also reduces damage taken while standing in the fog, by the same amount as its damage bonus.
 - **Grape Juice** — Also restores 20 health on pickup.
 
 ## Hades
@@ -82,6 +82,7 @@
 - **Air Quality** — Now floors your base damage before all multipliers.
 - **Arc Flash** — Extra Blitz damage is flatly applied to all Blitz instead of only ones triggered by omega attacks.
 - **Power Surge** — Additionally fires on magic restoration.
+- **Thunder Rush** — Strikes 50% more often while you Dash or Sprint. Stacks with Stutter Step.
 
 ## Duo Boons
 
@@ -101,7 +102,7 @@
 - **Killer Current** (Zeus × Poseidon) — New Effect: Froth-afflicted foes have a 30% chance of being struck by lightning after taking damage (30 damage per bolt).
 - **Love Handles** replaced with **Smoldering Forge** (Aphrodite × Hephaestus) — striking a foe with Glow with Weapon has a 25% chance to create a Heartthrob.
 - **Natural Selection** (Demeter × Poseidon) — New Effect: on pickup, gain 3 triple-poms. Every 8 encounters, gain another one.
-- **Ripple Effect** (Hera × Poseidon): Projectile repeat effect has a 50% chance to strike again, and again with 25% / 12.5% / 6.25%, up to 4 times total. Repeatable projectile list is expanded to include Ocean Swell, Fine Line, Easy Shot, Controlled Burn, Phalanx Shot and Support Fire.
+- **Ripple Effect** (Hera × Poseidon): Projectile repeat effect has a 50% chance to strike again, and again with 25% / 12.5% / 6.25%, up to 4 times total. Repeatable projectile list is expanded to include Ocean Swell, Fine Line, Easy Shot, Controlled Burn, Phalanx Shot, Support Fire and Beach Ball.
 - **Seismic Servo** replaed with **Seismic Hammer** (Hephaestus × Poseidon) — Replaced: your Cast erupts into your Omega Cast after being struck by a Hephaestus blast. Also flatly reduces the cooldowns of Volcanic Strike and Volcanic Flourish by 1 second.
 - **Sun Worshiper** (Apollo × Hera) — Additional foes have a 30% chance to also be summoned in combat after being slain, up to 10 per location.
 - **Scalding Vapor** (Hestia × Poseidon) — Reworked: Steam no longer consumes Froth when activated, and steam damage can stack up to 5 times per foe + proc Froth. Steam can now only be created by Fireballs instead of any fire source.
@@ -126,4 +127,5 @@
 ## Other
 - **Anvil of Fates** — Instead of random chance, choose from up to 3 hammer upgrades to sacrifice / gain.
 - **Glow** — Now stacks: each further stack makes the target take 5% more damage, up to 35%, and expires independently.
+- **Sprint speed** — Boons and items that only raised your move speed (Ignited Ichor, Word of Smaller Stature, the cat familiar) now raise your Sprint speed by the same amount, and Plasma raises Sprint speed in proportion to run speed, so running is never faster than Sprinting.
 - **Chronos' scythe throws** — His spinning scythes are now slowed by ranged-shot slows (Enfeeblement of Cowards, Demeter's gusts, More Duos' Air Control), which the game skipped for them.

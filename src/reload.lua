@@ -273,7 +273,12 @@ end
 
 function boon_text(spec)
 	for id, entry in pairs(spec.Traits or {}) do trait_text[id] = entry end
-	for id, entry in pairs(spec.Keywords or {}) do help_text[id] = entry end
+	for id, entry in pairs(spec.Keywords or {}) do
+		help_text[id] = entry
+		if entry.DisplayName and not game.Contains(game.KeywordList, id) then
+			table.insert(game.KeywordList, id)
+		end
+	end
 	for id, entry in pairs(spec.StatLines or {}) do stat_lines[id] = entry end
 	for id, entry in pairs(spec.Flavor or {}) do flavor_text[id] = entry end
 	for id, entry in pairs(spec.CombatText or {}) do combat_text[id] = entry end
@@ -426,10 +431,23 @@ end
 
 
 function sjson_HelpText(data)
+	local found = {}
 	for _, entry in ipairs(data.Texts) do
 		local rewrite = help_text[entry.Id]
-		if rewrite and rewrite.Description then
-			entry.Description = rewrite.Description
+		if rewrite then
+			found[entry.Id] = true
+			if rewrite.Description then entry.Description = rewrite.Description end
+		end
+	end
+
+	local order = { 'Id', 'DisplayName', 'Description' }
+	for id, keyword in pairs(help_text) do
+		if not found[id] and keyword.DisplayName then
+			table.insert(data.Texts, sjson.to_object({
+				Id = id,
+				DisplayName = keyword.DisplayName,
+				Description = keyword.Description,
+			}, order))
 		end
 	end
 end
@@ -567,6 +585,7 @@ import 'boons/killer_current.lua'
 import 'boons/air_quality.lua'
 import 'boons/power_surge.lua'
 import 'boons/arc_flash.lua'
+import 'boons/thunder_rush.lua'
 
 import 'boons/thermal_dynamics.lua'
 
@@ -597,6 +616,8 @@ import 'hammeredit/whirling_helix.lua'
 
 
 import 'systems/scythe_slows.lua'
+import 'systems/combat_text_stack.lua'
+import 'systems/sprint_follows_speed.lua'
 
 import 'requirements.lua'
 import 'text.lua'

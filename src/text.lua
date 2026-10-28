@@ -24,9 +24,9 @@ if boon_edit_on('FestiveFog') then
 			},
 		},
 		StatLines = {
-			BoonEditFestiveFogShelterStatDisplay = {
-				Name = 'Damage Taken in {$Keywords.Cloud}:',
-				Index = boon_edit_stat_index('FogDamageBonusBoon', 'TooltipShelter'),
+			BoonEditFestiveFogStatDisplay = {
+				Name = 'In-Fog Bonus Damage & Resistance:',
+				Index = boon_edit_stat_index('FogDamageBonusBoon', 'Damage'),
 			},
 		},
 	})
@@ -620,9 +620,16 @@ if boon_edit_on('RippleEffect') then
 	boon_text({
 		Traits = {
 			MoneyDamageBoon = {
-				Description = 'The bonus effects your {$Keywords.Omega} trigger, {#BoldFormatGraft}Phalanx Shot {#Prev}and ' ..
-					'{#BoldFormatGraft}Support Fire {#Prev}may occur again, up to ' ..
-					'{#BoldFormatGraft}{$TooltipData.ExtractData.TooltipMaxRepeats} {#Prev}more times.',
+				Description = 'Your {$Keywords.BoonEditRippleProjectiles} from Olympians have a chance to fire again.',
+			},
+		},
+		Keywords = {
+			BoonEditRippleProjectiles = {
+				DisplayName = 'projectiles',
+				Description = 'Effects from {#BoldFormatGraft}Ocean Swell{#Prev}, {#BoldFormatGraft}Fine Line{#Prev}, ' ..
+					'{#BoldFormatGraft}Easy Shot{#Prev}, {#BoldFormatGraft}Controlled Burn{#Prev}, ' ..
+					'{#BoldFormatGraft}Phalanx Shot{#Prev}, {#BoldFormatGraft}Support Fire {#Prev}and ' ..
+					'{#BoldFormatGraft}Beach Ball{#Prev}.'
 			},
 		},
 		StatLines = {
