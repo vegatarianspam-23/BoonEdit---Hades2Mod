@@ -69,7 +69,7 @@ Boons whose offer requirements differ from the base game. Where a boon has sever
 - **Nervous Wreck**
   - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
   - Glamour Gain, Passion Rush, Rapture Ring
-- **Post Haste** — Death Warrant, Defensive Posture, Phalanx Shot, Bottomless Drink, Happy Haze, Volcanic Strike, Volcanic Flourish, Flood Gain, Ionic Gain, Heinous Affront or Unseen Ire. With MoreDuos installed, also Land Mine and Solar Eclipse Alt.
+- **Post Haste** — Death Warrant, Defensive Posture, Phalanx Shot, Bottomless Drink, Happy Haze, Volcanic Strike, Volcanic Flourish, Flood Gain, Ionic Gain, Heinous Affront or Unseen Ire. With MoreDuos installed, also Land Mine, Tectonic Cycle and Solar Eclipse Alt.
 - **Premium Service**
   - Volcanic Strike, Volcanic Flourish
   - Heavy Metal, Trusty Shield, Security System
