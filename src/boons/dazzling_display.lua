@@ -24,7 +24,7 @@ once('DazzlingDisplayNovaOnly', function()
 		FunctionName = _PLUGIN.guid .. '.DazzlingDisplayBlind',
 		Args = {
 			Chance = tuning.Chance,
-			MissChanceBonus = { BaseValue = tuning.PotencyBonus },
+			MissChanceBonus = { BaseValue = tuning.PotencyBonus, AbsoluteStackValues = tuning.PomPotencyBonus },
 			ReportValues = { ReportedMissBonus = 'MissChanceBonus' },
 		},
 	}

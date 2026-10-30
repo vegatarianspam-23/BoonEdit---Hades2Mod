@@ -628,7 +628,8 @@ if boon_edit_on('RippleEffect') then
 				DisplayName = 'projectiles',
 				Description = 'Effects from {#BoldFormatGraft}Ocean Swell{#Prev}, {#BoldFormatGraft}Fine Line{#Prev}, ' ..
 					'{#BoldFormatGraft}Easy Shot{#Prev}, {#BoldFormatGraft}Controlled Burn{#Prev}, ' ..
-					'{#BoldFormatGraft}Phalanx Shot{#Prev}, {#BoldFormatGraft}Support Fire {#Prev}and ' ..
+					'{#BoldFormatGraft}Phalanx Shot{#Prev}, {#BoldFormatGraft}Support Fire{#Prev}, ' ..
+					'{#BoldFormatGraft}Glowing Coal{#Prev}, {#BoldFormatGraft}Tipsy Shot {#Prev}and ' ..
 					'{#BoldFormatGraft}Beach Ball{#Prev}.'
 			},
 		},

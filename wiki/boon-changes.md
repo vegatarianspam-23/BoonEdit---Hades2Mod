@@ -5,6 +5,7 @@
 - **Glamour Gain** — New Effect: Every 1 second, you inflict Weak on nearby foes. Gain mana for each one.
 - **Passion Rush** — Attack also fires along your sprint trail.
 - **Secret Crush** — Also applies to your special.
+- **Nervous Wreck** replaced with **Ecstatic Obsession** (Legendary): when you inflict Weak, you have a 30% chance to inflict Charm for 5 seconds instead. 5-second cooldown between Charming the same foe again, and Charmed foes cannot damage Melinoe.
 
 ## Apollo
 
@@ -32,6 +33,7 @@
 - **Steady Growth** — Now also rarifies a boon on pickup as well.
 - **Tranquil Gain** — New Effect: when channeling your Omega moves for 0.5 seconds, rapidly restore mana.
 - **Weed Killer** — Also applies to omega special.
+- **Winter Harvest** (Legendary) — Executes from 15% rather than 10%, and sums boss HP across all phases for calculation. Can now skip more boss phases (Prometheus, Zagreus, Typhon).
 
 ## Dionysus
 
@@ -48,21 +50,25 @@
 - **Heavy Metal** — Additionally, prevents foes attacks from knocking you back.
 - **Molten Touch** — Additionally, deals bonus damage to foes with Glow (15%/20%/25%/30% more).
 - **Smithy Rush** — New Effect: During your dash, a hammer strikes in your trail, dealing damage and inflicting Glow.
+- **Premium Service** (Legendary) — Additionally, all weapon upgrades increase in rank tonight, and you gain an Anvil of Fates on pickup.
 
 ## Hera
 
 - **Rousing Reception** — Additionally, inflicts Hitch on the foes it damages. New dependency on Engagement Ring.
+- **All Together** (Legendary) — Gain an additional +1 elemental essence of each type upon pickup.
 
 ## Hermes
 
 - **Mean Streak** — Its damage bonus applies to all damage, not just Attack and Special. Timer now pauses during menu and selection screens.
 - **Hard Target** replaced with: **Post Haste**: reduces boon effect cooldowns by 20%/25%/30%/35%.
+- **Paid Dues** replaced with **Second Wind** (Legendary): You can cast and dash an additional time.
 
 ## Hestia
 
 - **Cardio Gain** — Additionally, restores mana while sprinting.
 - **Controlled Burn** — Also applies to omega attack.
 - **Snuffed Candle** replaced with: **Volcanic Crown**: when your Omega Cast fires, release a ring of 5 fireballs from the center that hit for 100 / 125 / 150 / 175 damage each bounce.
+- **Fire Away** replaced with **Burning Meteor** (Legendary): Fireball effects from Hestia are 50% larger and stronger, and inflict Scorch equal to the damage they deal.
 
 ## Medea
 
@@ -84,6 +90,7 @@
 - **Arc Flash** — Extra Blitz damage is flatly applied to all Blitz instead of only ones triggered by omega attacks.
 - **Power Surge** — Additionally fires on magic restoration.
 - **Thunder Rush** — Strikes 50% more often while you Dash or Sprint. Stacks with Stutter Step.
+- **Shocking Loss** (Legendary) — 2.5% chance to destroy foes outright when your lightning bolts strike them; the first strike on each has a 25% chance instead. Now deals 9999 damage to guardians instead of destroying them (10 second cooldown).
 
 ## Duo Boons
 
@@ -102,22 +109,12 @@
 - **Killer Current** (Zeus × Poseidon) — New Effect: Froth-afflicted foes have a 30% chance of being struck by lightning after taking damage (30 damage per bolt).
 - **Love Handles** replaced with **Smoldering Forge** (Aphrodite × Hephaestus) — striking a foe with Glow with Weapon has a 25% chance to create a Heartthrob.
 - **Natural Selection** (Demeter × Poseidon) — New Effect: on pickup, gain 3 triple-poms. Every 8 encounters, gain another one.
-- **Ripple Effect** (Hera × Poseidon): Projectile repeat effect has a 50% chance to strike again, and again with 25% / 12.5% / 6.25%, up to 4 times total. Repeatable projectile list is expanded to include Ocean Swell, Fine Line, Easy Shot, Phalanx Shot, Support Fire, Controlled Burn and Beach Ball.
+- **Ripple Effect** (Hera × Poseidon): Projectile repeat effect has a 50% chance to strike again, and again with 25% / 12.5% / 6.25%, up to 4 times total. Repeatable projectile list is expanded to include Ocean Swell, Fine Line, Easy Shot, Phalanx Shot, Support Fire, Controlled Burn, Glowing Coal, Tipsy Shot and Beach Ball.
 - **Seismic Servo** replaed with **Seismic Hammer** (Hephaestus × Poseidon) — Replaced: your Cast erupts into your Omega Cast after being struck by a Hephaestus blast. Also flatly reduces the cooldowns of Volcanic Strike and Volcanic Flourish by 1 second.
 - **Sun Worshiper** (Apollo × Hera) — Additional foes have a 30% chance to also be summoned in combat after being slain, up to 10 per location.
 - **Scalding Vapor** (Hestia × Poseidon) — Reworked: Steam no longer consumes Froth when activated, and steam damage can stack up to 5 times per foe + proc Froth. Steam can now only be created by Fireballs instead of any fire source.
 - **Thermal Dynamics** (Hestia × Zeus) — Inflict Scorch equal to 30% of all lightning bolts from Zeus.
 
-
-## Legendary Boons
-
-- **All Together** (Hera) — Gain an additional +1 elemental essence of each type upon pickup.
-- **Fire Away** replaced with **Burning Meteor** (Hestia): Fireball effects from Hestia are 50% larger and stronger, and inflict Scorch equal to the damage they deal.
-- **Paid Dues** replaced with **Second Wind** (Hermes): You can cast and dash an additional time.
-- **Premium Service** (Hephaestus) — Additionally, all weapon upgrades increase in rank tonight, and you gain an Anvil of Fates on pickup.
-- **Shocking Loss** (Zeus) — 2.5% chance to destroy foes outright when your lightning bolts strike them; the first strike on each has a 25% chance instead. Now deals 9999 damage to guardians instead of destroying them (10 second cooldown).
-- **Winter Harvest** (Demeter) — Executes from 15% rather than 10%, and sums boss HP across all phases for calculation. Can now skip more boss phases (Prometheus, Zagreus, Typhon).
-- **Nervous Wreck** replaced with **Ecstatic Obsession** (Aphrodite): when you inflict Weak, you have a 30% chance to inflict Charm for 5 seconds instead. 5-second cooldown between Charming the same foe again, and Charmed foes cannot damage Melinoe.
 
 ## Keepsakes
 - **Aromatic Phial** (Narcissus) — New Heroic rarity, where it raises **two** Common blessings at the next fountain rather than one.

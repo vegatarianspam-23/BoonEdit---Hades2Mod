@@ -239,6 +239,7 @@ mod.tuning.DazzlingDisplay = {
 	Chance = 1.0,
 
 	PotencyBonus = 0.03,
+	PomPotencyBonus = { 0.03, 0.02, 0.01 },
 
 	PotencyRarityMultipliers = {
 		Common = 1,
@@ -286,7 +287,7 @@ mod.tuning.SecondWind = {
 
 mod.tuning.BurningMeteor = {
 	FireballMultiplier = 1.5,
-	SizeMultiplier = 2.0,
+	SizeMultiplier = 1.5,
 }
 
 mod.tuning.CardioGain = {

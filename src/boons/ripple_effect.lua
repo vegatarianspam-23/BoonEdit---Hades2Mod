@@ -29,6 +29,24 @@ once('RippleEffectOmegaBoons', function()
 		return result
 	end)
 
+	modutil.mod.Path.Wrap("CheckPlayerOnFirePowers", function(base, triggerArgs)
+		local result = base(triggerArgs)
+		if ripple_effect_cast_repeat then
+			ripple_effect_cast_repeat(triggerArgs)
+		end
+		return result
+	end)
+
+	modutil.mod.Path.Wrap("FireCastAtLocation", function(base, triggerArgs, ...)
+		local copies = mod.RippleCastCopies
+		local id = triggerArgs and triggerArgs.ProjectileId
+		if copies and id and copies[id] then
+			copies[id] = nil
+			return
+		end
+		return base(triggerArgs, ...)
+	end)
+
 	modutil.mod.Path.Wrap("PoseidonSprintBall", function(base, weaponData, traitArgs, triggerArgs)
 		local charging = game.MapState.AttachedBallProjectileId and game.MapState.AttachedBallProjectileId >= 0
 		local result = base(weaponData, traitArgs, triggerArgs)
@@ -54,6 +72,12 @@ local RIPPLE_PROJECTILES = {
 	ProjectileFireball = true,
 	AthenaDeflectingProjectile = true,
 	ArtemisSupportingFire = true,
+}
+
+
+local RIPPLE_CASTS = {
+	WeaponCastProjectile = 'ProjectileCastFireball',
+	WeaponCastLob = 'ProjectileCastLob',
 }
 
 
@@ -92,6 +116,78 @@ function ripple_effect_repeat(args)
 	end
 
 	game.thread(ripple_effect_refire, repeated, repeats)
+end
+
+function ripple_effect_cast_repeat(triggerArgs)
+	if mod.RippleFiring then return end
+	if not boon_edit_on('RippleEffect') then return end
+	if not triggerArgs or not triggerArgs.name then return end
+
+	local projectile = RIPPLE_CASTS[triggerArgs.name]
+	if not projectile then return end
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or triggerArgs.OwnerTable ~= hero then return end
+	if not game.HeroHasTrait('MoneyDamageBoon') then return end
+
+	local repeats = ripple_effect_rolls()
+	if repeats <= 0 then return end
+
+	local cast = {
+		Weapon = triggerArgs.name,
+		Projectile = projectile,
+		Angle = game.GetAngle({ Id = hero.ObjectId }),
+	}
+	if triggerArgs.name == 'WeaponCastLob' and triggerArgs.ProjectileX and triggerArgs.ProjectileY then
+		local at = game.GetLocation({ Id = hero.ObjectId })
+		local dx, dy = triggerArgs.ProjectileX - at.X, triggerArgs.ProjectileY - at.Y
+		if dx * dx + dy * dy > 100 * 100 then
+			cast.X = triggerArgs.ProjectileX
+			cast.Y = triggerArgs.ProjectileY
+		end
+	end
+
+	game.thread(ripple_effect_cast_refire, cast, repeats)
+end
+
+function ripple_effect_cast_refire(cast, repeats)
+	local interval = game.GetTotalHeroTraitValue('DoubleOlympianProjectileInterval')
+	local derived = game.GetDerivedPropertyChangeValues({
+		ProjectileName = cast.Projectile,
+		WeaponName = cast.Weapon,
+		Type = 'Projectile',
+	})
+
+	for _ = 1, repeats do
+		game.waitUnmodified(interval)
+
+		local hero = game.CurrentRun and game.CurrentRun.Hero
+		if not hero or hero.IsDead then return end
+
+		local anchor = cast.X and game.SpawnObstacle({ Name = 'InvisibleTarget', LocationX = cast.X, LocationY = cast.Y })
+
+		mod.RippleFiring = true
+		local ok, id = pcall(game.CreateProjectileFromUnit, {
+			WeaponName = cast.Weapon,
+			Name = cast.Projectile,
+			Id = hero.ObjectId,
+			DestinationId = anchor,
+			Angle = cast.Angle,
+			DataProperties = derived and derived.PropertyChanges,
+			ThingProperties = derived and derived.ThingPropertyChanges,
+		})
+		mod.RippleFiring = nil
+		if anchor then game.thread(game.DestroyOnDelay, { anchor }, 0.1) end
+
+		if not ok then
+			print('[' .. _PLUGIN.guid .. '] ripple cast repeat failed: ' .. tostring(id))
+			return
+		end
+		if id then
+			mod.RippleCastCopies = mod.RippleCastCopies or {}
+			mod.RippleCastCopies[id] = true
+		end
+	end
 end
 
 function ripple_effect_ball_snapshot()
