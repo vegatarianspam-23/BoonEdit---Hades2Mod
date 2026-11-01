@@ -43,6 +43,7 @@
 ## Hades
 
 - **Old Grudge** — Can fire more than one time per run, against appropriate enemies (MoreDuos support for Tectonic Cycle).
+- **Unseen Ire** — Deal 100% more damage while Invisible (was 70%).
 
 ## Hephaestus
 
@@ -78,6 +79,9 @@
 ## Poseidon
 
 - **Breaker Rush** — New Effect: Your dash creates a pulsing puddle that creates a wave when coming in contact with foes, knocking them back and dealing **20 / 25 / 30 / 35** damage. Counts as a splash boon.
+- **High Surf** — Gains splash boon bonuses. Does not count as a splash boon requirement.
+- **Geyser Spout** — Gains splash boon bonuses. Does not count as a splash boon requirement.
+- **Tidal Ring** — Gains splash boon bonuses. Does not count as a splash boon requirement.
 
 ## Selene
 
@@ -103,9 +107,9 @@
 - **Cherished Heirloom** (Demeter × Hera) — Every keepsake is upgraded by one rarity this night, and your current one is refreshed at its new rarity. Additionally, choose another to keep for the rest of the night on pickup. Zagreus' Journey support is experimental and off by default (`Experimental.Mods.WrathOfOlympus` in config).
 - **Cryo Pounder** (Demeter × Hephaestus) — Reworked: Frozen foes with Glow take 50% extra damage.
 - **Ecstatic Obsession** replaced with **Nervous Wreck** (Aphrodite x Hera): same effect as before (as Aphrodite's legendary), but kept Ecstatic Obession's old requirements.
-- **Glorious Disaster** (Apollo × Zeus) — No longer needs the extra channeled Magick, and bolts hit for 50 each (up from 20).
+- **Glorious Disaster** (Apollo × Zeus) — No longer needs the extra channeled Magick.
 - **Hearty Appetite** — Additionally grants a large healing drop on pickup, and again every 5 encounters, and all healing is improved by 50% tonight.
-- **Hostile Environment** (Demeter × Ares) — Additionally, your regular cast also follows you around. With Circe's Staff aspect, also follows Familiars.
+- **Hostile Environment** (Demeter × Ares) — Additionally, your regular cast also follows you around. With Circe's Staff aspect, also follows Familiars. Now compatible with Glowing Coal, Lightning Lance, Tipsy Shot, Howling Soul, and also Prominence Flare and Volcanic Crown.
 - **Killer Current** (Zeus × Poseidon) — New Effect: Froth-afflicted foes have a 30% chance of being struck by lightning after taking damage (30 damage per bolt).
 - **Love Handles** replaced with **Smoldering Forge** (Aphrodite × Hephaestus) — striking a foe with Glow with Weapon has a 25% chance to create a Heartthrob.
 - **Natural Selection** (Demeter × Poseidon) — New Effect: on pickup, gain 3 triple-poms. Every 8 encounters, gain another one.

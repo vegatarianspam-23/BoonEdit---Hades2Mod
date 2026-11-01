@@ -217,7 +217,7 @@ if boon_edit_on('HostileEnvironment') then
 	boon_text({
 		Traits = {
 			SelfCastBoon = {
-				Description = 'Your {$Keywords.CastEX} is stronger, and all your {$Keywords.CastSet} follow you.',
+				Description = 'Your {$Keywords.CastEX} is stronger, and all your {$Keywords.CastSet} form around you and follow you.',
 			},
 		},
 	})
@@ -588,6 +588,16 @@ if boon_edit_on('VolcanicCrown') then
 					'{#BoldFormatGraft}{$TooltipData.ExtractData.TooltipFireballs} {#Prev}fireballs from its ' ..
 					'center. Each bounces {#BoldFormatGraft}{$TooltipData.ExtractData.TooltipBounces} {#Prev}' ..
 					'times, leaving burning ground wherever it lands.',
+			},
+		},
+	})
+end
+
+if boon_edit_on('BeachBall') and mod.tuning.BeachBall.FireOnDash then
+	boon_text({
+		Traits = {
+			PoseidonSplashSprintBoon = {
+				Description = 'Your {$Keywords.Dash} and {$Keywords.Sprint} create a watery globe behind you, which surges ahead once you stop.',
 			},
 		},
 	})

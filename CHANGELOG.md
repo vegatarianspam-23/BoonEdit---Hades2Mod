@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Added
+
+- In-game config window: open the Hell2Modding menu and toggle any change with a Windowed checkbox, grouped by god, with each duo listed under both of its gods and each legendary under its own. Changes save right away.
+
+### Changed
+
+- Unseen Ire: damage bonus while Invisible raised to 100% (was 70%)
+- Hostile Environment: can now be taken with Glowing Coal, Lightning Lance and Tipsy Shot. Projectiles are still thrown, but binding circle forms instantly around you. Prominence Flare + Volcanic Crown are also released on channel and follow you around.
+- Tidal Ring, Geyser Spout: now also gain splash bonuses
+- Glorious Disaster: Removed extra damage
+- Beach Ball: creates a projectile after a short dash
+
+### Fixed
+
+- Second Wind: fixed interactions with double casting when holding Tipsy Shot, Glowing Coal or Howling Soul
+- Chain Reaction: added Phalanx Shot to cooldown skip list
+- Beach Ball: fixed interactions with King Tide and Arterial Spray's sizing
+- Meat Grinder: with Hostile Environment, the blade rift from your familiar's Cast now follows the familiar
+
 ## [1.1.0] - 2026-10-30
 
 ### Changed

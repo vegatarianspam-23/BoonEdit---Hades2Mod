@@ -20,7 +20,7 @@ function mod.MeatGrinderCastArmed(triggerArgs, functionArgs)
 		dataProperties.AttachToOwner = true
 		dataProperties.IgnoreCancelAttachedProjectiles = true
 	end
-	game.CreateProjectileFromUnit({
+	local riftId = game.CreateProjectileFromUnit({
 		Name = functionArgs.ProjectileName,
 		Id = game.CurrentRun.Hero.ObjectId,
 		ProjectileDestinationId = projectileId,
@@ -29,6 +29,19 @@ function mod.MeatGrinderCastArmed(triggerArgs, functionArgs)
 		DataProperties = dataProperties,
 		BlastRadiusModifier = cast_area_multiplier(),
 	})
+
+	familiar_rift_follows_familiar(projectileId, riftId)
+end
+
+
+function familiar_rift_follows_familiar(projectileId, riftId)
+	if not riftId or not hostile_environment_keeps_cast() then return end
+	if projectileId == nil or projectileId ~= game.SessionMapState.FamiliarCastProjectileId then return end
+
+	local anchorId = game.MapState.FamiliarLocationId
+	if not anchorId then return end
+
+	game.AttachProjectiles({ Ids = { riftId }, DestinationId = anchorId })
 end
 
 

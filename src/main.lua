@@ -40,6 +40,20 @@ local function on_reload()
 	import 'reload.lua'
 end
 
+rom.gui.add_imgui(function()
+	if rom.ImGui.Begin('BoonEdits') and boon_edits_draw_config then
+		boon_edits_draw_config()
+	end
+	rom.ImGui.End()
+end)
+
+rom.gui.add_to_menu_bar(function()
+	if rom.ImGui.BeginMenu('BoonEdits') then
+		if boon_edits_draw_config then boon_edits_draw_config() end
+		rom.ImGui.EndMenu()
+	end
+end)
+
 local loader = reload.auto_multiple()
 
 modutil.once_loaded.game(function()

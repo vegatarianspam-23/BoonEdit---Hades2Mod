@@ -57,6 +57,8 @@ BOON_EDIT_ROLES = {
 		Add = {
 			If('PoseidonSprintBoon', { 'BreakerRush' }),
 			If('PoseidonSplashSprintBoon', { 'BeachBall' }),
+			If('PoseidonCastBoon', { 'TidalRing' }),
+			If('PoseidonExCastBoon', { 'GeyserSpout' }),
 		},
 	},
 	{
@@ -262,6 +264,11 @@ BOON_EDIT_BROAD_RULES = {
 }
 
 
+BOON_EDIT_COMPATIBLE = {
+	{ When = { 'HostileEnvironment' }, Trait = 'SelfCastBoon', With = mod.tuning.HostileEnvironment.CompatibleCasts },
+}
+
+
 BOON_EDIT_INFECTION = {
 	DelayedKnockbackEffect = Group('SWuGlowTraits'),
 	DamageShareEffect = { If('SpawnCastDamageBoon', { 'RousingReception' }) },
@@ -436,6 +443,50 @@ local function rebuild_infection()
 end
 
 
+local function exclusion_lists(traitName)
+	local trait = game.TraitData[traitName]
+	local lists = {}
+	for _, requirement in ipairs(trait and trait.GameStateRequirements or {}) do
+		if type(requirement) == 'table' and type(requirement.HasNone) == 'table' then
+			table.insert(lists, requirement.HasNone)
+		end
+	end
+	return lists
+end
+
+
+local function rebuild_compatible()
+	mod.BoonEditExclusionBase = mod.BoonEditExclusionBase or {}
+	local base = mod.BoonEditExclusionBase
+
+	local links = {}
+	for _, rule in ipairs(BOON_EDIT_COMPATIBLE) do
+		for _, other in ipairs(rule.With) do
+			table.insert(links, { Trait = rule.Trait, Other = other, When = rule.When })
+			table.insert(links, { Trait = other, Other = rule.Trait, When = rule.When })
+		end
+	end
+
+	for _, link in ipairs(links) do
+		base[link.Trait] = base[link.Trait] or {}
+		for i, list in ipairs(exclusion_lists(link.Trait)) do
+			base[link.Trait][i] = base[link.Trait][i] or game.ShallowCopyTable(list)
+			for j = #list, 1, -1 do list[j] = nil end
+			for _, name in ipairs(base[link.Trait][i]) do table.insert(list, name) end
+		end
+	end
+
+	if config.enabled == false then return end
+	for _, link in ipairs(links) do
+		if boon_edit_when(link.When) then
+			for _, list in ipairs(exclusion_lists(link.Trait)) do
+				boon_list_set(list, link.Other, false)
+			end
+		end
+	end
+end
+
+
 local function apply_rules(names)
 	for _, rule in ipairs(BOON_EDIT_REQUIREMENTS) do
 		if boon_edit_when(rule.When) then
@@ -481,6 +532,7 @@ function boon_edit_sync_groups()
 	local names = group_names()
 	if boon_edit_on('WrathOfOlympus') then relink(names) end
 	rebuild_infection()
+	rebuild_compatible()
 
 	if config.enabled == false then return end
 	apply_rules(names)

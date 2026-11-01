@@ -159,11 +159,16 @@ mod.tuning.BeachBall = {
 
 	BlastRadius = 250,
 
-	WaveProjectile = 'PoseidonCastSplashSplinter',
+	FireOnDash = true,
 }
 
 mod.tuning.GloriousDisaster = {
-	BoltDamage = 50,
+	BoltDamage = 20,
+}
+
+mod.tuning.HostileEnvironment = {
+	CompatibleCasts = { 'CastProjectileBoon', 'CastAnywhereBoon', 'CastLobBoon' },
+	InstantCasts = { WeaponCastProjectile = true, WeaponCastLob = true, WeaponCastProjectileHades = true },
 }
 
 mod.tuning.SeismicHammer = {
@@ -206,6 +211,7 @@ mod.tuning.SteadyGrowth = {
 
 mod.tuning.UnseenIre = {
 	Cooldown = 40,
+	DamageMultiplier = 2.0,
 }
 
 mod.tuning.Glow = {
@@ -252,7 +258,10 @@ mod.tuning.DazzlingDisplay = {
 mod.tuning.ChainReaction = {
 	SkipChance = 0.25,
 
-	ExtraCooldowns = { 'SWuLandMine', 'SWuSolarEclipse', 'SWuWinterSolstice', 'SWuDistressCall', 'BoonEditShockingLossGuardian' },
+	ExtraCooldowns = {
+		'SWuLandMine', 'SWuSolarEclipse', 'SWuWinterSolstice', 'SWuDistressCall', 'BoonEditShockingLossGuardian',
+		'AthenaProjectile',
+	},
 
 	TextDuration = 1.45,
 	TextCooldown = 0.5,
@@ -283,6 +292,12 @@ mod.tuning.SecondWind = {
 	ExtraDashes = 1,
 	DashRechargeMultiplier = 0.90,
 	DashCooldownMultiplier = 0.40,
+
+	InFlightCasts = {
+		WeaponCastLob = 'ProjectileCastLob',
+		WeaponCastProjectile = 'ProjectileCastFireball',
+		WeaponCastProjectileHades = 'ProjectileCastHades',
+	},
 }
 
 mod.tuning.BurningMeteor = {
@@ -326,6 +341,13 @@ mod.tuning.PoseidonSplash = {
 	RedNova = 'SWuPoseidonRedNova',
 
 	WaveDelay = 0.1,
+
+	CircleProjectile = 'PoseidonCastSplashSplinter',
+}
+
+mod.tuning.GeyserSpout = {
+	ImpulseProjectile = 'PoseidonCastImpulse',
+	Knockback = 1100,
 }
 
 mod.tuning.BreakerRush = {

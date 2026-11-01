@@ -575,6 +575,8 @@ import 'boons/scalding_vapor.lua'
 import 'boons/volcanic_crown.lua'
 
 import 'boons/breaker_rush.lua'
+import 'boons/tidal_ring.lua'
+import 'boons/geyser_spout.lua'
 import 'boons/easy_shot.lua'
 import 'boons/beach_ball.lua'
 import 'boons/arterial_spray.lua'
@@ -618,9 +620,25 @@ import 'hammeredit/whirling_helix.lua'
 import 'systems/scythe_slows.lua'
 import 'systems/combat_text_stack.lua'
 import 'systems/sprint_follows_speed.lua'
+import 'systems/config_window.lua'
 
 import 'requirements.lua'
 import 'text.lua'
+
+function poseidon_splash_scale()
+	local scale = 1
+
+	for _, data in pairs(game.GetHeroTraitValues('ConeModifier')) do
+		if data.ScaleIncrease then
+			scale = scale * data.ScaleIncrease
+		end
+		if data.MaxScale and scale > data.MaxScale then
+			scale = data.MaxScale
+		end
+	end
+
+	return scale
+end
 
 function poseidon_splash_cone(waveFx)
 	local scale = 1
@@ -642,6 +660,58 @@ function poseidon_splash_cone(waveFx)
 	end
 
 	return scale, count, graphic
+end
+
+
+function poseidon_circle_splash(args)
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero or not args.X or not args.Y or not args.Radius then return end
+
+	local _, count, graphic = poseidon_splash_cone(mod.tuning.PoseidonSplash.RedNova)
+	local first = args.From or 1
+	if count < first then return end
+
+	local projectile = mod.tuning.PoseidonSplash.CircleProjectile
+	local multiplier = args.DamageMultiplier
+	if args.Damage then
+		local base = game.GetBaseDataValue({ Type = 'Projectile', Name = projectile, Property = 'Damage' })
+		if type(base) ~= 'number' or base <= 0 then return end
+		multiplier = args.Damage / base
+	end
+
+	local baseRadius = game.GetBaseDataValue({ Type = 'Projectile', Name = projectile, Property = 'DamageRadius' })
+	local visual = (type(baseRadius) == 'number' and baseRadius > 0) and args.Radius / baseRadius or 1
+
+	local anchor = game.SpawnObstacle({ Name = 'BlankObstacle', LocationX = args.X, LocationY = args.Y })
+	if not anchor then return end
+
+	local last = 0
+	arterial_spray_begin({ ProjectileName = projectile })
+
+	local ok, err = pcall(function()
+		for index = first, count do
+			last = (index - 1) * mod.tuning.PoseidonSplash.WaveDelay
+			game.CreateProjectileFromUnit({
+				Name = projectile,
+				Id = hero.ObjectId,
+				DestinationId = anchor,
+				FireFromTarget = true,
+				DamageMultiplier = multiplier,
+				ScaleMultiplier = visual,
+				DataProperties = {
+					DamageRadius = args.Radius,
+					StartFx = index > 1 and graphic or nil,
+					StartDelay = last,
+					ImpactVelocity = args.Knockback,
+				},
+			})
+		end
+	end)
+
+	arterial_spray_end()
+
+	game.thread(game.DestroyOnDelay, { anchor }, last + mod.tuning.PoseidonSplash.WaveDelay)
+	if not ok then error(err) end
 end
 
 

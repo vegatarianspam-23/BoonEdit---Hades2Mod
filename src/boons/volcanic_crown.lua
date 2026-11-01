@@ -110,6 +110,15 @@ function mod.VolcanicCrown(triggerArgs, _args)
 	local repeats = game.SessionMapState.InvalidRepeatCastIds
 	if repeats and triggerArgs.ProjectileId and repeats[triggerArgs.ProjectileId] then return end
 
+	if hostile_environment_armed_early(triggerArgs.ProjectileId) then return end
+
+	volcanic_crown_ring(triggerArgs.LocationX, triggerArgs.LocationY)
+end
+
+
+function volcanic_crown_ring(x, y)
+	if not boon_edit_on('VolcanicCrown') or not game.HeroHasTrait(CROWN) then return end
+
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return end
 
@@ -117,7 +126,7 @@ function mod.VolcanicCrown(triggerArgs, _args)
 	local facing = game.GetAngle({ Id = hero.ObjectId }) or 0
 
 	for i = 1, count do
-		volcanic_crown_throw(triggerArgs.LocationX, triggerArgs.LocationY, facing + (i - 1) * 360 / count, 0)
+		volcanic_crown_throw(x, y, facing + (i - 1) * 360 / count, 0)
 	end
 end
 

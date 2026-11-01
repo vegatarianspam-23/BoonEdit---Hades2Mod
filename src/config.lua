@@ -76,6 +76,8 @@ local config = {
 
     Poseidon = {
       BreakerRush = true;
+      GeyserSpout = true;
+      TidalRing = true;
     };
 
     Selene = {

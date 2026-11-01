@@ -4,8 +4,9 @@
 once('UnseenIreCooldown', function()
 	if not boon_edit_on('UnseenIre') then return end
 
-	game.TraitData.HadesInvisibilityRetaliateBoon.OnSelfDamagedFunction.FunctionArgs.Cooldown =
-		mod.tuning.UnseenIre.Cooldown
+	local ire = game.TraitData.HadesInvisibilityRetaliateBoon
+	ire.OnSelfDamagedFunction.FunctionArgs.Cooldown = mod.tuning.UnseenIre.Cooldown
+	ire.AddOutgoingDamageModifiers.RequiredSelfEffectsMultiplier.BaseValue = mod.tuning.UnseenIre.DamageMultiplier
 
 	modutil.mod.Path.Wrap("StartRoom", function(base, currentRun, currentRoom)
 		if currentRoom and currentRoom.BiomeStartRoom and boon_edit_on('UnseenIre')

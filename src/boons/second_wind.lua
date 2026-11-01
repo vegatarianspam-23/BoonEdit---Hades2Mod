@@ -1,6 +1,15 @@
 ---@meta _
 
 
+SECOND_WIND_CASTS = {
+	'WeaponCast',
+	'WeaponAnywhereCast',
+	'WeaponCastLob',
+	'WeaponCastProjectile',
+	'WeaponCastProjectileHades',
+}
+
+
 once('SecondWind', function()
 	if boon_edit_on('SecondWind') then
 		local secondWind = game.TraitData.TimeStopLastStandBoon
@@ -8,18 +17,21 @@ once('SecondWind', function()
 		secondWind.MoneyShieldData = nil
 
 		secondWind.PropertyChanges = {}
-		for _, weaponName in ipairs({
-			'WeaponCast',
-			'WeaponAnywhereCast',
-			'WeaponCastLob',
-			'WeaponCastProjectile',
-			'WeaponCastProjectileHades',
-		}) do
+		for _, weaponName in ipairs(SECOND_WIND_CASTS) do
 			table.insert(secondWind.PropertyChanges, {
 				WeaponName = weaponName,
 				WeaponProperty = 'ActiveProjectileCap',
 				ChangeValue = mod.tuning.SecondWind.ExtraCasts,
 				ChangeType = 'Add',
+			})
+		end
+
+		for weaponName, projectileName in pairs(mod.tuning.SecondWind.InFlightCasts) do
+			table.insert(secondWind.PropertyChanges, {
+				WeaponName = weaponName,
+				WeaponProperty = 'ExcludeInProjectileCap',
+				ChangeValue = projectileName,
+				ChangeType = 'Absolute',
 			})
 		end
 

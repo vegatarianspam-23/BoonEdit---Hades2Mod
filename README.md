@@ -20,7 +20,9 @@ Hell2Modding, ENVY, Chalk, ReLoad, SJSON and ModUtil.
 
 ## Configuration
 
-Launch the game once to generate `ReturnOfModding/config/SWu-BoonEdits.cfg`, then configure (enable/disable) any boon edits. The easiest way is your mod manager's **Config editor** (Thunderstore Mod Manager or r2modman), or open the `.cfg` file directly.
+Open the Hell2Modding menu in-game, and use the **BoonEdits** window. Every change has a checkbox, grouped by god (duos appear under both of their gods), and is updated in-game on save.
+
+You can also edit `ReturnOfModding/config/SWu-BoonEdits.cfg` (created the first time you launch the game) with your mod manager's **Config editor** (Thunderstore Mod Manager or r2modman), or open the `.cfg` file directly.
 
 Don't edit the mod's `config.lua`: once the `.cfg` exists its values take priority, and `config.lua` is overwritten whenever the mod updates.
 
