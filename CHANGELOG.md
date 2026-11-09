@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Changed
+
+- Tough Gain: can now be upgraded with Poms, up to 10 damage reduction
+- Perfect Image: only breaks when you lose Life; hits blocked by Armor no longer count
+
+### Fixed
+
+- Chronos' thrown scythes no longer stall partway through their flight and vanish. Ranged-shot slows now slow the whole throw while it is inside them, keeping its path
+- Ecstatic Obsession: Charmed foes now deal damage to other foes
+- Sun Worshiper: the curse ward on your summons now only applies while the change is on
+
 ## [1.1.1] - 2026-11-01
 
 ### Added
@@ -18,8 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tidal Ring, Geyser Spout: now also gain splash bonuses
 - Glorious Disaster: Removed extra damage
 - Beach Ball: creates a projectile after a short dash
-- Tough Gain: can now be upgraded with Poms, up to 10 damage reduction
-- Perfect Image: only breaks when you lose Life; hits blocked by Armor no longer count
 
 ### Fixed
 
@@ -27,7 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Chain Reaction: added Phalanx Shot to cooldown skip list
 - Beach Ball: fixed interactions with King Tide and Arterial Spray's sizing
 - Meat Grinder: with Hostile Environment, the blade rift from your familiar's Cast now follows the familiar
-- Chronos' thrown scythes no longer stall partway through their flight and vanish. Ranged-shot slows now slow the whole throw while it is inside them, keeping its path
 
 ## [1.1.0] - 2026-10-30
 
