@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2026-11-09
+
 ### Added
 
 - Nuptial Vow (Hera Legendary): replaces All Together while on (on by default). Hitch-afflicted foes share their curses with each other, and you deal 10% more damage for each Hitch-afflicted foe
@@ -129,6 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.1.3]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.2...1.1.3
 [1.1.2]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.0.8...1.1.0
