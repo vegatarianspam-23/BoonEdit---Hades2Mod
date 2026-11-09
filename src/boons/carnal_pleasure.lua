@@ -10,27 +10,27 @@ function carnal_pleasure_held()
 end
 
 
-once('CarnalPleasureHeartBreaker', function()
-	if boon_edit_on('CarnalPleasure') then
-		local carnal = game.TraitData.BloodManaBurstBoon
-		local tuning = mod.tuning.CarnalPleasure
+boon_patch('CarnalPleasure', 'BloodManaBurstBoon', function(carnal)
+	local tuning = mod.tuning.CarnalPleasure
 
-		carnal.DropManaBurstChance = tuning.PickupHeartthrobChance
-		carnal.BoonEditManaPerPlasma = tuning.ManaPerPlasma
-		carnal.BoonEditDamagePerPlasma = tuning.DamagePerPlasma
+	carnal.DropManaBurstChance = tuning.PickupHeartthrobChance
+	carnal.BoonEditManaPerPlasma = tuning.ManaPerPlasma
+	carnal.BoonEditDamagePerPlasma = tuning.DamagePerPlasma
 
-		carnal.StatLines = { 'BoonEditCarnalManaStatDisplay', 'BoonEditCarnalDamageStatDisplay' }
+	carnal.StatLines = { 'BoonEditCarnalManaStatDisplay', 'BoonEditCarnalDamageStatDisplay' }
 
-		local extracts = {
-			{ Key = 'BoonEditManaPerPlasma', ExtractAs = 'TooltipManaPerPlasma' },
-			{ Key = 'BoonEditDamagePerPlasma', ExtractAs = 'TooltipDamagePerPlasma', IncludeSigns = true },
-		}
-		for _, extract in ipairs(carnal.ExtractValues or {}) do
-			if extract.SkipAutoExtract then table.insert(extracts, extract) end
-		end
-		carnal.ExtractValues = extracts
+	local extracts = {
+		{ Key = 'BoonEditManaPerPlasma', ExtractAs = 'TooltipManaPerPlasma' },
+		{ Key = 'BoonEditDamagePerPlasma', ExtractAs = 'TooltipDamagePerPlasma', IncludeSigns = true },
+	}
+	for _, extract in ipairs(carnal.ExtractValues or {}) do
+		if extract.SkipAutoExtract then table.insert(extracts, extract) end
 	end
+	carnal.ExtractValues = extracts
+end)
 
+
+once('CarnalPleasureHeartBreaker', function()
 	modutil.mod.Path.Wrap("BloodDropUse", function(base, args, consumable)
 		local result = base(args, consumable)
 		carnal_pleasure_feed_heart_breaker()

@@ -228,6 +228,12 @@ mod.tuning.SmithyRush = {
 	ImpactRadius = 260,
 }
 
+mod.tuning.ToughGain = {
+	PomDamageReduction = 1,
+
+	MaxDamageReduction = 10,
+}
+
 mod.tuning.CryoPounder = {
 	FrozenGlowMultiplier = 1.5,
 }
@@ -488,6 +494,7 @@ mod.tuning.ScytheSlows = {
 	},
 
 	Interval = 0.03,
+	Debug = true,
 }
 
 mod.tuning.WhiteAntler = {

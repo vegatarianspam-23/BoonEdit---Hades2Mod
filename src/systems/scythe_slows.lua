@@ -1,4 +1,5 @@
 ---@meta _
+---@diagnostic disable: lowercase-global
 
 
 local zoneFactors = {}
@@ -38,12 +39,38 @@ local function scythe_slows_zone_factor(name)
 end
 
 
-local function scythe_slows_apply(projectileId, scythe, zoneFactor)
-	local speed = scythe.BaseSpeed * scythe.ShotMultiplier * zoneFactor
-	if scythe.Applied == speed then return end
+local function scythe_slows_debug(message)
+	if mod.tuning.ScytheSlows.Debug then
+		print('[' .. _PLUGIN.guid .. '] ScytheSlows: ' .. message)
+	end
+end
 
-	scythe.Applied = speed
-	game.SetProjectileProperty({ ProjectileId = projectileId, Property = 'Speed', Value = speed })
+
+local function scythe_slows_set_clock(projectileId, value)
+	game.SetThingProperty({
+		Property = 'ElapsedTimeMultiplier',
+		Value = value,
+		ValueChangeType = 'Absolute',
+		DataValue = false,
+		DestinationId = projectileId,
+	})
+end
+
+
+local function scythe_slows_apply(projectileId, scythe, zoneFactor)
+	local world = game.GetGameplayElapsedTimeMultiplier()
+
+	if zoneFactor then
+		scythe_slows_set_clock(projectileId, world * zoneFactor)
+		if scythe.Factor ~= zoneFactor then
+			scythe_slows_debug(scythe.Name .. ' ' .. projectileId .. ' slowed to ' .. zoneFactor .. 'x (world ' .. world .. 'x)')
+		end
+		scythe.Factor = zoneFactor
+	elseif scythe.Factor then
+		scythe_slows_set_clock(projectileId, world)
+		scythe_slows_debug(scythe.Name .. ' ' .. projectileId .. ' back to normal (world ' .. world .. 'x)')
+		scythe.Factor = nil
+	end
 end
 
 
@@ -54,13 +81,8 @@ function scythe_slows_spawned(projectileId, args)
 	local state = scythe_slows_state()
 
 	if game.Contains(mod.tuning.ScytheSlows.Projectiles, args.Name) then
-		local baseSpeed = args.DataProperties and args.DataProperties.Speed
-			or game.GetBaseDataValue({ Type = 'Projectile', Name = args.Name, Property = 'Speed' })
-		if type(baseSpeed) ~= 'number' then return end
-
-		local scythe = { BaseSpeed = baseSpeed, ShotMultiplier = args.SpeedMultiplier or 1 }
-		state.Scythes[projectileId] = scythe
-		scythe_slows_apply(projectileId, scythe, 1)
+		state.Scythes[projectileId] = { Name = args.Name }
+		scythe_slows_debug(args.Name .. ' ' .. projectileId .. ' thrown')
 
 		if not state.Running then
 			state.Running = true
@@ -98,9 +120,10 @@ function scythe_slows_tick(state)
 	for projectileId, scythe in pairs(state.Scythes) do
 		if not game.ProjectileExists({ Id = projectileId }) then
 			state.Scythes[projectileId] = nil
+			scythe_slows_debug(scythe.Name .. ' ' .. projectileId .. ' gone')
 		else
 			alive = true
-			scythe_slows_apply(projectileId, scythe, inside[projectileId] or 1)
+			scythe_slows_apply(projectileId, scythe, inside[projectileId])
 		end
 	end
 

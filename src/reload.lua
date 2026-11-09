@@ -2,11 +2,13 @@
 
 
 mod.SetupDone = mod.SetupDone or {}
+boon_recording = nil
+boon_text_recording = nil
 
 function once(key, setup)
 	if mod.SetupDone[key] then return end
 	mod.SetupDone[key] = true
-	setup()
+	boon_record(setup)
 end
 
 
@@ -46,7 +48,23 @@ local function boon_edit_group(path)
 	return node
 end
 
-function boon_edit_on(name)
+function boon_edit_on(name, bounty)
+	local recording = boon_recording
+	if recording then
+		if not recording.AskedSet[name] then
+			recording.AskedSet[name] = true
+			table.insert(recording.Asked, name)
+		end
+		return true
+	end
+	if boon_text_recording then
+		boon_text_owner = name
+		return true
+	end
+	return boon_edit_configured(name)
+end
+
+function boon_edit_configured(name)
 	if config.enabled == false then return false end
 
 	local path = boonEditGroupOf[name]
@@ -78,6 +96,7 @@ function prefix_SetupMap()
 	aromatic_phial_apply()
 	ionic_gain_start()
 	boon_edit_sync_groups()
+	boon_patches_reconcile()
 	burning_desire_sync()
 end
 
@@ -232,6 +251,15 @@ function rush_impact_ring(name, radius, pulses, delay, destinationId)
 end
 
 
+function projectile_damage_scale(triggerArgs, projectileName, damage)
+	if not triggerArgs or triggerArgs.EffectName or triggerArgs.SourceProjectile ~= projectileName then return 1 end
+
+	local base = game.GetBaseDataValue({ Type = 'Projectile', Name = projectileName, Property = 'Damage' })
+	if type(base) ~= 'number' or base <= 0 or type(damage) ~= 'number' then return 1 end
+	return damage / base
+end
+
+
 function create_heartthrob(burstArgs)
 	if not burstArgs then return end
 	game.thread(game.CreateManaBurst, burstArgs, 1 + game.GetTotalHeroTraitValue('BurstCount'))
@@ -244,8 +272,274 @@ stat_lines = {}
 flavor_text = {}
 combat_text = {}
 
+BOON_EDIT_RECORDED = { 'TraitData', 'EffectData', 'HeroData' }
+
+mod.DataVanilla = mod.DataVanilla or {}
+mod.DataPatchKeys = mod.DataPatchKeys or {}
+mod.DataPatchSignature = {}
+mod.RecordedPatches = mod.RecordedPatches or {}
+mod.RemovedKey = mod.RemovedKey or {}
+boon_patches = {}
+
+function boon_patch(boon, traitName, apply)
+	table.insert(boon_patches, { Table = 'TraitData', Entry = traitName, Owners = { boon }, Apply = apply })
+end
+
+local function same(a, b)
+	if a == b then return true end
+	if type(a) ~= 'table' or type(b) ~= 'table' then return false end
+	for key, value in pairs(a) do
+		if not same(value, b[key]) then return false end
+	end
+	for key in pairs(b) do
+		if a[key] == nil then return false end
+	end
+	return true
+end
+
+local function assign(target, source)
+	for key in pairs(target) do
+		if source[key] == nil then target[key] = nil end
+	end
+	for key, value in pairs(source) do
+		if type(value) == 'table' and type(target[key]) == 'table' then
+			assign(target[key], value)
+		else
+			target[key] = game.DeepCopyTable(value)
+		end
+	end
+end
+
+local function data_vanilla(tableName, entryName, real)
+	local store = mod.DataVanilla[tableName]
+	if not store then
+		store = {}
+		mod.DataVanilla[tableName] = store
+	end
+
+	local vanilla = store[entryName]
+	local entry = (real or game[tableName])[entryName]
+	if not vanilla and type(entry) == 'table' then
+		vanilla = game.DeepCopyTable(entry)
+		store[entryName] = vanilla
+	end
+	return vanilla
+end
+
+local function all_patches()
+	local patches = {}
+	for _, patch in ipairs(mod.RecordedPatches) do table.insert(patches, patch) end
+	for _, patch in ipairs(boon_patches) do table.insert(patches, patch) end
+	return patches
+end
+
+local function patch_apply(patch, entry)
+	if patch.Apply then
+		patch.Apply(entry)
+		return
+	end
+	for key, value in pairs(patch.Changes) do
+		if value == mod.RemovedKey then
+			entry[key] = nil
+		else
+			entry[key] = game.DeepCopyTable(value)
+		end
+	end
+end
+
+local function patch_build(tableName, entryName, patches, live)
+	local vanilla = data_vanilla(tableName, entryName)
+	if not vanilla then return nil end
+
+	local built = game.DeepCopyTable(vanilla)
+	for _, patch in ipairs(patches) do
+		if patch.Table == tableName and patch.Entry == entryName and live(patch) then patch_apply(patch, built) end
+	end
+	return built
+end
+
+function boon_patch_preview(traitName)
+	return patch_build('TraitData', traitName, all_patches(), function() return true end)
+end
+
+function boon_patched(traitName)
+	for _, patch in ipairs(all_patches()) do
+		if patch.Table == 'TraitData' and patch.Entry == traitName then return true end
+	end
+	return false
+end
+
+function boon_patches_reconcile(bounty)
+	local patches = all_patches()
+	local boonLive = {}
+	local function live(patch)
+		for _, boon in ipairs(patch.Owners) do
+			if boonLive[boon] == nil then boonLive[boon] = boon_edit_on(boon, bounty) end
+			if not boonLive[boon] then return false end
+		end
+		return true
+	end
+
+	local entries = {}
+	local signatures = {}
+	for index, patch in ipairs(patches) do
+		local id = patch.Table .. '.' .. patch.Entry
+		if not signatures[id] then
+			signatures[id] = {}
+			table.insert(entries, { Id = id, Table = patch.Table, Entry = patch.Entry })
+		end
+		if live(patch) then table.insert(signatures[id], index) end
+	end
+
+	for _, item in ipairs(entries) do
+		local signature = table.concat(signatures[item.Id], ',')
+		local entry = game[item.Table] and game[item.Table][item.Entry]
+		if type(entry) == 'table' and mod.DataPatchSignature[item.Id] ~= signature then
+			local vanilla = data_vanilla(item.Table, item.Entry)
+			local built = patch_build(item.Table, item.Entry, patches, live)
+
+			local keys = {}
+			for key, value in pairs(built) do
+				if not same(value, vanilla[key]) then keys[key] = true end
+			end
+			for key in pairs(vanilla) do
+				if built[key] == nil then keys[key] = true end
+			end
+
+			local touched = {}
+			for key in pairs(mod.DataPatchKeys[item.Id] or {}) do touched[key] = true end
+			for key in pairs(keys) do touched[key] = true end
+
+			for key in pairs(touched) do
+				local want = built[key]
+				if want == nil then
+					entry[key] = nil
+				elseif type(want) == 'table' and type(entry[key]) == 'table' then
+					assign(entry[key], want)
+				else
+					entry[key] = game.DeepCopyTable(want)
+				end
+			end
+
+			mod.DataPatchKeys[item.Id] = keys
+			mod.DataPatchSignature[item.Id] = signature
+		end
+	end
+end
+
+local function record_changes(vanilla, copy)
+	local changes = {}
+	local any = false
+	for key, value in pairs(copy) do
+		if not same(value, vanilla[key]) then
+			changes[key] = value
+			any = true
+		end
+	end
+	for key in pairs(vanilla) do
+		if copy[key] == nil then
+			changes[key] = mod.RemovedKey
+			any = true
+		end
+	end
+	return any and changes or nil
+end
+
+local function record_conflicts(patch)
+	for _, other in ipairs(mod.RecordedPatches) do
+		if other.Table == patch.Table and other.Entry == patch.Entry
+			and table.concat(other.Owners, ',') ~= table.concat(patch.Owners, ',') then
+			for key in pairs(patch.Changes) do
+				if other.Changes[key] ~= nil then
+					print('[' .. _PLUGIN.guid .. '] ' .. patch.Table .. '.' .. patch.Entry .. '.' .. tostring(key) ..
+						' is edited by both ' .. table.concat(other.Owners, '+') .. ' and ' .. table.concat(patch.Owners, '+'))
+				end
+			end
+		end
+	end
+end
+
+function boon_edit_all_on(owners)
+	for _, boon in ipairs(owners) do
+		if not boon_edit_on(boon) then return false end
+	end
+	return true
+end
+
+function boon_record(setup)
+	local session = { Asked = {}, AskedSet = {}, Copies = {} }
+	local reals = {}
+
+	for _, tableName in ipairs(BOON_EDIT_RECORDED) do
+		local real = game[tableName]
+		local created = {}
+		local copies = {}
+		reals[tableName] = real
+		session.Copies[tableName] = copies
+
+		game[tableName] = setmetatable({}, {
+			__index = function(_, name)
+				if created[name] then return real[name] end
+				local copy = copies[name]
+				if copy then return copy.Data end
+
+				local vanilla = data_vanilla(tableName, name, real)
+				if not vanilla then return real[name] end
+
+				local owners = {}
+				for _, boon in ipairs(session.Asked) do table.insert(owners, boon) end
+				copy = { Data = game.DeepCopyTable(vanilla), Owners = owners }
+				copies[name] = copy
+				return copy.Data
+			end,
+			__newindex = function(_, name, value)
+				created[name] = true
+				real[name] = value
+			end,
+			__pairs = function()
+				return next, real, nil
+			end,
+		})
+	end
+
+	local path = modutil.mod.Path
+	local wrap = path.Wrap
+	path.Wrap = function(target, handler, ...)
+		if #session.Asked == 0 then return wrap(target, handler, ...) end
+
+		local owners = {}
+		for _, boon in ipairs(session.Asked) do table.insert(owners, boon) end
+		return wrap(target, function(base, ...)
+			if boon_edit_all_on(owners) then return handler(base, ...) end
+			return base(...)
+		end, ...)
+	end
+
+	boon_recording = session
+	local ok, err = pcall(setup)
+	boon_recording = nil
+	path.Wrap = wrap
+	for tableName, real in pairs(reals) do game[tableName] = real end
+	if not ok then error(err, 0) end
+
+	local recorded = false
+	for _, tableName in ipairs(BOON_EDIT_RECORDED) do
+		for name, copy in pairs(session.Copies[tableName]) do
+			local changes = record_changes(mod.DataVanilla[tableName][name], copy.Data)
+			if changes then
+				local owners = #copy.Owners > 0 and copy.Owners or session.Asked
+				local patch = { Table = tableName, Entry = name, Owners = owners, Changes = changes }
+				record_conflicts(patch)
+				table.insert(mod.RecordedPatches, patch)
+				recorded = true
+			end
+		end
+	end
+	if recorded then boon_patches_reconcile() end
+end
+
 function boon_edit_add_stat(traitName, statLine, extract)
-	local trait = game.TraitData[traitName]
+	local trait = type(traitName) == 'table' and traitName or game.TraitData[traitName]
 	if not trait then return end
 
 	trait.ExtractValues = trait.ExtractValues or {}
@@ -261,8 +555,9 @@ function boon_edit_add_stat(traitName, statLine, extract)
 end
 
 function boon_edit_stat_index(traitName, extractAs)
+	local trait = boon_patched(traitName) and boon_patch_preview(traitName) or game.TraitData[traitName]
 	local index = 0
-	for _, extract in ipairs((game.TraitData[traitName] or {}).ExtractValues or {}) do
+	for _, extract in ipairs((trait or {}).ExtractValues or {}) do
 		if not extract.SkipAutoExtract then
 			index = index + 1
 			if extract.ExtractAs == extractAs then return index end
@@ -271,10 +566,30 @@ function boon_edit_stat_index(traitName, extractAs)
 	return 1
 end
 
-function boon_text(spec)
-	for id, entry in pairs(spec.Traits or {}) do trait_text[id] = entry end
+trait_text_alt = {}
+help_text_owner = {}
+
+function boon_edit_text_id(id)
+	local alt = id and trait_text_alt[id]
+	if alt and boon_edit_on(alt.Boon) then return 'BoonEdit_' .. id end
+	return id
+end
+
+function boon_text(boon, spec, when)
+	if type(boon) == 'table' then
+		spec, boon = boon, boon_text_recording and boon_text_owner or nil
+	elseif when == false then
+		return
+	end
+
+	if boon then
+		for id, entry in pairs(spec.Traits or {}) do trait_text_alt[id] = { Boon = boon, Entry = entry } end
+	else
+		for id, entry in pairs(spec.Traits or {}) do trait_text[id] = entry end
+	end
 	for id, entry in pairs(spec.Keywords or {}) do
 		help_text[id] = entry
+		help_text_owner[id] = boon
 		if entry.DisplayName and not game.Contains(game.KeywordList, id) then
 			table.insert(game.KeywordList, id)
 		end
@@ -282,23 +597,6 @@ function boon_text(spec)
 	for id, entry in pairs(spec.StatLines or {}) do stat_lines[id] = entry end
 	for id, entry in pairs(spec.Flavor or {}) do flavor_text[id] = entry end
 	for id, entry in pairs(spec.CombatText or {}) do combat_text[id] = entry end
-end
-
-function sjson_PlayerProjectiles(data)
-	local damages = {}
-
-	if glorious_disaster_supercharged() then
-		damages.ZeusApolloSynergyStrike = mod.tuning.GloriousDisaster.BoltDamage
-	end
-
-	if beach_ball_rebalanced() then
-		damages.ProjectileSprintBall = mod.tuning.BeachBall.BlastDamage
-	end
-
-	for _, projectile in ipairs(data.Projectiles) do
-		local damage = damages[projectile.Name]
-		if damage then projectile.Damage = damage end
-	end
 end
 
 function sjson_EnemyProjectiles(data)
@@ -434,7 +732,8 @@ function sjson_HelpText(data)
 	local found = {}
 	for _, entry in ipairs(data.Texts) do
 		local rewrite = help_text[entry.Id]
-		if rewrite then
+		local owner = help_text_owner[entry.Id]
+		if rewrite and (owner == nil or boon_edit_configured(owner)) then
 			found[entry.Id] = true
 			if rewrite.Description then entry.Description = rewrite.Description end
 		end
@@ -454,6 +753,38 @@ end
 
 function sjson_TraitText(data)
 	local rewritten = {}
+	local vanilla = {}
+
+	for _, entry in ipairs(data.Texts) do
+		vanilla[entry.Id] = true
+	end
+
+	for id, alt in pairs(trait_text_alt) do
+		local entries = {
+			{
+				Id = 'BoonEdit_' .. id,
+				InheritFrom = vanilla[id] and id or nil,
+				DisplayName = alt.Entry.DisplayName,
+				Description = alt.Entry.Description,
+			},
+		}
+
+		if not vanilla[id] then
+			table.insert(entries, {
+				Id = id,
+				DisplayName = alt.Entry.DisplayName,
+				Description = alt.Entry.Description,
+			})
+		end
+
+		for _, text in ipairs(entries) do
+			local order = { 'Id' }
+			if text.InheritFrom then table.insert(order, 'InheritFrom') end
+			if text.DisplayName then table.insert(order, 'DisplayName') end
+			if text.Description then table.insert(order, 'Description') end
+			table.insert(data.Texts, sjson.to_object(text, order))
+		end
+	end
 
 	for _, entry in ipairs(data.Texts) do
 		local rewrite = trait_text[entry.Id]
@@ -535,6 +866,7 @@ import 'boons/phalanx_shot.lua'
 import 'boons/sun_worshiper.lua'
 import 'boons/dazzling_display.lua'
 import 'boons/extra_dose.lua'
+import 'boons/perfect_image.lua'
 
 import 'boons/local_climate.lua'
 import 'boons/tranquil_gain.lua'
@@ -555,6 +887,7 @@ import 'boons/heavy_metal.lua'
 import 'boons/burning_desire.lua'
 import 'boons/controlled_burn.lua'
 import 'boons/molten_touch.lua'
+import 'boons/tough_gain.lua'
 import 'boons/premium_service.lua'
 import 'boons/chain_reaction.lua'
 import 'boons/seismic_hammer.lua'
@@ -622,8 +955,19 @@ import 'systems/combat_text_stack.lua'
 import 'systems/sprint_follows_speed.lua'
 import 'systems/config_window.lua'
 
+boon_patches_reconcile()
+
 import 'requirements.lua'
-import 'text.lua'
+
+boon_text_recording = true
+local textOk, textErr = pcall(function()
+	import 'text.lua'
+end)
+boon_text_recording = nil
+boon_text_owner = nil
+if not textOk then error(textErr, 0) end
+
+boon_patches_reconcile()
 
 function poseidon_splash_scale()
 	local scale = 1

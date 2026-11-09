@@ -203,19 +203,21 @@ function ripple_effect_ball_snapshot()
 	local where = game.GetLocation({ Id = ballId, IsProjectile = true })
 	if not where then return nil end
 
-	local charge = 1
 	local started = game.MapState.BoonEditRippleBallStart
-	if started and args.ChargeRadiusTime and args.ChargeRadiusTime > 0 then
-		charge = math.max(0, math.min(1, (game._worldTimeUnmodified - started) / args.ChargeRadiusTime))
-	end
 
 	return {
 		Args = args,
 		X = where.X,
 		Y = where.Y,
 		Angle = game.GetAngle({ Id = hero.ObjectId }),
-		Charge = charge,
+		Started = started,
+		Charge = ripple_effect_ball_charge(args, started),
 	}
+end
+
+function ripple_effect_ball_charge(args, started)
+	if not started or not args.ChargeRadiusTime or args.ChargeRadiusTime <= 0 then return 1 end
+	return math.max(0, math.min(1, (game._worldTimeUnmodified - started) / args.ChargeRadiusTime))
 end
 
 function ripple_effect_ball_repeat(ball)
@@ -231,14 +233,18 @@ function ripple_effect_ball_refire(ball, repeats)
 
 	local startDamage = args.StartingDamageMultiplier or 0.25
 	local damage = startDamage + ball.Charge * ((args.DamageMultiplier or 1) - startDamage)
-	local scale = args.StartScale + ball.Charge * (args.EndScale - args.StartScale)
-	local radius = 1 + ball.Charge * ((args.ChargeRadiusMultiplier or 1) - 1)
+	local fullRadius = args.ChargeRadiusMultiplier or 1
 
 	for _ = 1, repeats do
 		game.waitUnmodified(interval)
 
 		local hero = game.CurrentRun and game.CurrentRun.Hero
 		if not hero or hero.IsDead then return end
+
+		local charge = ripple_effect_ball_charge(args, ball.Started)
+		local scale = args.StartScale + charge * (args.EndScale - args.StartScale)
+		local radius = 1 + charge * (fullRadius - 1)
+		local remaining = (1 - charge) * (args.ChargeRadiusTime or 0)
 
 		local anchor = game.SpawnObstacle({ Name = 'InvisibleTarget', LocationX = ball.X, LocationY = ball.Y })
 		if not anchor then return end
@@ -261,8 +267,15 @@ function ripple_effect_ball_refire(ball, repeats)
 			print('[' .. _PLUGIN.guid .. '] ripple ball repeat failed: ' .. tostring(projectileId))
 			return
 		end
-		if projectileId and radius ~= 1 then
-			game.SetDamageRadiusMultiplier({ Id = projectileId, Fraction = radius, Duration = 0 })
+		if projectileId then
+			if beach_ball_tide then beach_ball_tide(projectileId) end
+			if radius ~= 1 then
+				game.SetDamageRadiusMultiplier({ Id = projectileId, Fraction = radius, Duration = 0 })
+			end
+			if remaining > 0 then
+				game.SetDamageRadiusMultiplier({ Id = projectileId, Fraction = fullRadius, Duration = remaining })
+				game.SetProjectileScale({ Id = projectileId, Fraction = args.EndScale / scale, Duration = remaining })
+			end
 		end
 	end
 end

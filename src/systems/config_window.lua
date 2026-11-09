@@ -14,7 +14,7 @@ local CONFIG_LABELS = {
 	BurningMeteor = 'Burning Meteor (replaces Fire Away)',
 	SecondWind = 'Second Wind (replaces Paid Dues)',
 	OfferRequirements = 'Offer requirement changes',
-	ScytheSlows = "Chronos' scythe throws can be slowed",
+	ScytheSlows = "Chronos' thrown scythes can be slowed",
 	SprintFollowsMoveSpeed = 'Sprint speed follows move speed',
 	WrathOfOlympus = 'Wrath of Olympus support',
 }

@@ -11,11 +11,6 @@ sjson.hook(helpText, function(data)
 	return sjson_HelpText(data)
 end)
 
-local playerProjectiles = rom.path.combine(rom.paths.Content, 'Game/Projectiles/PlayerProjectiles.sjson')
-sjson.hook(playerProjectiles, function(data)
-	return sjson_PlayerProjectiles(data)
-end)
-
 local enemyProjectiles = rom.path.combine(rom.paths.Content, 'Game/Projectiles/Enemy_General_Projectiles.sjson')
 sjson.hook(enemyProjectiles, function(data)
 	return sjson_EnemyProjectiles(data)
@@ -40,4 +35,24 @@ end)
 modutil.mod.Path.Wrap("SetupMap", function(base, ...)
 	prefix_SetupMap()
 	return base(...)
+end)
+
+modutil.mod.Path.Wrap("StartNewRun", function(base, currentRun, args)
+	boon_patches_reconcile(args and args.ActiveBounty or false)
+	return base(currentRun, args)
+end)
+
+modutil.mod.Path.Wrap("GetTraitTooltip", function(base, trait, args)
+	return boon_edit_text_id(base(trait, args))
+end)
+
+modutil.mod.Path.Wrap("GetTraitTooltipTitle", function(base, trait)
+	return boon_edit_text_id(base(trait))
+end)
+
+modutil.mod.Path.Wrap("CreateTextBox", function(base, args)
+	if args and type(args.LuaValue) == 'table' and args.LuaValue.ForBoonInfo then
+		args.Text = boon_edit_text_id(args.Text)
+	end
+	return base(args)
 end)

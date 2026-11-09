@@ -386,7 +386,10 @@ once('CherishedHeirloom', function()
 			end
 		end
 	end
+end)
 
+
+once('CherishedHeirloomScreens', function()
 	modutil.mod.Path.Wrap('HandleUpgradeToggle', function(base, screen, button, textOverride)
 		local data = button and button.Data
 		local picked = data and data.Unlocked and data.Gift

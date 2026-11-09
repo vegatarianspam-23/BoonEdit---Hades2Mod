@@ -28,16 +28,6 @@ once('ChainReactionCooldownSkip', function()
 		return ready
 	end)
 
-	modutil.mod.Path.Wrap("AddTraitToHero", function(base, ...)
-		mod.ChainReactionCooldowns = nil
-		return base(...)
-	end)
-
-	modutil.mod.Path.Wrap("RemoveTrait", function(base, ...)
-		mod.ChainReactionCooldowns = nil
-		return base(...)
-	end)
-
 	modutil.mod.Path.Wrap("CheckMassiveAttack", function(base, victim, functionArgs, triggerArgs)
 		local name = functionArgs and functionArgs.Name
 		mod.ChainReactionSkipped = nil
@@ -58,6 +48,19 @@ once('ChainReactionCooldownSkip', function()
 			if not ok then error(err, 0) end
 		end)
 	end
+end)
+
+
+once('ChainReactionTraitCache', function()
+	modutil.mod.Path.Wrap("AddTraitToHero", function(base, ...)
+		mod.ChainReactionCooldowns = nil
+		return base(...)
+	end)
+
+	modutil.mod.Path.Wrap("RemoveTrait", function(base, ...)
+		mod.ChainReactionCooldowns = nil
+		return base(...)
+	end)
 end)
 
 

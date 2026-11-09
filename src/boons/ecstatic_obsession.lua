@@ -169,6 +169,22 @@ local function obsession_flash(unit)
 end
 
 
+local function obsession_charm_watch(unit)
+	game.wait(0.2, game.RoomThreadName)
+	while unit and unit.ObjectId and not unit.IsDead and game.IsCharmed({ Id = unit.ObjectId }) do
+		game.wait(0.2, game.RoomThreadName)
+	end
+	if not unit then return end
+
+	unit.BoonEditCharmWatch = nil
+	unit.Charmed = nil
+	game.RemoveOutgoingDamageModifier(unit, CHARM_MODIFIER_NAME)
+	if unit.ObjectId and (unit.IsBoss or unit.UseBossHealthBar) then
+		game.StopFlashing({ Id = unit.ObjectId })
+	end
+end
+
+
 local SOFT_CHARM_MODIFIER_NAME = 'BoonEditObsessionSoftCharm'
 
 
@@ -223,6 +239,12 @@ local function obsession_charm(unit)
 			TimeModifierFraction = 0,
 		},
 	})
+
+	unit.Charmed = true
+	if not unit.BoonEditCharmWatch then
+		unit.BoonEditCharmWatch = true
+		game.thread(obsession_charm_watch, unit)
+	end
 
 	local multiplier = tuning.CharmedDamageMultiplier
 	local friendly = tuning.CharmedFriendlyFireMultiplier

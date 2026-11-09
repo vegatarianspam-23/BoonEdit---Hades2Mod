@@ -13,6 +13,7 @@ local config = {
       DazzlingDisplay = true;
       EasyShot = true;
       ExtraDose = true;
+      PerfectImage = true;
     };
 
     Ares = {
@@ -51,6 +52,7 @@ local config = {
       HeavyMetal = true;
       MoltenTouch = true;
       SmithyRush = true;
+      ToughGain = true;
     };
 
     Hera = {

@@ -29,12 +29,36 @@ once('BeachBallCone', function()
 		Args = {},
 	}
 
+	ball.BoonEditBallDamage = mod.tuning.BeachBall.BlastDamage
+	for _, extract in ipairs(ball.ExtractValues or {}) do
+		if extract.ExtractAs == 'Damage' then
+			extract.Key = 'BoonEditBallDamage'
+			extract.Format = nil
+			extract.BaseType = nil
+			extract.BaseName = nil
+			extract.BaseProperty = nil
+		end
+	end
+
 	local slope = game.TraitData.PoseidonStatusBoon
 	beach_ball_join(slope and slope.OnEnemyDamagedAction)
 
 	local tide = game.TraitData.AmplifyConeBoon
 	beach_ball_join(tide and tide.AddOutgoingDamageModifiers)
 end)
+
+
+once('BeachBallDamage', function()
+	modutil.mod.Path.Wrap("CalculateDamageMultipliers", function(base, attacker, victim, weaponData, triggerArgs)
+		return base(attacker, victim, weaponData, triggerArgs) * beach_ball_damage_scale(triggerArgs)
+	end)
+end)
+
+
+function beach_ball_damage_scale(triggerArgs)
+	if not beach_ball_rebalanced() then return 1 end
+	return projectile_damage_scale(triggerArgs, 'ProjectileSprintBall', mod.tuning.BeachBall.BlastDamage)
+end
 
 
 once('BeachBallSize', function()
@@ -51,13 +75,20 @@ function beach_ball_size_launch()
 	local ball = game.MapState.AttachedBallProjectileId
 	if not ball or ball < 0 then return end
 
+	beach_ball_tide(ball)
+end
+
+
+function beach_ball_tide(projectileId)
+	if not beach_ball_rebalanced() or not projectileId then return end
+
 	local scale = poseidon_splash_scale()
 	if scale == 1 then return end
 
 	local base = game.GetBaseDataValue({ Type = 'Projectile', Name = 'ProjectileSprintBall', Property = 'DamageRadius' })
 	if type(base) ~= 'number' or base <= 0 then return end
 
-	game.SetProjectileProperty({ ProjectileId = ball, Property = 'DamageRadius', Value = base * scale })
+	game.SetProjectileProperty({ ProjectileId = projectileId, Property = 'DamageRadius', Value = base * scale })
 end
 
 

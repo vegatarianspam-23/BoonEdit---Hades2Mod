@@ -4,10 +4,36 @@
 once('GloriousDisasterAxe', function()
 	if not boon_edit_on('GloriousDisaster') then return end
 
-	game.TraitData.ApolloSecondStageCastBoon.OnEarlyCastDetonation = {
+	local disaster = game.TraitData.ApolloSecondStageCastBoon
+
+	disaster.OnEarlyCastDetonation = {
 		FunctionName = _PLUGIN.guid .. '.GloriousDisasterEarlyDetonation',
 	}
+
+	disaster.BoonEditBoltDamage = mod.tuning.GloriousDisaster.BoltDamage
+	for _, extract in ipairs(disaster.ExtractValues or {}) do
+		if extract.ExtractAs == 'Damage' then
+			extract.Key = 'BoonEditBoltDamage'
+			extract.External = nil
+			extract.BaseType = nil
+			extract.BaseName = nil
+			extract.BaseProperty = nil
+		end
+	end
 end)
+
+
+once('GloriousDisasterDamage', function()
+	modutil.mod.Path.Wrap("CalculateDamageMultipliers", function(base, attacker, victim, weaponData, triggerArgs)
+		return base(attacker, victim, weaponData, triggerArgs) * glorious_disaster_damage_scale(triggerArgs)
+	end)
+end)
+
+
+function glorious_disaster_damage_scale(triggerArgs)
+	if not boon_edit_on('GloriousDisaster') then return 1 end
+	return projectile_damage_scale(triggerArgs, 'ZeusApolloSynergyStrike', mod.tuning.GloriousDisaster.BoltDamage)
+end
 
 
 function glorious_disaster_supercharged()

@@ -12,6 +12,7 @@
 - **Easy Shot** — Piercing arrow damage increased to 100 / 120 / 140 / 160, and has a 20% chance to crit.
 - **Dazzling Display** — Nova Flourish also applies Daze. Daze rate bumped up to 100%, and rarity scaling improves Daze potency by +3% / +6% / +9% / +12%.
 - **Extra Dose** — Also applies to your special.
+- **Perfect Image** — Only breaks when you lose health (no longer counts when damage is done to armor)
 
 ## Ares
 
@@ -51,6 +52,7 @@
 - **Heavy Metal** — Additionally, prevents foes attacks from knocking you back.
 - **Molten Touch** — Additionally, deals bonus damage to foes with Glow (15%/20%/25%/30% more).
 - **Smithy Rush** — New Effect: During your dash, a hammer strikes in your trail, dealing damage and inflicting Glow.
+- **Tough Gain** — Can now be upgraded with Poms: each adds 1 damage reduction, up to 10.
 - **Premium Service** (Legendary) — Additionally, all weapon upgrades increase in rank tonight, and you gain an Anvil of Fates on pickup.
 
 ## Hera
@@ -129,4 +131,4 @@
 - **Anvil of Fates** — Instead of random chance, choose from up to 3 hammer upgrades to sacrifice / gain.
 - **Glow** — Now stacks: each further stack makes the target take 5% more damage, up to 35%, and expires independently.
 - **Sprint speed** — Boons and items that only raised your move speed (Ignited Ichor, Word of Smaller Stature, the cat familiar) now raise your Sprint speed by the same amount, and Plasma raises Sprint speed in proportion to run speed, so running is never faster than Sprinting.
-- **Chronos' scythe throws** — His spinning scythes are now slowed by ranged-shot slows (Enfeeblement of Cowards, Demeter's gusts, More Duos' Air Control), which the game skipped for them.
+- **Chronos' thrown scythes** — His thrown scythes are now slowed by ranged-shot slows (Enfeeblement of Cowards, Demeter's gusts, More Duos' Air Control) while inside them, which the game skipped for them.

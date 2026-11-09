@@ -1,11 +1,7 @@
 ---@meta _
 
 
-once('GlamourGainPulse', function()
-	if not boon_edit_on('GlamourGain') then return end
-
-	local glamour = game.TraitData.AphroditeManaBoon
-
+boon_patch('GlamourGain', 'AphroditeManaBoon', function(glamour)
 	glamour.SetupFunction.Name = _PLUGIN.guid .. '.GlamourGainPulse'
 
 	glamour.SetupFunction.RequiredContext = nil
