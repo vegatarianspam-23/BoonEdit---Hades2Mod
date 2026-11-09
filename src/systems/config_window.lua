@@ -45,6 +45,7 @@ local CONFIG_DUO_GODS = {
 
 local CONFIG_LEGENDARY_GODS = {
 	AllTogether = 'Hera',
+	NuptialVow = 'Hera',
 	BurningMeteor = 'Hestia',
 	PremiumService = 'Hephaestus',
 	SecondWind = 'Hermes',

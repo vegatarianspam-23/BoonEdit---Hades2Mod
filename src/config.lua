@@ -121,6 +121,7 @@ local config = {
     Legendaries = {
       AllTogether = true;
       BurningMeteor = true;
+      NuptialVow = true;
       PremiumService = true;
       SecondWind = true;
       ShockingLoss = true;

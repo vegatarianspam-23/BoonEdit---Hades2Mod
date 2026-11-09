@@ -11,4 +11,5 @@ once('AllTogetherDoubleElements', function()
 		table.insert(doubled, element)
 	end
 	allTogether.Elements = doubled
+	allTogether.StatLines = { boon_edit_alt_id('AllTogether', 'AllElementStatDisplay') }
 end)

@@ -58,7 +58,8 @@
 ## Hera
 
 - **Rousing Reception** — Additionally, inflicts Hitch on the foes it damages. New dependency on Engagement Ring.
-- **All Together** (Legendary) — Gain an additional +1 elemental essence of each type upon pickup.
+- **All Together** (Legendary) — Gain an additional +1 elemental essence of each type upon pickup. Turned off while Nuptial Vow is on.
+- **Nuptial Vow** (Legendary) — Replaces All Together while it is on. Hitch-afflicted foes share their curses with each other, and you deal 10% more damage for each Hitch-afflicted foe.
 
 ## Hermes
 

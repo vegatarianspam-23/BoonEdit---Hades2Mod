@@ -64,8 +64,15 @@ function boon_edit_on(name, bounty)
 	return boon_edit_configured(name)
 end
 
+BOON_EDIT_OVERRIDDEN_BY = {
+	AllTogether = 'NuptialVow',
+}
+
 function boon_edit_configured(name)
 	if config.enabled == false then return false end
+
+	local overrider = BOON_EDIT_OVERRIDDEN_BY[name]
+	if overrider and boon_edit_configured(overrider) then return false end
 
 	local path = boonEditGroupOf[name]
 	if not path then
@@ -192,6 +199,13 @@ KEYWORD_EXTRACTS = {
 		{ ExtractAs = 'DelayedKnockbackDuration', SkipAutoExtract = true, External = true,
 			BaseType = 'EffectData', BaseName = 'DelayedKnockbackEffect', BaseProperty = 'Duration',
 			DecimalPlaces = 1 },
+	},
+	Link = {
+		{ ExtractAs = 'DamageShareDuration', SkipAutoExtract = true, External = true,
+			BaseType = 'EffectData', BaseName = 'DamageShareEffect', BaseProperty = 'Duration' },
+		{ ExtractAs = 'DamageShareAmount', SkipAutoExtract = true, External = true,
+			BaseType = 'EffectData', BaseName = 'DamageShareEffect', BaseProperty = 'Amount',
+			Format = 'Percent' },
 	},
 	Blind = {
 		{ ExtractAs = 'BlindChance', SkipAutoExtract = true, External = true,
@@ -569,9 +583,14 @@ end
 trait_text_alt = {}
 help_text_owner = {}
 
+function boon_edit_alt_id(boon, id)
+	return 'BoonEdit_' .. boon .. '_' .. id
+end
+
 function boon_edit_text_id(id)
-	local alt = id and trait_text_alt[id]
-	if alt and boon_edit_on(alt.Boon) then return 'BoonEdit_' .. id end
+	for _, alt in ipairs(id and trait_text_alt[id] or {}) do
+		if boon_edit_on(alt.Boon) then return boon_edit_alt_id(alt.Boon, id) end
+	end
 	return id
 end
 
@@ -583,7 +602,10 @@ function boon_text(boon, spec, when)
 	end
 
 	if boon then
-		for id, entry in pairs(spec.Traits or {}) do trait_text_alt[id] = { Boon = boon, Entry = entry } end
+		for id, entry in pairs(spec.Traits or {}) do
+			trait_text_alt[id] = trait_text_alt[id] or {}
+			table.insert(trait_text_alt[id], { Boon = boon, Entry = entry })
+		end
 	else
 		for id, entry in pairs(spec.Traits or {}) do trait_text[id] = entry end
 	end
@@ -759,21 +781,22 @@ function sjson_TraitText(data)
 		vanilla[entry.Id] = true
 	end
 
-	for id, alt in pairs(trait_text_alt) do
-		local entries = {
-			{
-				Id = 'BoonEdit_' .. id,
+	for id, alts in pairs(trait_text_alt) do
+		local entries = {}
+		for _, alt in ipairs(alts) do
+			table.insert(entries, {
+				Id = boon_edit_alt_id(alt.Boon, id),
 				InheritFrom = vanilla[id] and id or nil,
 				DisplayName = alt.Entry.DisplayName,
 				Description = alt.Entry.Description,
-			},
-		}
+			})
+		end
 
-		if not vanilla[id] then
+		if not vanilla[id] and alts[1] then
 			table.insert(entries, {
 				Id = id,
-				DisplayName = alt.Entry.DisplayName,
-				Description = alt.Entry.Description,
+				DisplayName = alts[1].Entry.DisplayName,
+				Description = alts[1].Entry.Description,
 			})
 		end
 
@@ -895,6 +918,7 @@ import 'boons/brave_face.lua'
 
 import 'boons/rousing_reception.lua'
 import 'boons/all_together.lua'
+import 'boons/nuptial_vow.lua'
 import 'boons/cherished_heirloom.lua'
 
 import 'boons/mean_streak.lua'

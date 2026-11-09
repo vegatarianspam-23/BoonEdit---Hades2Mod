@@ -204,6 +204,12 @@ mod.tuning.NaturalSelection = {
 	EncountersPerPom = 8,
 }
 
+mod.tuning.NuptialVow = {
+	DamagePerHitched = 0.10,
+
+	Interval = 0.3,
+}
+
 mod.tuning.SteadyGrowth = {
 	RarityOnPickup = 1,
 	PickupDelay = 0.5,

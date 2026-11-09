@@ -422,6 +422,21 @@ if boon_edit_on('RousingReception') and mod.tuning.RousingReception.HitchOnly th
 	})
 end
 
+if boon_edit_on('NuptialVow') then
+	boon_text({
+		Traits = {
+			AllElementalBoon = {
+				DisplayName = 'Nuptial Vow',
+				Description = '{$Keywords.Link}-afflicted foes share their {$Keywords.StatusPlural} with each ' ..
+					'other. You deal more damage for each {$Keywords.Link}-afflicted foe.',
+			},
+		},
+		StatLines = {
+			BoonEditNuptialVowStatDisplay = { Name = 'Extra Damage per Hitched Foe:', Index = 1 },
+		},
+	})
+end
+
 if boon_edit_on('AllTogether') then
 	boon_text({
 		Traits = {
