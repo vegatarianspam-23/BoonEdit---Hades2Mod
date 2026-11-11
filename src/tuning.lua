@@ -46,6 +46,7 @@ mod.tuning.WhirlingHelix = {
 mod.tuning.CarnalPleasure = {
 	ManaPerPlasma = 20,
 	DamagePerPlasma = 1,
+	SizePerPlasma = 0.01,
 	PickupHeartthrobChance = 0,
 }
 
@@ -85,11 +86,12 @@ mod.tuning.EcstaticObsession = {
 	CharmDuration = 5,
 	InterruptCooldown = 5,
 
-	CharmedDamageMultiplier = 10,
+	CharmedDamageMultiplier = 5,
 	CharmedFriendlyFireMultiplier = 0,
 
 	GuardianCharmDuration = 2.5,
 	GuardianCharmCooldown = 5,
+	FullCharmGuardians = { 'SirenDrummer', 'SirenKeytarist', 'CharybdisTentacle2' },
 	MaxCharmed = 5,
 	InterruptBossAttacks = false,
 	SoftCharmUnits = { 'TyphonHead' },
@@ -100,6 +102,8 @@ mod.tuning.EcstaticObsession = {
 
 	DamagePerFriendly = 0.10,
 	MaxDamageBonus = 0.50,
+
+	Debug = true,
 
 	AllyRange = 430,
 
@@ -183,6 +187,13 @@ mod.tuning.SunWorshiper = {
 	MaxRepeats = 10,
 
 	WardSummons = true,
+
+	HitchSummons = true,
+	SummonHitchDuration = 9999,
+
+	AllyKillsCount = true,
+
+	Debug = true,
 }
 
 mod.tuning.TranquilGain = {

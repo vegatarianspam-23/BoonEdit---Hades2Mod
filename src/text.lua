@@ -110,14 +110,12 @@ if boon_edit_on('CarnalPleasure') then
 	boon_text({
 		Traits = {
 			BloodManaBurstBoon = {
-				Description = 'Each {!Icons.BloodDropIcon} you collect counts toward ' ..
-					'{$TraitData.ManaBurstBoon.Name} as {!Icons.Mana} used. Your {$Keywords.HeartBurstPlural} ' ..
-					'deal more damage for each {!Icons.BloodDropIcon} you have.',
+				Description = 'Your {$Keywords.HeartBurstPlural} grow in {$Keywords.BaseDamage} and size for each ' ..
+					'{$Keywords.BloodDrop} you have, and collecting {$Keywords.BloodDrop} creates more.',
 			},
 		},
 		StatLines = {
-			BoonEditCarnalManaStatDisplay = { Name = 'Magick per Plasma:', Index = 1 },
-			BoonEditCarnalDamageStatDisplay = { Name = '{$Keywords.HeartBurst} Power per Plasma:', Index = 2 },
+			BoonEditCarnalDamageStatDisplay = { Name = '{$Keywords.HeartBurst} Power per Plasma:', Index = 1 },
 		},
 	})
 end
@@ -227,8 +225,13 @@ if boon_edit_on('SunWorshiper') then
 	boon_text({
 		Traits = {
 			RaiseDeadBoon = {
-				Description = 'In each {$Keywords.EncounterAlt}, the first foe you slay returns to fight for you, '
-					.. 'and others may as well.',
+				Description = 'In each {$Keywords.EncounterAlt}, the first foe '
+					.. (mod.tuning.SunWorshiper.AllyKillsCount and 'you or your allies slay' or 'you slay')
+					.. ' returns to fight for you, '
+					.. 'and others may as well.'
+					.. (mod.tuning.SunWorshiper.HitchSummons
+						and ' They are {$Keywords.Link}-afflicted, sharing the damage they take with your foes.'
+						or ''),
 			},
 		},
 		StatLines = {

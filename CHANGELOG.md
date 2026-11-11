@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Carnal Pleasure: Heartthrobs also grow 1% in size for each Plasma you have. The stat line now shows only the power gained per Plasma
+- Ecstatic Obsession: Charmed foes deal 500% damage to other foes, down from 1000%. Scylla's Sirens and the Charybdis tentacle are Charmed for the full duration instead of the shorter Guardian one
+- Sun Worshiper: your summons are Hitch-afflicted for as long as they live, so damage they take is shared with other Hitch-afflicted foes. They don't take Hitch damage themselves
+- Sun Worshiper: foes slain by your summons or Charmed foes now count as yours for raising them, both for Sun Worshiper and for Night Bloom
+
 ## [1.1.3] - 2026-11-09
 
 ### Added

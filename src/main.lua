@@ -23,6 +23,9 @@ chalk = mods["SGG_Modding-Chalk"]
 ---@module 'SGG_Modding-ReLoad'
 reload = mods['SGG_Modding-ReLoad']
 
+---@module 'Siuhnexus-BountyAPI'
+bountyAPI = mods['Siuhnexus-BountyAPI']
+
 ---@module 'config'
 config = chalk.auto 'config.lua'
 public.config = config

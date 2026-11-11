@@ -48,6 +48,180 @@ local function boon_edit_group(path)
 	return node
 end
 
+local function boon_edit_path(name)
+	local path = boonEditGroupOf[name]
+	if not path then
+		for _, candidate in ipairs(BOON_EDIT_GROUPS) do
+			local group = boon_edit_group(candidate)
+			if group and group[name] ~= nil then
+				path = candidate
+				boonEditGroupOf[name] = path
+				break
+			end
+		end
+	end
+	return path
+end
+
+mod.Trials = mod.Trials or {}
+
+BOON_EDIT_UNFORCEABLE = {}
+
+BOON_EDIT_TRIAL_BLOCKED_PREFIXES = { 'SWu-MoreDuosMod-' }
+
+function boon_edit_trial_running(bounty)
+	if bounty == nil then
+		local run = game.CurrentRun
+		if not run or not run.Hero or run.Hero.IsDead then return false end
+		bounty = run.ActiveBounty
+	end
+	return bounty and mod.Trials[bounty] == true or false
+end
+
+function boon_edit_trial_blocks(traitName)
+	if type(traitName) ~= 'string' or not boon_edit_trial_running() then return false end
+	for _, prefix in ipairs(BOON_EDIT_TRIAL_BLOCKED_PREFIXES) do
+		if string.sub(traitName, 1, #prefix) == prefix then return true end
+	end
+	return false
+end
+
+function boon_edit_forced(name, bounty)
+	if config.enabled == false or BOON_EDIT_UNFORCEABLE[name] then return false end
+	if not boon_edit_trial_running(bounty) then return false end
+
+	local path = boon_edit_path(name)
+	if not path or path[1] == 'Experimental' then return false end
+
+	local overrider = BOON_EDIT_OVERRIDDEN_BY[name]
+	if overrider and boon_edit_on(overrider, bounty) then return false end
+	return true
+end
+
+mod.TrialShops = mod.TrialShops or {}
+mod.TrialRewardFallbacks = mod.TrialRewardFallbacks or {}
+
+function boon_edit_trial_reward_fallback()
+	local run = game.CurrentRun
+	return boon_edit_trial_running() and run and mod.TrialRewardFallbacks[run.ActiveBounty] or nil
+end
+
+local function boon_edit_set(names)
+	local set = {}
+	for _, name in ipairs(names or {}) do set[name] = true end
+	return set
+end
+
+local function boon_edit_keeper(names, blocking)
+	local set = boon_edit_set(names)
+	return function(name)
+		if blocking then return not set[name] end
+		return set[name] == true
+	end
+end
+
+function boon_edit_trial(spec)
+	local shopItems, shopBlocked, rewardFallback = spec.ShopItems, spec.ShopBlocked, spec.RewardFallback
+	spec.ShopItems, spec.ShopBlocked, spec.RewardFallback = nil, nil, nil
+
+	bountyAPI.RegisterBounty(spec)
+	local name = spec.BaseData and spec.BaseData.Name
+	if not name then return end
+
+	mod.Trials[name] = true
+	mod.TrialRewardFallbacks[name] = rewardFallback
+	if shopItems then
+		mod.TrialShops[name] = { Keep = boon_edit_keeper(shopItems), Strict = true }
+	elseif shopBlocked then
+		mod.TrialShops[name] = { Keep = boon_edit_keeper(shopBlocked, true) }
+	else
+		mod.TrialShops[name] = nil
+	end
+end
+
+local function boon_edit_filter_rewards(keep, fallback)
+	local pools = {}
+	for storeName, pool in pairs(game.RewardStoreData) do
+		if type(pool) == 'table' and type(pool[1]) == 'table' and pool[1].Name then
+			local kept = {}
+			for _, reward in ipairs(pool) do
+				if keep(reward.Name) then table.insert(kept, game.DeepCopyTable(reward)) end
+			end
+			if #kept == 0 then kept = { { Name = fallback } } end
+			pools[storeName] = kept
+		end
+	end
+	return pools
+end
+
+function boon_edit_trial_rewards(names, fallback)
+	return boon_edit_filter_rewards(boon_edit_keeper(names), fallback)
+end
+
+function boon_edit_trial_rewards_without(names, fallback)
+	return boon_edit_filter_rewards(boon_edit_keeper(names, true), fallback)
+end
+
+local function boon_edit_kept_names(list, keep)
+	if type(list) ~= 'table' then return list end
+	local kept = {}
+	for _, entry in ipairs(list) do
+		local entryName = type(entry) == 'table' and entry.Name or entry
+		if keep(entryName) then table.insert(kept, entry) end
+	end
+	return kept
+end
+
+function boon_edit_trial_shop(storeData)
+	local run = game.CurrentRun
+	local shop = boon_edit_trial_running() and run and mod.TrialShops[run.ActiveBounty]
+	if not shop or type(storeData) ~= 'table' then return storeData end
+	local keep = shop.Keep
+
+	local filtered = game.ShallowCopyTable(storeData)
+	filtered.Traits = boon_edit_kept_names(storeData.Traits, keep)
+	filtered.Consumables = boon_edit_kept_names(storeData.Consumables, keep)
+	filtered.GuaranteedItems = boon_edit_kept_names(storeData.GuaranteedItems, keep)
+	if shop.Strict then filtered.CosmeticOffers = nil end
+
+	if storeData.HealingOffers then
+		filtered.HealingOffers = game.ShallowCopyTable(storeData.HealingOffers)
+		filtered.HealingOffers.Options = boon_edit_kept_names(storeData.HealingOffers.Options, keep)
+	end
+
+	if storeData.GroupsOf then
+		filtered.GroupsOf = {}
+		for _, group in ipairs(storeData.GroupsOf) do
+			if group.OptionsData then
+				local copy = game.ShallowCopyTable(group)
+				copy.OptionsData = boon_edit_kept_names(group.OptionsData, keep)
+				if #copy.OptionsData > 0 then table.insert(filtered.GroupsOf, copy) end
+			else
+				table.insert(filtered.GroupsOf, group)
+			end
+		end
+	end
+
+	return filtered
+end
+
+function boon_edit_trial_stats(name, stats)
+	local changes = {}
+	if stats.MaxHealth then
+		table.insert(changes, { LuaProperty = 'MaxHealth', BaseValue = stats.MaxHealth - game.HeroData.MaxHealth, ChangeType = 'Add' })
+	end
+	if stats.MaxMana then
+		table.insert(changes, { LuaProperty = 'MaxMana', BaseValue = stats.MaxMana - game.HeroData.MaxMana, ChangeType = 'Add' })
+	end
+
+	local trait = { Name = name, InheritFrom = { 'BaseTrait' }, Hidden = true, PropertyChanges = changes }
+	if stats.Money then trait.BonusMoney = { BaseValue = stats.Money } end
+
+	game.TraitData[name] = trait
+	game.ProcessDataInheritance(trait, game.TraitData)
+	return name
+end
+
 function boon_edit_on(name, bounty)
 	local recording = boon_recording
 	if recording then
@@ -61,7 +235,7 @@ function boon_edit_on(name, bounty)
 		boon_text_owner = name
 		return true
 	end
-	return boon_edit_configured(name)
+	return boon_edit_configured(name) or boon_edit_forced(name, bounty)
 end
 
 BOON_EDIT_OVERRIDDEN_BY = {
@@ -74,18 +248,7 @@ function boon_edit_configured(name)
 	local overrider = BOON_EDIT_OVERRIDDEN_BY[name]
 	if overrider and boon_edit_configured(overrider) then return false end
 
-	local path = boonEditGroupOf[name]
-	if not path then
-		for _, candidate in ipairs(BOON_EDIT_GROUPS) do
-			local group = boon_edit_group(candidate)
-			if group and group[name] ~= nil then
-				path = candidate
-				boonEditGroupOf[name] = path
-				break
-			end
-		end
-	end
-
+	local path = boon_edit_path(name)
 	local group = path and boon_edit_group(path)
 	return group ~= nil and group[name] == true
 end
@@ -991,6 +1154,15 @@ boon_text_recording = nil
 boon_text_owner = nil
 if not textOk then error(textErr, 0) end
 
+once('Trials', function()
+	import 'bounties/trial_of_devotion.lua'
+	import 'bounties/trial_of_heartbreak.lua'
+	import 'bounties/trial_of_blades.lua'
+	import 'bounties/trial_of_storms.lua'
+	import 'bounties/trial_of_arrows.lua'
+	import 'bounties/trial_of_revelry.lua'
+	import 'bounties/trial_of_charisma.lua'
+end)
 boon_patches_reconcile()
 
 function poseidon_splash_scale()

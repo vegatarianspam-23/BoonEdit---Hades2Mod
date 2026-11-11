@@ -77,6 +77,59 @@ once('EcstaticObsession', function()
 end)
 
 
+local function obsession_debug(message)
+	if not mod.tuning.EcstaticObsession.Debug then return end
+	print('[' .. _PLUGIN.guid .. '] EcstaticObsession: ' .. message)
+end
+
+
+local function obsession_unit_label(unit)
+	if not unit then return 'nil' end
+	if unit == (game.CurrentRun and game.CurrentRun.Hero) then return 'Hero' end
+	return tostring(unit.Name) .. '#' .. tostring(unit.ObjectId)
+end
+
+
+local function obsession_unit_state(unit)
+	local modifiers = {}
+	for _, modifier in ipairs(unit.OutgoingDamageModifiers or {}) do
+		local parts = { tostring(modifier.Name) }
+		for _, key in ipairs({ 'NonPlayerMultiplier', 'FriendMultiplier', 'PlayerMultiplier' }) do
+			if modifier[key] ~= nil then table.insert(parts, key .. '=' .. tostring(modifier[key])) end
+		end
+		table.insert(modifiers, table.concat(parts, ' '))
+	end
+	local engineCharmed = unit.ObjectId and game.IsCharmed({ Id = unit.ObjectId })
+	return 'Charmed=' .. tostring(unit.Charmed) .. ' IsCharmed=' .. tostring(engineCharmed)
+		.. ' modifiers=[' .. table.concat(modifiers, '; ') .. ']'
+end
+
+
+local function obsession_attacker_charmed(attacker)
+	if not attacker or attacker == (game.CurrentRun and game.CurrentRun.Hero) then return false end
+	if attacker.Charmed or attacker.BoonEditSoftCharmed then return true end
+	return attacker.ObjectId ~= nil and game.IsCharmed({ Id = attacker.ObjectId }) == true
+end
+
+
+once('EcstaticObsessionDebug', function()
+	if not boon_edit_on('EcstaticObsession') then return end
+
+	modutil.mod.Path.Wrap('CalculateDamageMultipliers', function(base, attacker, victim, weaponData, triggerArgs)
+		local multipliers = base(attacker, victim, weaponData, triggerArgs)
+		if mod.tuning.EcstaticObsession.Debug and obsession_attacker_charmed(attacker) then
+			obsession_debug('charmed hit: ' .. obsession_unit_label(attacker) .. ' -> ' .. obsession_unit_label(victim)
+				.. ' weapon=' .. tostring(triggerArgs and triggerArgs.SourceWeapon)
+				.. ' projectile=' .. tostring(triggerArgs and triggerArgs.SourceProjectile)
+				.. ' damage=' .. tostring(triggerArgs and triggerArgs.DamageAmount)
+				.. ' multiplier=' .. tostring(multipliers)
+				.. ' | attacker ' .. obsession_unit_state(attacker))
+		end
+		return multipliers
+	end)
+end)
+
+
 local function obsession_interrupt_key(unit)
 	return 'BoonEditObsessionInterrupt' .. tostring(unit.ObjectId)
 end
@@ -98,9 +151,16 @@ local function obsession_guardian(unit)
 end
 
 
+local function obsession_timed_guardian(unit)
+	if not obsession_guardian(unit) then return false end
+	local exempt = mod.tuning.EcstaticObsession.FullCharmGuardians
+	return not (exempt and game.Contains(exempt, unit.Name))
+end
+
+
 local function obsession_duration(unit)
 	local tuning = mod.tuning.EcstaticObsession
-	if obsession_guardian(unit) and tuning.GuardianCharmDuration then
+	if obsession_timed_guardian(unit) and tuning.GuardianCharmDuration then
 		return tuning.GuardianCharmDuration
 	end
 	return tuning.CharmDuration
@@ -127,7 +187,7 @@ local function obsession_charm_ready(unit)
 	if unit.ObjectId and game.IsInvulnerable({ Id = unit.ObjectId }) then return false end
 	if obsession_at_cap() then return false end
 
-	if not obsession_guardian(unit) then return true end
+	if not obsession_timed_guardian(unit) then return true end
 
 	local tuning = mod.tuning.EcstaticObsession
 	return game.CheckCooldownNoTrigger('BoonEditObsessionCharm' .. tostring(unit.ObjectId),
@@ -175,6 +235,9 @@ local function obsession_charm_watch(unit)
 		game.wait(0.2, game.RoomThreadName)
 	end
 	if not unit then return end
+
+	obsession_debug('charm ended: ' .. obsession_unit_label(unit) .. ' dead=' .. tostring(unit.IsDead)
+		.. ' | ' .. obsession_unit_state(unit))
 
 	unit.BoonEditCharmWatch = nil
 	unit.Charmed = nil
@@ -257,6 +320,9 @@ local function obsession_charm(unit)
 			FriendMultiplier = friendly,
 		})
 	end
+
+	obsession_debug('charm applied: ' .. obsession_unit_label(unit)
+		.. ' duration=' .. tostring(obsession_duration(unit)) .. ' | ' .. obsession_unit_state(unit))
 
 	local guardian = obsession_guardian(unit)
 	if not guardian or tuning.InterruptBossAttacks then
