@@ -42,6 +42,35 @@ modutil.mod.Path.Wrap("StartNewRun", function(base, currentRun, args)
 	return base(currentRun, args)
 end)
 
+modutil.mod.Path.Wrap("FillInShopOptions", function(base, args)
+	if args and args.StoreData then
+		args.StoreData = boon_edit_trial_shop(args.StoreData)
+	end
+	return base(args)
+end)
+
+modutil.mod.Path.Wrap("ChooseRoomReward", function(base, run, room, rewardStoreName, previouslyChosenRewards, args)
+	local chosen = base(run, room, rewardStoreName, previouslyChosenRewards, args)
+	local fallback = chosen == "RoomRewardHealDrop" and boon_edit_trial_reward_fallback()
+	if fallback and room and room.Reward and room.Reward.Name == "RoomRewardHealDrop" then
+		room.Reward = { Name = fallback }
+		return fallback
+	end
+	return chosen
+end)
+
+modutil.mod.Path.Wrap("RandomFogSpawn", function(base, unit, args)
+	while game.CurrentRun and not game.CurrentRun.CurrentRoom do
+		game.wait(0.1)
+	end
+	return base(unit, args)
+end)
+
+modutil.mod.Path.Wrap("IsTraitEligible", function(base, traitData, args)
+	if traitData and boon_edit_trial_blocks(traitData.Name) then return false end
+	return base(traitData, args)
+end)
+
 modutil.mod.Path.Wrap("GetTraitTooltip", function(base, trait, args)
 	return boon_edit_text_id(base(trait, args))
 end)
