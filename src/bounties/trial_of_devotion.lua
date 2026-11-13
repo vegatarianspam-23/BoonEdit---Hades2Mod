@@ -17,7 +17,7 @@ boon_edit_trial({
 		WeaponKitName = 'WeaponDagger',
 		WeaponUpgradeName = 'DaggerBlockAspect',
 		KeepsakeName = 'ForceAphroditeBoonKeepsake',
-		FamiliarName = 'RavenFamiliar',
+		FamiliarName = 'HoundFamiliar',
 
 		MetaUpgradeStateEquipped = {
 			'ChanneledCast',
@@ -53,6 +53,7 @@ boon_edit_trial({
 			{ Name = 'SpawnCastDamageBoon', Rarity = 'Epic' },
 			{ Name = 'SorcerySpeedBoon', Rarity = 'Epic' },
 			{ Name = 'LuckyBoon', Rarity = 'Epic' },
+			{ Name = 'CommonGlobalDamageBoon', Rarity = 'Epic' },
 			{ Name = 'DaggerRapidAttackTrait' },
 			{ Name = boon_edit_trial_stats('BoonEditTrialOfDevotionStart', { MaxHealth = 150, MaxMana = 100, Money = 200 }) },
 		},
@@ -64,6 +65,8 @@ boon_edit_trial({
 				AphroditeUpgrade = 1,
 			},
 		},
+
+		RewardStoreOverrides = boon_edit_trial_rewards_without({ 'HermesUpgrade', 'TrialUpgrade' }, 'Boon'),
 
 		UnlockGameStateRequirements = {
 			NamedRequirements = { 'PackageBountyBiomeP' },
