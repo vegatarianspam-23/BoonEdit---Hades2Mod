@@ -40,8 +40,8 @@ once('ReaperKnives', function()
 		for property, value in pairs(HOOK_PROPERTIES) do
 			change(projectile, property, value)
 		end
-		change(projectile, 'ReturnToOwnerAfterInactiveSeconds', mod.tuning.ReaperKnives.ReturnDelay,
-			{ ReportedReturnTime = 'ChangeValue' })
+		change(projectile, 'ReturnToOwnerAfterInactiveSeconds', mod.tuning.ReaperKnives.ReturnDelay[projectile],
+			projectile == THROWN and { ReportedReturnTime = 'ChangeValue' } or nil)
 	end
 	change(THROWN, 'Fuse', mod.tuning.ReaperKnives.Fuse)
 

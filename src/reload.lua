@@ -1157,6 +1157,7 @@ if not textOk then error(textErr, 0) end
 once('Trials', function()
 	import 'bounties/trial_of_devotion.lua'
 	import 'bounties/trial_of_heartbreak.lua'
+	import 'bounties/trial_of_embers.lua'
 	import 'bounties/trial_of_blades.lua'
 	import 'bounties/trial_of_storms.lua'
 	import 'bounties/trial_of_arrows.lua'

@@ -18,7 +18,10 @@ mod.tuning.AspectOfSupay = {
 
 mod.tuning.ReaperKnives = {
 	HitVulnerabilityMultiplier = 1.5,
-	ReturnDelay = 0.138,
+	ReturnDelay = {
+		ProjectileDaggerThrow = 0.276,
+		ProjectileDaggerThrowCharged = 0.138,
+	},
 
 	Fuse = 1,
 }

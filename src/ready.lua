@@ -80,7 +80,14 @@ modutil.mod.Path.Wrap("GetTraitTooltipTitle", function(base, trait)
 end)
 
 modutil.mod.Path.Wrap("CreateTextBox", function(base, args)
-	if args and type(args.LuaValue) == 'table' and args.LuaValue.ForBoonInfo then
+	if args and args.Text then
+		args.Text = boon_edit_text_id(args.Text)
+	end
+	return base(args)
+end)
+
+modutil.mod.Path.Wrap("ModifyTextBox", function(base, args)
+	if args and args.Text then
 		args.Text = boon_edit_text_id(args.Text)
 	end
 	return base(args)

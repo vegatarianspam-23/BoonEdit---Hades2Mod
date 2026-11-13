@@ -31,8 +31,12 @@ once('AirQualityAdditiveFloor', function()
 	modutil.mod.Path.Wrap("CalculateBaseDamage", function(base, attacker, victim, triggerArgs)
 		local damage = base(attacker, victim, triggerArgs)
 
-		if triggerArgs and type(damage) == 'number' and damage > 0 and air_quality_floor(attacker, triggerArgs) then
-			triggerArgs.BoonEditBaseDamage = damage
+		if triggerArgs and type(damage) == 'number' and damage > 0 then
+			local floor = air_quality_floor(attacker, triggerArgs)
+			if floor then
+				triggerArgs.BoonEditBaseDamage = damage
+				triggerArgs.BoonEditDamageFloor = floor
+			end
 		end
 
 		return damage
@@ -44,8 +48,8 @@ once('AirQualityAdditiveFloor', function()
 		local damage = triggerArgs and triggerArgs.BoonEditBaseDamage
 		if type(damage) ~= 'number' or type(addition) ~= 'number' then return addition end
 
-		local floor = air_quality_floor(attacker, triggerArgs)
-		if not floor then return addition end
+		local floor = triggerArgs.BoonEditDamageFloor
+		if type(floor) ~= 'number' then return addition end
 
 		local total = damage + addition
 		if total >= floor then return addition end
