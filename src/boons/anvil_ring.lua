@@ -26,47 +26,18 @@ end)
 
 local GLOW_EFFECT = 'DelayedKnockbackEffect'
 
-local function glow_data()
+function glow_inflict(victim)
+	if not victim or not victim.ObjectId or victim.IsDead then return end
+
 	local effect = game.EffectData[GLOW_EFFECT]
-	return effect and effect.EffectData
-end
-
-local function glow_apply(victim)
-	local base = glow_data()
-	if not base or not victim or not victim.ObjectId then return end
-
-	local stacks = victim.BoonEditGlowStacks or 0
-	if stacks <= 0 then
-		game.ClearEffect({ Id = victim.ObjectId, Name = GLOW_EFFECT })
-		return
-	end
-
-	local tuning = mod.tuning.Glow
-	local modifier = math.min(base.Modifier + (stacks - 1) * tuning.GlowPerStack, tuning.GlowMax)
+	if not effect or not effect.EffectData then return end
 
 	game.ApplyEffect({
 		DestinationId = victim.ObjectId,
 		Id = game.CurrentRun.Hero.ObjectId,
 		EffectName = GLOW_EFFECT,
-		DataProperties = game.MergeAllTables({ base, { Modifier = modifier } }),
+		DataProperties = effect.EffectData,
 	})
-end
-
-function glow_expire(victim)
-	local base = glow_data()
-	game.wait((base and base.Duration) or 5, game.RoomThreadName)
-
-	if not victim or victim.IsDead then return end
-	victim.BoonEditGlowStacks = math.max((victim.BoonEditGlowStacks or 1) - 1, 0)
-	glow_apply(victim)
-end
-
-function glow_inflict(victim)
-	if not victim or not victim.ObjectId or victim.IsDead then return end
-
-	victim.BoonEditGlowStacks = (victim.BoonEditGlowStacks or 0) + 1
-	glow_apply(victim)
-	game.thread(glow_expire, victim)
 end
 
 ---@diagnostic disable-next-line: unused-local

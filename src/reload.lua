@@ -68,7 +68,13 @@ BOON_EDIT_OVERRIDDEN_BY = {
 	AllTogether = 'NuptialVow',
 }
 
-function boon_edit_configured(name)
+local boonEditConfigured = {}
+
+function boon_edit_config_changed()
+	boonEditConfigured = {}
+end
+
+local function boon_edit_read_config(name)
 	if config.enabled == false then return false end
 
 	local overrider = BOON_EDIT_OVERRIDDEN_BY[name]
@@ -88,6 +94,15 @@ function boon_edit_configured(name)
 
 	local group = path and boon_edit_group(path)
 	return group ~= nil and group[name] == true
+end
+
+function boon_edit_configured(name)
+	local cached = boonEditConfigured[name]
+	if cached == nil then
+		cached = boon_edit_read_config(name)
+		boonEditConfigured[name] = cached
+	end
+	return cached
 end
 
 import 'tuning.lua'
@@ -115,6 +130,7 @@ function reload_config()
 	if ok and reloaded then
 		config = reloaded
 		public.config = config
+		boon_edit_config_changed()
 	else
 		print('[' .. _PLUGIN.guid .. '] config reload failed: ' .. tostring(reloaded))
 	end

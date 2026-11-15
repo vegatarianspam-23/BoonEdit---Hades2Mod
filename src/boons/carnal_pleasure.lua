@@ -17,10 +17,9 @@ boon_patch('CarnalPleasure', 'BloodManaBurstBoon', function(carnal)
 	carnal.BoonEditManaPerPlasma = tuning.ManaPerPlasma
 	carnal.BoonEditDamagePerPlasma = tuning.DamagePerPlasma
 
-	carnal.StatLines = { 'BoonEditCarnalManaStatDisplay', 'BoonEditCarnalDamageStatDisplay' }
+	carnal.StatLines = { 'BoonEditCarnalDamageStatDisplay' }
 
 	local extracts = {
-		{ Key = 'BoonEditManaPerPlasma', ExtractAs = 'TooltipManaPerPlasma' },
 		{ Key = 'BoonEditDamagePerPlasma', ExtractAs = 'TooltipDamagePerPlasma', IncludeSigns = true },
 	}
 	for _, extract in ipairs(carnal.ExtractValues or {}) do
@@ -40,7 +39,30 @@ once('CarnalPleasureHeartBreaker', function()
 	modutil.mod.Path.Wrap("CalculateBaseDamageAdditions", function(base, attacker, victim, triggerArgs)
 		return base(attacker, victim, triggerArgs) + carnal_pleasure_heartthrob_power(attacker, triggerArgs)
 	end)
+
+	modutil.mod.Path.Wrap("CreateProjectileFromUnit", function(base, args)
+		carnal_pleasure_grow_heartthrob(args)
+		return base(args)
+	end)
 end)
+
+
+local function carnal_pleasure_plasma()
+	local room = game.CurrentRun and game.CurrentRun.CurrentRoom
+	return (room and room.BloodDropCount) or 0
+end
+
+
+function carnal_pleasure_grow_heartthrob(args)
+	if not args or args.Name ~= HEARTTHROB then return end
+	if not carnal_pleasure_held() then return end
+
+	local scale = 1 + carnal_pleasure_plasma() * mod.tuning.CarnalPleasure.SizePerPlasma
+	if scale <= 1 then return end
+
+	args.BlastRadiusModifier = (args.BlastRadiusModifier or 1) * scale
+	args.ScaleMultiplier = (args.ScaleMultiplier or 1) * scale
+end
 
 
 function carnal_pleasure_feed_heart_breaker()
@@ -63,7 +85,5 @@ function carnal_pleasure_heartthrob_power(attacker, triggerArgs)
 	if attacker ~= (game.CurrentRun and game.CurrentRun.Hero) then return 0 end
 	if not carnal_pleasure_held() then return 0 end
 
-	local room = game.CurrentRun.CurrentRoom
-	local plasma = (room and room.BloodDropCount) or 0
-	return plasma * mod.tuning.CarnalPleasure.DamagePerPlasma
+	return carnal_pleasure_plasma() * mod.tuning.CarnalPleasure.DamagePerPlasma
 end

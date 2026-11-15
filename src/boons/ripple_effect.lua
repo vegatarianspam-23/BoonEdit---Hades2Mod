@@ -68,6 +68,7 @@ end)
 local RIPPLE_PROJECTILES = {
 	PoseidonOmegaWave = true,
 	ProjectileHeraOmega = true,
+	SWuVolcanicRift = true,
 	ArtemisCastVolley = true,
 	ProjectileFireball = true,
 	AthenaDeflectingProjectile = true,
