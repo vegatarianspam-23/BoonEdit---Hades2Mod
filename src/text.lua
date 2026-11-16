@@ -553,16 +553,77 @@ if boon_edit_on('PostHaste') then
 	})
 end
 
-if boon_edit_on('SecondWind') then
+if boon_edit_on('MidnightOil') then
 	boon_text({
 		Traits = {
-			TimeStopLastStandBoon = {
-				DisplayName = 'Second Wind',
+			[MIDNIGHT_OIL_TRAIT] = {
+				InheritFrom = 'BaseBoonMultiline',
+				DisplayName = 'Midnight Oil',
+				Description = 'Your {$Keywords.Spell} needs ' ..
+					'{#AltUpgradeFormat}{$TooltipData.ExtractData.TooltipMidnightOil:P} {#Prev}less ' ..
+					'{!Icons.Mana} to charge up.',
+			},
+		},
+		StatLines = {
+			BoonEditMidnightOilStatDisplay = { Name = 'Magick Charge Discount:', Index = 1 },
+		},
+	})
+end
+
+if boon_edit_on('FlawlessExecution') then
+	boon_text({
+		Traits = {
+			[FLAWLESS_EXECUTION_TRAIT] = {
+				InheritFrom = 'BaseBoonMultiline',
+				DisplayName = 'Flawless Execution',
+				Description = 'Your {$Keywords.WeaponSet} strikes deal more damage and you take less damage the longer ' ..
+					'foes are around. The bonus resets whenever you are hit.',
+			},
+		},
+		Flavor = {
+			BoonEditFlawlessExecutionFlavorText = 'Ten out of ten.',
+		},
+		StatLines = {
+			BoonEditFlawlessExecutionMaxStatDisplay = { Name = 'Max Bonus Damage & Resistance:', Index = 1 },
+		},
+		CombatText = {
+			BoonEditFlawlessExecutionExpired = '{!Icons.DownArrow} {#AltPenaltyFormat}Flawless Execution{#Prev}!',
+		},
+	})
+end
+
+if boon_edit_on('DistressCall') then
+	boon_text({
+		Traits = {
+			[DISTRESS_CALL_TRAIT] = {
+				InheritFrom = 'BaseBoonMultiline',
+				DisplayName = 'Distress Call',
+				Description = mod.tuning.DistressCall.OnEncounterStart
+					and 'At the start of each {$Keywords.EncounterAlt}, summon an ally to the fight for a few seconds.'
+					or 'After you take damage, summon an ally to the fight for a few seconds.',
+			},
+		},
+		Flavor = {
+			BoonEditDistressCallFlavorText = 'Mayday? Mayday!',
+		},
+		StatLines = {
+			BoonEditDistressCallCooldownStatDisplay = { Name = 'Distress Call Cooldown:', Index = 1, Suffix = ' Sec.' },
+			BoonEditDistressCallDurationStatDisplay = { Name = 'Ally Duration:', Index = 1, Suffix = ' Sec.' },
+		},
+	})
+end
+
+if boon_edit_on('DoubleTime') then
+	boon_text({
+		Traits = {
+			[DOUBLE_TIME_TRAIT] = {
+				InheritFrom = 'BaseBoonMultiline',
+				DisplayName = 'Double Time',
 				Description = 'Gain an extra {$Keywords.Cast} and {$Keywords.Dash}.',
 			},
 		},
 		Flavor = {
-			BoonEditSecondWindFlavorText = 'Why not a third? Or fourth?',
+			BoonEditDoubleTimeFlavorText = 'Double time, but where is my double pay?',
 		},
 	})
 end

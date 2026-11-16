@@ -66,6 +66,7 @@ Boons whose offer requirements differ from the base game. Where a boon has sever
   - Wave Strike, Wave Flourish, Breaker Rush
   - Slippery Slope, Tidal Ring
   - Geyser Spout, High Surf, Ocean Swell
+- **Midnight Oil** — any Hex.
 - **Nervous Wreck**
   - Sworn Strike, Sworn Flourish, Engagement Ring, Nexus Rush, Born Gain
   - Glamour Gain, Passion Rush, Rapture Ring
@@ -86,7 +87,11 @@ Boons whose offer requirements differ from the base game. Where a boon has sever
 - **Scalding Vapor**
   - Tidal Ring, Slippery Slope
   - Glowing Coal, Controlled Burn, Volcanic Crown
-- **Second Wind** — Nimble Limbs, Racing Thoughts, Winner's Circle, Nitro Boost, Stutter Step, Hasty Retreat, Post Haste, Quick Buck, Mean Streak, Travel Deal or Success Rate, or while holding Metallic Droplet.
+- **Hermes Legendaries** — each needs a Hermes boon of its own Element, or Metallic Droplet, or 8 boons of that Element from any god. Metallic Droplet also gives each a 10% chance to be offered first; reaching 8 boons of an Element guarantees its Legendary on Hermes' next offer, once per run.
+  - **Double Time** (Earth) — Nimble Limbs, Racing Thoughts, Winner's Circle or Stutter Step.
+  - **Flawless Execution** (Air) — Nitro Boost, Hasty Retreat or Mean Streak.
+  - **Paid Dues** (Fire) — Travel Deal or Quick Buck.
+  - **Distress Call** (Water) — Success Rate, Post Haste or Midnight Oil.
 - **Seismic Hammer**
   - Volcanic Strike, Volcanic Flourish
   - Geyser Spout

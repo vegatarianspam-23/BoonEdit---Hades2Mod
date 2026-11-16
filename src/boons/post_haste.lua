@@ -6,6 +6,7 @@ once('HardTargetBecomesPostHaste', function()
 		local haste = game.TraitData.SlowProjectileBoon
 
 		haste.EnemyProjectileSpeedMultiplier = nil
+		haste.Elements = { mod.tuning.PostHaste.Element }
 
 		local function speedup(factor)
 			return (1 - 1 / factor) / (1 - 1 / 1.20)

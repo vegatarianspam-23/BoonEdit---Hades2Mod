@@ -117,6 +117,7 @@ function prefix_SetupMap()
 	white_antler_restore()
 	aromatic_phial_apply()
 	ionic_gain_start()
+	distress_call_reset()
 	boon_edit_sync_groups()
 	boon_patches_reconcile()
 	burning_desire_sync()
@@ -802,7 +803,7 @@ function sjson_TraitText(data)
 		for _, alt in ipairs(alts) do
 			table.insert(entries, {
 				Id = boon_edit_alt_id(alt.Boon, id),
-				InheritFrom = vanilla[id] and id or nil,
+				InheritFrom = vanilla[id] and id or alt.Entry.InheritFrom,
 				DisplayName = alt.Entry.DisplayName,
 				Description = alt.Entry.Description,
 			})
@@ -811,6 +812,7 @@ function sjson_TraitText(data)
 		if not vanilla[id] and alts[1] then
 			table.insert(entries, {
 				Id = id,
+				InheritFrom = alts[1].Entry.InheritFrom,
 				DisplayName = alts[1].Entry.DisplayName,
 				Description = alts[1].Entry.Description,
 			})
@@ -840,8 +842,9 @@ function sjson_TraitText(data)
 
 	for id, entry in pairs(trait_text) do
 		if not rewritten[id] then
-			local text = { Id = id }
+			local text = { Id = id, InheritFrom = entry.InheritFrom }
 			local order = { 'Id' }
+			if entry.InheritFrom then table.insert(order, 'InheritFrom') end
 
 			if entry.DisplayName then
 				text.DisplayName = entry.DisplayName
@@ -938,8 +941,14 @@ import 'boons/nuptial_vow.lua'
 import 'boons/cherished_heirloom.lua'
 
 import 'boons/mean_streak.lua'
+import 'boons/midnight_oil.lua'
+import 'boons/nitro_boost.lua'
+import 'boons/distress_call.lua'
+import 'boons/double_time.lua'
+import 'boons/flawless_execution.lua'
+import 'boons/paid_dues.lua'
 import 'boons/post_haste.lua'
-import 'boons/second_wind.lua'
+import 'boons/quick_buck.lua'
 import 'boons/stutter_step.lua'
 
 import 'boons/burning_meteor.lua'
@@ -990,6 +999,7 @@ import 'hammeredit/rising_helix.lua'
 import 'hammeredit/whirling_helix.lua'
 
 
+import 'systems/hermes_legendaries.lua'
 import 'systems/scythe_slows.lua'
 import 'systems/combat_text_stack.lua'
 import 'systems/sprint_follows_speed.lua'

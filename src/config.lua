@@ -61,7 +61,10 @@ local config = {
 
     Hermes = {
       MeanStreak = true;
+      MidnightOil = true;
+      NitroBoost = true;
       PostHaste = true;
+      QuickBuck = true;
       StutterStep = true;
     };
 
@@ -121,9 +124,12 @@ local config = {
     Legendaries = {
       AllTogether = true;
       BurningMeteor = true;
+      DistressCall = true;
+      DoubleTime = true;
+      FlawlessExecution = true;
       NuptialVow = true;
+      PaidDues = true;
       PremiumService = true;
-      SecondWind = true;
       ShockingLoss = true;
       WinterHarvest = true;
     };

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Flawless Execution (Hermes Legendary): for every 0.6 seconds that foes are present, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100% (damage floored at 1). The bonus resets whenever an attack hits you, and can't reset again for 5 seconds
+- Distress Call (Hermes Legendary, moved from MoreDuos): at the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey installed, Thanatos, Megaera and Bouldy can answer too, with no config switch needed
+- Midnight Oil (Hermes, Water): your Hex needs 20%/30%/40%/50% less Magick to charge up. Only offered while you hold a Hex
+
+### Changed
+
+- Paid Dues is back as a Hermes Legendary, costing 1 Gold per point of damage blocked (was 3)
+- Second Wind is renamed to Double Time and is now its own Hermes Legendary instead of replacing Paid Dues. Its config switch is now `DoubleTime` (was `SecondWind`)
+- Hermes Legendaries each have an Element and need a Hermes boon of that Element: Double Time is Earth, Flawless Execution is Air, Paid Dues is Fire and Distress Call is Water
+- Metallic Droplet unlocks every Hermes Legendary and gives each a 10% chance to be offered first
+- Holding 8 boons of one Element guarantees that Element's Hermes Legendary on his next offer, once per run, and counts as meeting its requirement
+- Hermes boons regrouped by Element. Earth: Nimble Limbs, Racing Thoughts, Winner's Circle, Stutter Step. Air: Nitro Boost, Hasty Retreat, Mean Streak. Fire: Travel Deal, Quick Buck. Water: Success Rate, Post Haste, Midnight Oil
+
 ## [1.1.4] - 2026-11-15
 
 ### Changed

@@ -14,7 +14,7 @@ function boon_edit_when(when)
 end
 
 
-function boon_list_set(list, traitName, wanted)
+function boon_list_set(list, traitName, wanted, after)
 	if not list then return end
 
 	local at = nil
@@ -26,6 +26,12 @@ function boon_list_set(list, traitName, wanted)
 	end
 
 	if wanted and not at then
+		for i, name in ipairs(after and list or {}) do
+			if name == after then
+				table.insert(list, i + 1, traitName)
+				return
+			end
+		end
 		table.insert(list, traitName)
 	elseif not wanted and at then
 		table.remove(list, at)
@@ -96,6 +102,7 @@ local DUO_REQUIREMENTS = { 'OfferRequirements' }
 
 BOON_EDIT_REQUIREMENTS = {
 	{ Trait = 'SpawnCastDamageBoon', When = { 'RousingReception' }, Set = { OneOf = { 'HeraCastBoon' } } },
+	{ Trait = MIDNIGHT_OIL_TRAIT, When = { 'MidnightOil' }, Set = { OneOf = mod.tuning.MidnightOil.Hexes } },
 
 	{ Trait = 'PoseidonSplashSprintBoon', When = DUO_REQUIREMENTS, Set = { OneFromEachSet = {
 		{ 'ApolloSprintBoon', 'PoseidonSprintBoon' },
@@ -191,6 +198,9 @@ BOON_EDIT_REQUIREMENTS = {
 		'FogDamageBonusBoon', 'HephaestusWeaponBoon', 'HephaestusSpecialBoon', 'PoseidonManaBoon',
 		'ZeusManaBoon', 'AutoRevengeBoon', 'HadesInvisibilityRetaliateBoon',
 	} } },
+	{ Trait = 'SlowProjectileBoon', When = { 'PostHaste', 'DistressCall' }, Patch = function(requirement)
+		if not distress_call_on_encounter_start() then boon_list_set(requirement.OneOf, DISTRESS_CALL_TRAIT, true) end
+	end },
 	{ Trait = 'BurnSprintBoon', When = { 'BurningMeteor' }, Set = { OneFromEachSet = {
 		{ 'HestiaWeaponBoon', 'HestiaSpecialBoon', 'HestiaCastBoon' },
 		Group('SWuFireballTraits'),
@@ -209,10 +219,6 @@ BOON_EDIT_REQUIREMENTS = {
 	end },
 
 	{ Trait = 'LuckyBoon', Patch = function(requirement) boon_edit_success_rate(requirement.OneOf) end },
-
-	{ Trait = 'TimeStopLastStandBoon', When = { 'SecondWind' }, Patch = function(requirement)
-		requirement.PriorityChance = mod.tuning.SecondWind.KeepsakeOfferChance
-	end },
 }
 
 for _, traitName in ipairs({ 'MassiveDamageBoon', 'MassiveKnockupBoon', 'DoubleMassiveAttackBoon', 'BlindClearBoon', 'ClearRootBoon' }) do
@@ -525,6 +531,31 @@ local function apply_broad_rules(names)
 end
 
 
+local function hermes_trait_set(traitName, wanted, after)
+	local hermes = game.LootData.HermesUpgrade
+	if not hermes then return end
+
+	wanted = wanted and game.TraitData[traitName] ~= nil
+	boon_list_set(hermes.Traits, traitName, wanted, after)
+	if hermes.TraitIndex then hermes.TraitIndex[traitName] = wanted or nil end
+
+	local info = game.ScreenData and game.ScreenData.BoonInfo
+	if not info then return end
+	local dictionary = info.TraitDictionary and info.TraitDictionary.HermesUpgrade
+	if dictionary then dictionary[traitName] = wanted or nil end
+	local order = info.TraitSortOrder and info.TraitSortOrder.HermesUpgrade
+	boon_list_set(order, traitName, wanted, after)
+end
+
+
+local function apply_hermes_legendaries(names)
+	for _, traitName in ipairs(hermes_legendary_names()) do
+		remember(traitName, names)
+		game.TraitRequirements[traitName] = hermes_legendary_requirement(traitName)
+	end
+end
+
+
 function boon_edit_sync_groups()
 	restore()
 	rebuild_roles()
@@ -534,7 +565,16 @@ function boon_edit_sync_groups()
 	rebuild_infection()
 	rebuild_compatible()
 
+	hermes_trait_set(MIDNIGHT_OIL_TRAIT, boon_edit_on('MidnightOil'), 'LuckyBoon')
+	hermes_trait_set(DOUBLE_TIME_TRAIT, boon_edit_on('DoubleTime'), 'TimeStopLastStandBoon')
+	hermes_trait_set(FLAWLESS_EXECUTION_TRAIT, boon_edit_on('FlawlessExecution'),
+		boon_edit_on('DoubleTime') and DOUBLE_TIME_TRAIT or 'TimeStopLastStandBoon')
+	hermes_trait_set(DISTRESS_CALL_TRAIT, boon_edit_on('DistressCall'),
+		boon_edit_on('FlawlessExecution') and FLAWLESS_EXECUTION_TRAIT
+		or boon_edit_on('DoubleTime') and DOUBLE_TIME_TRAIT or 'TimeStopLastStandBoon')
+
 	if config.enabled == false then return end
 	apply_rules(names)
 	apply_broad_rules(names)
+	apply_hermes_legendaries(names)
 end

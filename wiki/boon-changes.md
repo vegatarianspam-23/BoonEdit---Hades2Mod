@@ -21,7 +21,7 @@
 - **Meat Grinder** — Additionally, each hit of the blade rift per foe has a 30% chance to spill plasma. Counts as a plasma boon.
 - **Profuse Bleeding** — New(?) Effect: Foes with wounds have a small chance to drop plasma after taking damage. Inflicting wounds also gets the same chance. Counts as a plasma boon.
 - **Stabbing Rush** — Falling blades drop for the entire duration of your sprint.
-- **Sword Ring** — Each cast circle drops its own blades, so overlapping casts (Aspect of the Circle, Second Wind) each strike a foe caught in more than one.
+- **Sword Ring** — Each cast circle drops its own blades, so overlapping casts (Aspect of the Circle, Double Time) each strike a foe caught in more than one.
 
 ## Athena
 
@@ -64,8 +64,14 @@
 ## Hermes
 
 - **Mean Streak** — Its damage bonus applies to all damage, not just Attack and Special. Timer now pauses during menu and selection screens.
-- **Hard Target** replaced with: **Post Haste**: reduces boon effect cooldowns by 20%/25%/30%/35%.
-- **Paid Dues** replaced with **Second Wind** (Legendary): You can cast and dash an additional time.
+- **Nitro Boost** — Now an Air boon (was Fire).
+- **Quick Buck** — Now a Fire boon (was Air).
+- **Hard Target** replaced with: **Post Haste**: reduces boon effect cooldowns by 20%/25%/30%/35%. A Water boon (Hard Target was Air).
+- **Midnight Oil** (new, Water): Your Hex needs 20%/30%/40%/50% less Magick to charge up. Only offered while you hold a Hex.
+- **Paid Dues** (Legendary) — Costs 1 Gold per point of damage blocked (was 3). Now a Fire boon (was Air).
+- **Double Time** (new Legendary, Earth, was Second Wind): You can cast and dash an additional time.
+- **Flawless Execution** (new Legendary, Air): For every 0.6 seconds that foes are present, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100%. The bonus resets whenever an attack that deals damage hits you, including damage to your Armor but not hits a shield blocks, and can't reset again for 5 seconds.
+- **Distress Call** (new Legendary, Water, moved from MoreDuos): At the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey installed, Thanatos, Megaera and Bouldy can answer too; Bouldy drops onto a foe for 4000 damage and scatters Gold, Bones and Health. Setting `DistressCall.OnEncounterStart` to false in tuning switches back to summoning after you take damage (40 second cooldown, reset at the start of each location, shortened by Post Haste).
 
 ## Hestia
 
