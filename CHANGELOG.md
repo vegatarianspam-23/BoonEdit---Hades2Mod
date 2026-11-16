@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.5] - 2026-11-16
+
 ### Added
 
 - Flawless Execution (Hermes Legendary): for every 0.6 seconds that foes are present, you deal 1% more damage and you take 1% less damage, both up to 100% (damage floored at 1). The bonus resets whenever an attack hits you, and can't reset again for 5 seconds
@@ -166,6 +168,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.1.5]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.4...1.1.5
 [1.1.4]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.3...1.1.4
 [1.1.3]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.2...1.1.3
 [1.1.2]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.1...1.1.2
