@@ -8,7 +8,6 @@ FLAWLESS_EXECUTION_TRAIT = 'BoonEditFlawlessExecutionBoon'
 once('FlawlessExecution', function()
 	if not game.TraitData[FLAWLESS_EXECUTION_TRAIT] then
 		local tuning = mod.tuning.FlawlessExecution
-		local weapons = game.AddLinkedWeapons(game.WeaponSets.HeroPrimarySecondaryWeapons)
 		local trait = game.DeepCopyTable(game.TraitData.TimeStopLastStandBoon)
 
 		trait.Name = FLAWLESS_EXECUTION_TRAIT
@@ -22,8 +21,6 @@ once('FlawlessExecution', function()
 		trait.BoonEditFlawlessDefense = 1
 
 		trait.AddOutgoingDamageModifiers = {
-			ValidWeapons = weapons,
-			ValidWeaponsLookup = game.ToLookup(weapons),
 			UseTraitValue = 'BoonEditFlawlessMultiplier',
 			IsMultiplier = true,
 		}
@@ -208,14 +205,9 @@ end
 
 local function flawless_execution_multiplier(attacker, triggerArgs)
 	if not boon_edit_on('FlawlessExecution') then return 1 end
-	if not triggerArgs or triggerArgs.EffectName then return 1 end
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if attacker ~= hero then return 1 end
-
-	if not game.WeaponSetLookups.HeroPrimarySecondaryWeaponsLinked[triggerArgs.SourceWeapon] then
-		return 1
-	end
 
 	return 1 + flawless_execution_bonus(game.CurrentRun)
 end

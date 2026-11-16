@@ -576,7 +576,7 @@ if boon_edit_on('FlawlessExecution') then
 			[FLAWLESS_EXECUTION_TRAIT] = {
 				InheritFrom = 'BaseBoonMultiline',
 				DisplayName = 'Flawless Execution',
-				Description = 'Your {$Keywords.WeaponSet} strikes deal more damage and you take less damage the longer ' ..
+				Description = 'You deal more damage and take less damage the longer ' ..
 					'foes are around. The bonus resets whenever you are hit.',
 			},
 		},

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Flawless Execution (Hermes Legendary): for every 0.6 seconds that foes are present, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100% (damage floored at 1). The bonus resets whenever an attack hits you, and can't reset again for 5 seconds
+- Flawless Execution (Hermes Legendary): for every 0.6 seconds that foes are present, you deal 1% more damage and you take 1% less damage, both up to 100% (damage floored at 1). The bonus resets whenever an attack hits you, and can't reset again for 5 seconds
 - Distress Call (Hermes Legendary, moved from MoreDuos): at the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey installed, Thanatos, Megaera and Bouldy can answer too, with no config switch needed
 - Midnight Oil (Hermes, Water): your Hex needs 20%/30%/40%/50% less Magick to charge up. Only offered while you hold a Hex
 
