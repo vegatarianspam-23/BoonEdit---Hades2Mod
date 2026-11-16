@@ -70,8 +70,8 @@
 - **Midnight Oil** (new, Water): Your Hex needs 20%/30%/40%/50% less Magick to charge up. Only offered while you hold a Hex.
 - **Paid Dues** (Legendary) — Costs 1 Gold per point of damage blocked (was 3). Now a Fire boon (was Air).
 - **Double Time** (new Legendary, Earth, was Second Wind): You can cast and dash an additional time.
-- **Flawless Execution** (new Legendary, Air): For every 0.6 seconds that foes are present, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100%. The bonus resets whenever an attack that deals damage hits you, including damage to your Armor but not hits a shield blocks, and can't reset again for 5 seconds.
-- **Distress Call** (new Legendary, Water, moved from MoreDuos): At the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey installed, Thanatos, Megaera and Bouldy can answer too; Bouldy drops onto a foe for 4000 damage and scatters Gold, Bones and Health. Setting `DistressCall.OnEncounterStart` to false in tuning switches back to summoning after you take damage (40 second cooldown, reset at the start of each location, shortened by Post Haste).
+- **Flawless Execution** (new Legendary, Air): For every 0.6 seconds that foes are present, your Weapon strikes deal 1% more damage and you take 1% less damage, both up to 100%. The bonus resets whenever you are hit with an attack, and can't reset again for 5 seconds.
+- **Distress Call** (new Legendary, Water, moved from MoreDuos): At the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey installed, Thanatos, Megaera and Bouldy can answer too.
 
 ## Hestia
 
