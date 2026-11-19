@@ -45,7 +45,7 @@ once('SeismicHammer', function()
 
 	hammer.OnProjectileCreationFunction = {
 		ValidProjectiles = { 'MassiveSlamBlast' },
-		Name = 'CheckAxeCastArm',
+		Name = _PLUGIN.guid .. '.SeismicHammerCastArm',
 		Args = {
 			BlastMultiplier = { BaseValue = 1.15, SourceIsMultiplier = true },
 		},
@@ -106,16 +106,38 @@ function seismic_hammer_cooldown_started(name, time)
 end
 
 
-function mod.SeismicHammerDetonation(triggerArgs)
-	if not triggerArgs or not triggerArgs.Armed or not triggerArgs.Detonated then return end
-	if seismic_hammer_blasts_reduce() then seismic_hammer_blast() end
+function mod.SeismicHammerCastArm(triggerArgs, args)
+	if seismic_hammer_blasts_reduce() then
+		local casts = game.GetInProjectilesBlast({
+			ProjectileId = triggerArgs.ProjectileId,
+			DestinationName = 'ProjectileCast',
+			UseDamageRadius = true,
+		})
+
+		mod.SeismicHammerDetonated = mod.SeismicHammerDetonated or {}
+		for _, id in pairs(casts or {}) do
+			if not mod.SeismicHammerDetonated[id] then
+				mod.SeismicHammerDetonated[id] = true
+				seismic_hammer_blast()
+			end
+		end
+	end
+
+	return game.CheckAxeCastArm(triggerArgs, args)
 end
 
 
-function seismic_hammer_cooldown_floor(name)
-	local floor = boon_recharge_source_floor(SEISMIC_BLAST_COOLDOWNS[name], 'Cooldown')
-	if floor then return floor * boon_recharge_multiplier() end
-	return 0
+function mod.SeismicHammerDetonation(triggerArgs)
+	if not triggerArgs then return end
+
+	local detonated = mod.SeismicHammerDetonated
+	if detonated and detonated[triggerArgs.ProjectileId] then
+		detonated[triggerArgs.ProjectileId] = nil
+		return
+	end
+
+	if not triggerArgs.Armed or not triggerArgs.Detonated then return end
+	if seismic_hammer_blasts_reduce() then seismic_hammer_blast() end
 end
 
 
@@ -127,12 +149,30 @@ function seismic_hammer_blast()
 	for name, entry in pairs(mod.SeismicHammerCooldowns or {}) do
 		local started = cooldowns[name]
 		if type(started) == 'number' then
-			local shift = math.min(reduction, entry.Time - seismic_hammer_cooldown_floor(name) - entry.Shift)
+			local shift = math.min(reduction, entry.Time - entry.Shift)
 			if shift > 0 then
 				cooldowns[name] = started - shift
 				entry.Shift = entry.Shift + shift
+				seismic_hammer_rearm(name, cooldowns[name] + entry.Time - game._worldTime)
 			end
 		end
+	end
+end
+
+
+function seismic_hammer_rearm(name, remaining)
+	local traitName = SEISMIC_BLAST_COOLDOWNS[name]
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not traitName or not hero or not game.HeroHasTrait(traitName) then return end
+
+	game.killTaggedThreads(traitName)
+
+	if remaining > 0 then
+		local ui = game.GetExistingUITraitName(traitName)
+		if ui then game.TraitUIActivateTrait(ui, { FlashOnActive = false, Duration = remaining }) end
+		game.thread(game.MassiveAttackSetup, hero, { Delay = remaining, TraitName = traitName })
+	else
+		game.thread(game.MassiveAttackSetup, hero, { TraitName = traitName })
 	end
 end
 
