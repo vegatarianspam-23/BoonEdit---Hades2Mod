@@ -80,7 +80,8 @@ function shocking_loss_hit(enemy, traitArgs, triggerArgs)
 end
 
 function shocking_loss_guardian_interval()
-	return post_haste_recharge({ Cooldown = mod.tuning.ShockingLoss.GuardianInterval }).Cooldown
+	local multiplier = boon_recharge_multiplier()
+	return boon_recharge(mod.tuning.ShockingLoss.GuardianInterval, { Multiplier = multiplier }) * multiplier
 end
 
 function mod.ShockingLossStrike(enemy, traitArgs)

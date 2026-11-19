@@ -168,6 +168,17 @@ function boon_ignores(unit)
 	return unit.SkipModifiers and not unit.TrainingTarget
 end
 
+function boon_foe(unit)
+	if not unit or not unit.ObjectId or unit.IsDead then return false end
+	if boon_ignores(unit) then return false end
+
+	if not game.GetThingDataValue({ Id = unit.ObjectId, Property = 'StopsProjectiles' }) then return false end
+	if game.IsInvulnerable({ Id = unit.ObjectId }) then return false end
+	if game.IsUntargetable({ Id = unit.ObjectId }) then return false end
+
+	return true
+end
+
 function apply_hitch(unit)
 	if not unit or not unit.ObjectId then return end
 	if is_allied_summon(unit) then return end
@@ -604,11 +615,43 @@ function boon_edit_alt_id(boon, id)
 	return 'BoonEdit_' .. boon .. '_' .. id
 end
 
+BOON_EDIT_TEXT_VARIANTS = { '_Inactive', '_NoUpgradeUses' }
+
 function boon_edit_text_id(id)
-	for _, alt in ipairs(id and trait_text_alt[id] or {}) do
+	if type(id) ~= 'string' then return id end
+
+	local base = id
+	if not trait_text_alt[id] then
+		for _, suffix in ipairs(BOON_EDIT_TEXT_VARIANTS) do
+			if #id > #suffix and id:find(suffix, -#suffix, true) then
+				base = id:sub(1, -#suffix - 1)
+				break
+			end
+		end
+	end
+
+	for _, alt in ipairs(trait_text_alt[base] or {}) do
 		if boon_edit_on(alt.Boon) then return boon_edit_alt_id(alt.Boon, id) end
 	end
 	return id
+end
+
+function boon_edit_text_args(args)
+	if type(args) ~= 'table' then return args end
+
+	local text = boon_edit_text_id(args.Text)
+	local value = args.LuaValue
+	local title = type(value) == 'table' and boon_edit_text_id(value.Title)
+	local titleRouted = title and title ~= value.Title
+	if text == args.Text and not titleRouted then return args end
+
+	local copy = game.ShallowCopyTable(args)
+	copy.Text = text
+	if titleRouted then
+		copy.LuaValue = game.ShallowCopyTable(value)
+		copy.LuaValue.Title = title
+	end
+	return copy
 end
 
 function boon_text(boon, spec, when)
@@ -795,18 +838,28 @@ function sjson_TraitText(data)
 	local vanilla = {}
 
 	for _, entry in ipairs(data.Texts) do
-		vanilla[entry.Id] = true
+		vanilla[entry.Id] = entry
 	end
 
 	for id, alts in pairs(trait_text_alt) do
 		local entries = {}
 		for _, alt in ipairs(alts) do
+			local altId = boon_edit_alt_id(alt.Boon, id)
 			table.insert(entries, {
-				Id = boon_edit_alt_id(alt.Boon, id),
+				Id = altId,
 				InheritFrom = vanilla[id] and id or alt.Entry.InheritFrom,
 				DisplayName = alt.Entry.DisplayName,
 				Description = alt.Entry.Description,
 			})
+			for _, suffix in ipairs(BOON_EDIT_TEXT_VARIANTS) do
+				local variant = vanilla[id .. suffix]
+				local own = variant and variant.Description ~= nil
+				table.insert(entries, {
+					Id = boon_edit_alt_id(alt.Boon, id .. suffix),
+					InheritFrom = own and (id .. suffix) or altId,
+					DisplayName = own and alt.Entry.DisplayName or nil,
+				})
+			end
 		end
 
 		if not vanilla[id] and alts[1] then
@@ -1000,6 +1053,7 @@ import 'hammeredit/whirling_helix.lua'
 
 
 import 'systems/hermes_legendaries.lua'
+import 'systems/recharges.lua'
 import 'systems/scythe_slows.lua'
 import 'systems/combat_text_stack.lua'
 import 'systems/sprint_follows_speed.lua'

@@ -107,7 +107,24 @@ function hermes_legendary_priority(linked)
 end
 
 
+function hermes_legendary_rarities(lootData)
+	for _, option in ipairs(lootData and lootData.UpgradeOptions or {}) do
+		local levels = option.Type == 'Trait' and hermes_legendary_element(option.ItemName)
+			and game.TraitData[option.ItemName].RarityLevels
+		if levels and not levels[option.Rarity] then
+			option.Rarity = 'Legendary'
+		end
+	end
+end
+
+
 once('HermesLegendaries', function()
+	modutil.mod.Path.Wrap('SetTraitsOnLoot', function(base, lootData, ...)
+		local result = base(lootData, ...)
+		hermes_legendary_rarities(lootData)
+		return result
+	end)
+
 	modutil.mod.Path.Wrap('HasTraitRequirements', function(base, traitName, ...)
 		if hermes_legendary_unlocked(traitName) then return true end
 		return base(traitName, ...)

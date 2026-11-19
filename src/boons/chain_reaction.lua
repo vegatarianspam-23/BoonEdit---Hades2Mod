@@ -86,6 +86,16 @@ function chain_reaction_eat(name, time)
 end
 
 
+function chain_reaction_fires_early()
+	if mod.tuning.ChainReaction.HephaestusOnly or not mod.tuning.ChainReaction.RepeatingTimers then return false end
+	if not chain_reaction_armed() then return false end
+	if not rolls(mod.tuning.ChainReaction.SkipChance) then return false end
+
+	chain_reaction_announce()
+	return true
+end
+
+
 function chain_reaction_ready(traitName, cooldownName)
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or not traitName then return end
@@ -146,6 +156,13 @@ end
 
 
 function chain_reaction_owns(name)
+	if mod.tuning.ChainReaction.HephaestusOnly then
+		for _, owned in ipairs(mod.tuning.ChainReaction.HephaestusCooldowns) do
+			if name == owned or (#name > #owned and name:sub(1, #owned) == owned) then return true end
+		end
+		return false
+	end
+
 	local names = chain_reaction_cooldowns()
 	if names[name] then return true end
 

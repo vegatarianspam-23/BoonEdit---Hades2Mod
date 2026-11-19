@@ -384,7 +384,9 @@ if boon_edit_on('ChainReaction') then
 	boon_text({
 		Traits = {
 			DoubleMassiveAttackBoon = {
-				Description = 'Any {$Keywords.GodBoon} effects that recharge over time have a chance to skip the recharge entirely.',
+				Description = mod.tuning.ChainReaction.HephaestusOnly
+					and 'Your blast effects from {#BoldFormatGraft}Hephaestus {#Prev}have a chance to skip their recharge entirely.'
+					or 'Any {$Keywords.GodBoon} effects that recharge over time have a chance to skip the recharge entirely.',
 			},
 		},
 		StatLines = {
@@ -401,12 +403,15 @@ if boon_edit_on('SeismicHammer') then
 		Traits = {
 			MassiveCastBoon = {
 				DisplayName = 'Seismic Hammer',
-				Description = 'Your blast effects from {#BoldFormatGraft}Hephaestus {#Prev}make your ' ..
-					'{$Keywords.Cast} erupt like your {$Keywords.CastEX}.',
+				Description = '{#BoldFormatGraft}Hephaestus {#Prev}blasts make your {$Keywords.Cast} erupt like your ' ..
+					'{$Keywords.CastEX}. ' ..
+					(mod.tuning.SeismicHammer.OmegaCastReducesCooldowns
+						and 'Each {$Keywords.CastEX} shortens your recharging {$Keywords.GodBoon} effects.'
+						or 'Your {$Keywords.GodBoon} effects recharge sooner.'),
 			},
 		},
 		StatLines = {
-			BoonEditSeismicHammerStatDisplay = { Name = 'Blast Recharge Reduction:', Index = 1, Suffix = ' Sec.' },
+			BoonEditSeismicHammerStatDisplay = { Name = 'Recharge Reduction:', Index = 1, Suffix = ' Sec.' },
 		},
 	})
 end

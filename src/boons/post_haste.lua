@@ -29,21 +29,5 @@ once('HardTargetBecomesPostHaste', function()
 			},
 		}
 	end
-
-	modutil.mod.Path.Wrap("HadesRetaliate", function(base, unit, args, triggerArgs)
-		return base(unit, post_haste_recharge(args), triggerArgs)
-	end)
 end)
 
-
-function post_haste_recharge(args)
-	if not boon_edit_on('PostHaste') then return args end
-	if not args or not args.Cooldown then return args end
-
-	local multiplier = game.GetTotalHeroTraitValue('OlympianRechargeMultiplier', { IsMultiplier = true })
-	if multiplier == 1 then return args end
-
-	local scaled = game.ShallowCopyTable(args)
-	scaled.Cooldown = args.Cooldown * multiplier
-	return scaled
-end

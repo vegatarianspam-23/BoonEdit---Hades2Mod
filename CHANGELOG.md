@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Tough Gain: Heinous Affront triggering now restores Magick, as taking damage does
+- Seismic Hammer: each Omega Cast detonation takes 2 seconds off your recharging cooldowns (shared list with Post Haste).
+- Chain Reaction: only skips Hephaestus blasts and More Duos' Land Mine.
+
+### Fixed
+
+- Fixed Paid Dues showing up as Common rarity
+- Fixed Glow decal on non-foes from Anvil Ring and Smithy Rush
+- Sun Worshiper: raised and Night Bloom summons now attack Typhon, instead of idling out of range
+- Removed Winter Solstice from shared cooldown lists
+
 ## [1.1.5] - 2026-11-16
 
 ### Added

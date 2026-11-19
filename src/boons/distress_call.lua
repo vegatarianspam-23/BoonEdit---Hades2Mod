@@ -1256,7 +1256,8 @@ end
 
 
 local function distress_call_recharge()
-	return mod.tuning.DistressCall.Cooldown * game.GetTotalHeroTraitValue('OlympianRechargeMultiplier', { IsMultiplier = true })
+	local multiplier = boon_recharge_multiplier()
+	return boon_recharge(mod.tuning.DistressCall.Cooldown, { Multiplier = multiplier }) * multiplier
 end
 
 

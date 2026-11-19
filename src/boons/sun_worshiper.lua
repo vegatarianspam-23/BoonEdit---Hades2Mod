@@ -70,6 +70,49 @@ once('SunWorshiperAllyKills', function()
 end)
 
 
+once('SunWorshiperBossReach', function()
+	modutil.mod.Path.Wrap("GetTargetId", function(base, enemy, aiData)
+		local boss = aiData and aiData ~= enemy and sun_worshiper_reach_boss(enemy)
+		if boss then
+			aiData.TargetMaxDistance = math.max(aiData.TargetMaxDistance or 0, mod.tuning.SunWorshiper.BossTargetReach)
+		end
+
+		local targetId = base(enemy, aiData)
+		if boss and targetId == boss.ObjectId then
+			sun_worshiper_reach(aiData, boss)
+		end
+		return targetId
+	end)
+end)
+
+
+function sun_worshiper_reach_boss(enemy)
+	if not boon_edit_on('SunWorshiper') then return nil end
+	if not mod.tuning.SunWorshiper.BossReach then return nil end
+	if not enemy or not is_allied_summon(enemy) then return nil end
+
+	for _, unit in pairs(game.ActiveEnemies or {}) do
+		if unit and unit.IsBoss and not unit.IsDead and unit.ObjectId and unit.CatFamiliarAttackDistance then
+			return unit
+		end
+	end
+	return nil
+end
+
+
+function sun_worshiper_reach(aiData, boss)
+	if (aiData.AttackDistance or 0) < boss.CatFamiliarAttackDistance then
+		aiData.AttackDistance = boss.CatFamiliarAttackDistance
+	end
+
+	local overrides = game.ShallowCopyTable(aiData.ProjectileDataOverrides or {})
+	for key, value in pairs(mod.tuning.SunWorshiper.BossProjectile) do
+		overrides[key] = value
+	end
+	aiData.ProjectileDataOverrides = overrides
+end
+
+
 local SUN_WORSHIPER_RAISE_FUNCTIONS = {
 	RaiseKilledEnemy = true,
 	RecordSpellSummonEnemyDeath = true,

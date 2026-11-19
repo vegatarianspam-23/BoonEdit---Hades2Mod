@@ -179,9 +179,13 @@ mod.tuning.HostileEnvironment = {
 }
 
 mod.tuning.SeismicHammer = {
-	BlastCooldownReduction = 1,
+	RechargeReduction = 2,
+	OmegaCastReducesCooldowns = true,
 
-	MinimumBlastCooldown = 0.1,
+	ReducedCooldowns = {
+		'MassiveAttack', 'MassiveSpecial', 'HephSprint', 'AthenaProjectile', 'AthenaInvulnerability', 'HadesRetaliate',
+		'AutoRevengeCooldown', 'BoonEditDistressCall', 'BoonEditShockingLossGuardian', 'SWuLandMine', 'SWuSolarEclipse',
+	},
 }
 
 mod.tuning.SunWorshiper = {
@@ -195,6 +199,14 @@ mod.tuning.SunWorshiper = {
 	SummonHitchDuration = 9999,
 
 	AllyKillsCount = true,
+
+	BossReach = true,
+	BossTargetReach = 9999,
+	BossProjectile = {
+		ImpactLineOfSight = false,
+		CheckObstacleImpact = false,
+		MaxVictimZ = 9999,
+	},
 
 	Debug = false,
 }
@@ -247,6 +259,8 @@ mod.tuning.ToughGain = {
 	PomDamageReduction = 1,
 
 	MaxDamageReduction = 10,
+
+	HeinousAffront = true,
 }
 
 mod.tuning.CryoPounder = {
@@ -280,9 +294,14 @@ mod.tuning.ChainReaction = {
 	SkipChance = 0.25,
 
 	ExtraCooldowns = {
-		'SWuLandMine', 'SWuSolarEclipse', 'SWuWinterSolstice', 'BoonEditDistressCall', 'BoonEditShockingLossGuardian',
-		'AthenaProjectile',
+		'SWuLandMine', 'SWuSolarEclipse', 'BoonEditDistressCall', 'AthenaProjectile', 'AthenaInvulnerability',
 	},
+
+	HephaestusOnly = true,
+	HephaestusCooldowns = { 'MassiveAttack', 'MassiveSpecial', 'HephSprint', 'SWuLandMine' },
+
+	RepeatingTimers = false,
+	EarlyFireDelay = 0.25,
 
 	TextDuration = 1.45,
 	TextCooldown = 0.5,
@@ -900,10 +919,13 @@ mod.tuning.ShockingLoss = {
 		'ZeusApolloSynergyStrike',
 		'ZeusPolymorphStrike',
 		'ZeusManaBolt',
+		'SWuAirControlBolt',
+		'SWuBlindingSmiteBolt',
+		'SWuTippedScalesBolt',
 	},
 
 	GuardianDamage = 9999,
-	GuardianInterval = 10,
+	GuardianInterval = 40,
 }
 
 mod.tuning.KillerCurrent = {
@@ -931,6 +953,9 @@ mod.tuning.ThermalDynamics = {
 		'ZeusApolloSynergyStrike',
 		'ZeusPolymorphStrike',
 		'ZeusManaBolt',
+		'SWuAirControlBolt',
+		'SWuBlindingSmiteBolt',
+		'SWuTippedScalesBolt',
 	},
 }
 

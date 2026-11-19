@@ -27,7 +27,7 @@ end)
 local GLOW_EFFECT = 'DelayedKnockbackEffect'
 
 function glow_inflict(victim)
-	if not victim or not victim.ObjectId or victim.IsDead then return end
+	if not boon_foe(victim) then return end
 
 	local effect = game.EffectData[GLOW_EFFECT]
 	if not effect or not effect.EffectData then return end
