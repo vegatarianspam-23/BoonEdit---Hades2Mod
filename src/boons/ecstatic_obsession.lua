@@ -429,6 +429,16 @@ function mod.EcstaticObsessionWeak(triggerArgs, _args)
 end
 
 
+function obsession_try_charm(victim)
+	game.waitUnmodified(0.01)
+
+	if not victim.ObjectId or victim.IsDead then return end
+	if not (game.ActiveEnemies or {})[victim.ObjectId] then return end
+	if not obsession_charmable(victim) or not obsession_charm_ready(victim) then return end
+	obsession_charm(victim)
+end
+
+
 function obsession_take(victim, effectName)
 
 	game.waitUnmodified(0.01)

@@ -3,53 +3,60 @@
 
 
 FLAWLESS_EXECUTION_TRAIT = 'BoonEditFlawlessExecutionBoon'
+FLAWLESS_EXECUTION_DUO_TRAIT = 'BoonEditFlawlessExecutionDuoBoon'
+
+
+local function flawless_execution_fill(trait)
+	local tuning = mod.tuning.FlawlessExecution
+
+	trait.FlavorText = 'BoonEditFlawlessExecutionFlavorText'
+	trait.BoonEditMaxBonus = tuning.MaxPercent
+	trait.BoonEditPerSecond = tuning.PercentPerStep / tuning.StepInterval
+	trait.BoonEditFlawlessMultiplier = 1
+	trait.BoonEditFlawlessDefense = 1
+
+	trait.AddOutgoingDamageModifiers = {
+		UseTraitValue = 'BoonEditFlawlessMultiplier',
+		IsMultiplier = true,
+	}
+	trait.AddIncomingDamageModifiers = {
+		UseTraitValue = 'BoonEditFlawlessDefense',
+		IsMultiplier = true,
+		IncludeObstacleDamage = tuning.IncludeTraps,
+	}
+
+	trait.ShowInHUD = true
+	trait.CustomLabel = {
+		DisplayType = 'RoomValue',
+		Key = 'BoonEditFlawlessPercent',
+		Text = 'UI_TimedKillBuff',
+	}
+	trait.SetupFunction = {
+		Threaded = true,
+		Name = _PLUGIN.guid .. '.FlawlessExecution',
+		RepeatOnEncounterStart = true,
+		Args = { Interval = tuning.StepInterval },
+	}
+
+	trait.StatLines = { 'BoonEditFlawlessExecutionRateStatDisplay' }
+	trait.ExtractValues = {
+		{ Key = 'BoonEditPerSecond', ExtractAs = 'TooltipPerSecond', Format = 'Percent', DecimalPlaces = 1, IncludeSigns = true },
+		{ Key = 'BoonEditMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', SkipAutoExtract = true },
+	}
+	trait.TraitOrderingValueCache = game.GetTraitOrderingValue(trait)
+	game.TraitData[trait.Name] = trait
+end
 
 
 once('FlawlessExecution', function()
+	local tuning = mod.tuning.FlawlessExecution
+
 	if not game.TraitData[FLAWLESS_EXECUTION_TRAIT] then
-		local tuning = mod.tuning.FlawlessExecution
-		local trait = game.DeepCopyTable(game.TraitData.TimeStopLastStandBoon)
+		flawless_execution_fill(boon_edit_new_legendary(FLAWLESS_EXECUTION_TRAIT, tuning.Icon, tuning.Element, FLAWLESS_EXECUTION_DUO_TRAIT))
+	end
 
-		trait.Name = FLAWLESS_EXECUTION_TRAIT
-		trait.Icon = tuning.Icon
-		trait.MoneyShieldData = nil
-		trait.Elements = { tuning.Element }
-		trait.FlavorText = nil
-
-		trait.BoonEditMaxBonus = tuning.MaxPercent
-		trait.BoonEditFlawlessMultiplier = 1
-		trait.BoonEditFlawlessDefense = 1
-
-		trait.AddOutgoingDamageModifiers = {
-			UseTraitValue = 'BoonEditFlawlessMultiplier',
-			IsMultiplier = true,
-		}
-		trait.AddIncomingDamageModifiers = {
-			UseTraitValue = 'BoonEditFlawlessDefense',
-			IsMultiplier = true,
-			IncludeObstacleDamage = tuning.IncludeTraps,
-		}
-
-		trait.ShowInHUD = true
-		trait.CustomLabel = {
-			DisplayType = 'RoomValue',
-			Key = 'BoonEditFlawlessPercent',
-			Text = 'UI_TimedKillBuff',
-		}
-		trait.SetupFunction = {
-			Threaded = true,
-			Name = _PLUGIN.guid .. '.FlawlessExecution',
-			RepeatOnEncounterStart = true,
-			Args = { Interval = tuning.StepInterval },
-		}
-
-		trait.StatLines = { 'BoonEditFlawlessExecutionMaxStatDisplay' }
-		trait.ExtractValues = {
-			{ Key = 'BoonEditMaxBonus', ExtractAs = 'TooltipMaxBonus', Format = 'Percent', IncludeSigns = true },
-		}
-		trait.TraitOrderingValueCache = game.GetTraitOrderingValue(trait)
-
-		game.TraitData[FLAWLESS_EXECUTION_TRAIT] = trait
+	if not game.TraitData[FLAWLESS_EXECUTION_DUO_TRAIT] then
+		flawless_execution_fill(boon_edit_new_duo(FLAWLESS_EXECUTION_DUO_TRAIT, tuning.Icon, FLAWLESS_EXECUTION_TRAIT))
 	end
 
 	modutil.mod.Path.Wrap('CalculateDamageMultipliers', function(base, attacker, victim, weaponData, triggerArgs)
@@ -72,8 +79,17 @@ once('FlawlessExecution', function()
 end)
 
 
+local function flawless_execution_held_trait()
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero then return nil end
+	if game.HeroHasTrait(FLAWLESS_EXECUTION_TRAIT) then return FLAWLESS_EXECUTION_TRAIT end
+	if game.HeroHasTrait(FLAWLESS_EXECUTION_DUO_TRAIT) then return FLAWLESS_EXECUTION_DUO_TRAIT end
+	return nil
+end
+
+
 local function flawless_execution_held()
-	return boon_edit_on('FlawlessExecution') and game.HeroHasTrait(FLAWLESS_EXECUTION_TRAIT)
+	return boon_edit_on('FlawlessExecution') and flawless_execution_held_trait() ~= nil
 end
 
 
@@ -90,7 +106,8 @@ end
 
 
 local function flawless_execution_show(run)
-	local trait = game.GetHeroTrait(FLAWLESS_EXECUTION_TRAIT)
+	local held = flawless_execution_held_trait()
+	local trait = held and game.GetHeroTrait(held)
 	if trait then trait.BoonEditFlawlessDefense = 1 - flawless_execution_defense(run) end
 
 	local room = run.CurrentRoom
@@ -118,7 +135,7 @@ end
 
 
 local function flawless_execution_running()
-	return game.CurrentRun and game.CurrentRun.CurrentRoom and hero_live() and game.HeroHasTrait(FLAWLESS_EXECUTION_TRAIT)
+	return game.CurrentRun and game.CurrentRun.CurrentRoom and hero_live() and flawless_execution_held_trait() ~= nil
 end
 
 
@@ -215,7 +232,8 @@ end
 
 function flawless_execution_refresh(attacker, victim, triggerArgs)
 	if not game.CurrentRun then return end
-	local trait = game.GetHeroTrait(FLAWLESS_EXECUTION_TRAIT)
+	local held = flawless_execution_held_trait()
+	local trait = held and game.GetHeroTrait(held)
 	if not trait then return end
 
 	trait.BoonEditFlawlessMultiplier = flawless_execution_multiplier(attacker, triggerArgs)

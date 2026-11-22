@@ -22,9 +22,14 @@ once('RippleEffectOmegaBoons', function()
 	end
 
 	modutil.mod.Path.Wrap("CreateProjectileFromUnit", function(base, args)
+		local pristine = ripple_effect_pristine
+		if pristine and (not args or pristine.Name ~= args.Name) then pristine = nil end
+		if not pristine and args and args.Name and not mod.RippleFiring and ripple_effect_covers(args.Name) then
+			pristine = ripple_effect_copy(args)
+		end
 		local result = base(args)
 		if ripple_effect_repeat then
-			ripple_effect_repeat(args)
+			ripple_effect_repeat(pristine or args)
 		end
 		return result
 	end)
@@ -71,6 +76,7 @@ local RIPPLE_PROJECTILES = {
 	SWuVolcanicRift = true,
 	ArtemisCastVolley = true,
 	ProjectileFireball = true,
+	ProjectileSprintFireball = true,
 	AthenaDeflectingProjectile = true,
 	ArtemisSupportingFire = true,
 }
@@ -83,7 +89,7 @@ local RIPPLE_CASTS = {
 
 
 function ripple_effect_covers(name)
-	return RIPPLE_PROJECTILES[name] == true
+	return RIPPLE_PROJECTILES[name] == true or more_dash_ripple(name)
 end
 
 function ripple_effect_rolls()
@@ -110,7 +116,7 @@ function ripple_effect_repeat(args)
 	local repeats = ripple_effect_rolls()
 	if repeats <= 0 then return end
 
-	local repeated = game.ShallowCopyTable(args)
+	local repeated = ripple_effect_copy(args)
 
 	if repeated.ProjectileCap then
 		repeated.ProjectileCap = repeated.ProjectileCap + repeats
@@ -281,6 +287,28 @@ function ripple_effect_ball_refire(ball, repeats)
 	end
 end
 
+function ripple_effect_copy(args)
+	local copy = game.ShallowCopyTable(args)
+	if type(copy.DataProperties) == 'table' then copy.DataProperties = game.ShallowCopyTable(copy.DataProperties) end
+	return copy
+end
+
+function ripple_effect_snapshot_wrap()
+	if ripple_effect_snapshot_wrapped then return end
+	ripple_effect_snapshot_wrapped = true
+	modutil.mod.Path.Wrap("CreateProjectileFromUnit", function(base, args)
+		if mod.RippleFiring or not args or not args.Name or not ripple_effect_covers(args.Name) then
+			return base(args)
+		end
+		local previous = ripple_effect_pristine
+		ripple_effect_pristine = ripple_effect_copy(args)
+		local ok, result = pcall(base, args)
+		ripple_effect_pristine = previous
+		if not ok then error(result, 0) end
+		return result
+	end)
+end
+
 function ripple_effect_refire(args, repeats)
 	local interval = game.GetTotalHeroTraitValue('DoubleOlympianProjectileInterval')
 
@@ -288,7 +316,7 @@ function ripple_effect_refire(args, repeats)
 		game.waitUnmodified(interval)
 
 		mod.RippleFiring = true
-		local ok, err = pcall(game.CreateProjectileFromUnit, args)
+		local ok, err = pcall(game.CreateProjectileFromUnit, ripple_effect_copy(args))
 		mod.RippleFiring = nil
 		if not ok then
 			print('[' .. _PLUGIN.guid .. '] ripple repeat failed: ' .. tostring(err))

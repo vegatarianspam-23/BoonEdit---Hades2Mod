@@ -3,6 +3,10 @@
 
 mod.tuning = {}
 
+mod.tuning.AspectOfAnubis = {
+	EtchingsFieldDuration = 0.5,
+}
+
 mod.tuning.AspectOfSupay = {
 	SprintDamageBonus = 0.15,
 
@@ -801,6 +805,7 @@ mod.tuning.Fireballs = {
 	Projectiles = {
 		'ProjectileCastFireball', 'ProjectileFireball', 'SWuHestiaFireball',
 		mod.tuning.VolcanicCrown.FireballProjectile, 'SWuVolcanicFireball',
+		'ProjectileSprintFireball',
 	},
 
 	Traits = { 'FireballRendBoon', 'SteamBoon' },
@@ -919,6 +924,8 @@ mod.tuning.ShockingLoss = {
 		'ZeusApolloSynergyStrike',
 		'ZeusPolymorphStrike',
 		'ZeusManaBolt',
+		'ProjectileZeusSpark',
+		'ZeusWrathBolt',
 		'SWuAirControlBolt',
 		'SWuBlindingSmiteBolt',
 		'SWuTippedScalesBolt',
@@ -953,6 +960,8 @@ mod.tuning.ThermalDynamics = {
 		'ZeusApolloSynergyStrike',
 		'ZeusPolymorphStrike',
 		'ZeusManaBolt',
+		'ProjectileZeusSpark',
+		'ZeusWrathBolt',
 		'SWuAirControlBolt',
 		'SWuBlindingSmiteBolt',
 		'SWuTippedScalesBolt',
@@ -1003,4 +1012,39 @@ mod.tuning.AromaticPhial = {
 
 mod.tuning.MetallicDroplet = {
 	ResidualFraction = 0.5,
+}
+
+mod.tuning.MoreDashBoons = {
+	MaxHeld = 1,
+	FamilyTradeMaxHeld = 2,
+
+	Fireballs = { 'BlinkTrailProjectileHestia', 'BlinkTrailProjectileFireHestia' },
+
+	FlutterProjectile = 'BlinkTrailProjectileAphrodite',
+	FlutterCharmChance = 0.15,
+
+	CrystalProjectile = 'BlinkTrailDemeterProjectileTracking',
+	CrystalEffect = 'ChillEffect',
+
+	SwornProjectile = 'BlinkTrailProjectileHeraOmega',
+	SwornRift = 'ProjectileHeraOmega',
+	SwornPower = 0.5,
+	SwornStartDelay = 0.5,
+	SwornFirstDelay = 0.75,
+	SwornInterval = 0.5,
+	SwornMinMove = 45,
+	SwornMaxRifts = 5,
+	SwornAnchorLife = 3,
+
+	WaveProjectile = 'PoseidonBlinkWave',
+	WaveInterval = 0.25,
+	WaveGrace = 0.3,
+	WaveCap = 2,
+
+	BlindingEffect = 'ArtemisBoonHuntersMark',
+
+	VolcanicMine = 'HephMineBlast',
+	VolcanicBlast = 'HephSprintBlast',
+	VolcanicBlastMultiplier = 0.5,
+	VolcanicBlastRadius = 0.6,
 }

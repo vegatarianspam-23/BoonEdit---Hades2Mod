@@ -105,6 +105,45 @@ function boon_edit_configured(name)
 	return cached
 end
 
+function boon_edit_mod_present(guid)
+	local ok, present = pcall(function() return rom.mods[guid] ~= nil end)
+	return ok and present
+end
+
+function boon_edit_mod_on(name, guid)
+	return boon_edit_on(name) and boon_edit_mod_present(guid)
+end
+
+function boon_edit_new_legendary(name, icon, element, without)
+	local trait = game.DeepCopyTable(game.TraitData.TimeStopLastStandBoon)
+	trait.Name = name
+	trait.Icon = icon
+	trait.MoneyShieldData = nil
+	trait.Elements = { element }
+	if without then
+		trait.GameStateRequirements = trait.GameStateRequirements or {}
+		table.insert(trait.GameStateRequirements, {
+			Path = { 'CurrentRun', 'Hero', 'TraitDictionary' },
+			HasNone = { without },
+		})
+	end
+	return trait
+end
+
+function boon_edit_new_duo(name, icon, without)
+	local trait = game.DeepCopyTable(game.TraitData.SynergyTrait)
+	trait.Name = name
+	trait.Icon = icon
+	trait.InheritFrom = nil
+	trait.DebugOnly = nil
+	trait.GameStateRequirements = trait.GameStateRequirements or {}
+	table.insert(trait.GameStateRequirements, {
+		Path = { 'CurrentRun', 'Hero', 'TraitDictionary' },
+		HasNone = { without },
+	})
+	return trait
+end
+
 import 'tuning.lua'
 
 
@@ -119,6 +158,8 @@ function prefix_SetupMap()
 	ionic_gain_start()
 	distress_call_reset()
 	boon_edit_sync_groups()
+	more_dash_sync()
+	ripple_effect_snapshot_wrap()
 	boon_patches_reconcile()
 	burning_desire_sync()
 end
@@ -609,6 +650,7 @@ function boon_edit_stat_index(traitName, extractAs)
 end
 
 trait_text_alt = {}
+trait_text_routable = {}
 help_text_owner = {}
 
 function boon_edit_alt_id(boon, id)
@@ -618,19 +660,10 @@ end
 BOON_EDIT_TEXT_VARIANTS = { '_Inactive', '_NoUpgradeUses' }
 
 function boon_edit_text_id(id)
-	if type(id) ~= 'string' then return id end
+	local base = trait_text_routable[id]
+	if not base then return id end
 
-	local base = id
-	if not trait_text_alt[id] then
-		for _, suffix in ipairs(BOON_EDIT_TEXT_VARIANTS) do
-			if #id > #suffix and id:find(suffix, -#suffix, true) then
-				base = id:sub(1, -#suffix - 1)
-				break
-			end
-		end
-	end
-
-	for _, alt in ipairs(trait_text_alt[base] or {}) do
+	for _, alt in ipairs(trait_text_alt[base]) do
 		if boon_edit_on(alt.Boon) then return boon_edit_alt_id(alt.Boon, id) end
 	end
 	return id
@@ -641,15 +674,27 @@ function boon_edit_text_args(args)
 
 	local text = boon_edit_text_id(args.Text)
 	local value = args.LuaValue
-	local title = type(value) == 'table' and boon_edit_text_id(value.Title)
-	local titleRouted = title and title ~= value.Title
-	if text == args.Text and not titleRouted then return args end
+	local routed
+
+	if type(value) == 'table' then
+		for key, field in pairs(value) do
+			if trait_text_routable[field] then
+				local id = boon_edit_text_id(field)
+				if id ~= field then
+					routed = routed or {}
+					routed[key] = id
+				end
+			end
+		end
+	end
+
+	if text == args.Text and not routed then return args end
 
 	local copy = game.ShallowCopyTable(args)
 	copy.Text = text
-	if titleRouted then
+	if routed then
 		copy.LuaValue = game.ShallowCopyTable(value)
-		copy.LuaValue.Title = title
+		for key, id in pairs(routed) do copy.LuaValue[key] = id end
 	end
 	return copy
 end
@@ -665,6 +710,8 @@ function boon_text(boon, spec, when)
 		for id, entry in pairs(spec.Traits or {}) do
 			trait_text_alt[id] = trait_text_alt[id] or {}
 			table.insert(trait_text_alt[id], { Boon = boon, Entry = entry })
+			trait_text_routable[id] = id
+			for _, suffix in ipairs(BOON_EDIT_TEXT_VARIANTS) do trait_text_routable[id .. suffix] = id end
 		end
 	else
 		for id, entry in pairs(spec.Traits or {}) do trait_text[id] = entry end
@@ -1041,6 +1088,7 @@ import 'keepsakes/white_antler.lua'
 import 'keepsakes/evil_eye.lua'
 import 'keepsakes/metallic_droplet.lua'
 
+import 'aspects/aspect_of_anubis.lua'
 import 'aspects/aspect_of_supay.lua'
 
 import 'hammeredit/dual_moonshot.lua'
@@ -1053,6 +1101,8 @@ import 'hammeredit/whirling_helix.lua'
 
 
 import 'systems/hermes_legendaries.lua'
+import 'systems/mod_support.lua'
+import 'systems/more_dash_boons.lua'
 import 'systems/recharges.lua'
 import 'systems/scythe_slows.lua'
 import 'systems/combat_text_stack.lua'
@@ -1062,6 +1112,8 @@ import 'systems/config_window.lua'
 boon_patches_reconcile()
 
 import 'requirements.lua'
+
+boon_edit_hermes_duos_list()
 
 boon_text_recording = true
 local textOk, textErr = pcall(function()

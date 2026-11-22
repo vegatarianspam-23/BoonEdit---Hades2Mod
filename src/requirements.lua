@@ -199,8 +199,20 @@ BOON_EDIT_REQUIREMENTS = {
 		'ZeusManaBoon', 'AutoRevengeBoon', 'HadesInvisibilityRetaliateBoon',
 	} } },
 	{ Trait = 'SlowProjectileBoon', When = { 'PostHaste', 'DistressCall' }, Patch = function(requirement)
-		if not distress_call_on_encounter_start() then boon_list_set(requirement.OneOf, DISTRESS_CALL_TRAIT, true) end
+		if distress_call_on_encounter_start() then return end
+		local held = boon_edit_hermes_duos_on() and DISTRESS_CALL_DUO_TRAIT or DISTRESS_CALL_TRAIT
+		boon_list_set(requirement.OneOf, held, true)
 	end },
+	{ Trait = DISTRESS_CALL_DUO_TRAIT, When = function() return boon_edit_hermes_duo_on('DistressCall') end,
+		Set = { OneFromEachSet = {
+			{ 'HighHealthOffenseBoon', 'FocusRawDamageBoon', 'HealthRewardBonusBoon' },
+			{ 'SlowProjectileBoon', 'LuckyBoon' },
+		} } },
+	{ Trait = FLAWLESS_EXECUTION_DUO_TRAIT, When = function() return boon_edit_hermes_duo_on('FlawlessExecution') end,
+		Set = { OneFromEachSet = {
+			{ 'ApolloCastAreaBoon', 'PerfectDamageBonusBoon', 'DoubleStrikeChanceBoon', 'ApolloExCastBoon' },
+			{ 'HermesWeaponBoon', 'HermesSpecialBoon', 'HermesCastDiscountBoon', 'SorcerySpeedBoon' },
+		} } },
 	{ Trait = 'BurnSprintBoon', When = { 'BurningMeteor' }, Set = { OneFromEachSet = {
 		{ 'HestiaWeaponBoon', 'HestiaSpecialBoon', 'HestiaCastBoon' },
 		Group('SWuFireballTraits'),
@@ -567,11 +579,15 @@ function boon_edit_sync_groups()
 
 	hermes_trait_set(MIDNIGHT_OIL_TRAIT, boon_edit_on('MidnightOil'), 'LuckyBoon')
 	hermes_trait_set(DOUBLE_TIME_TRAIT, boon_edit_on('DoubleTime'), 'TimeStopLastStandBoon')
-	hermes_trait_set(FLAWLESS_EXECUTION_TRAIT, boon_edit_on('FlawlessExecution'),
+	hermes_trait_set(FLAWLESS_EXECUTION_TRAIT,
+		boon_edit_on('FlawlessExecution') and not boon_edit_hermes_duos_on(),
 		boon_edit_on('DoubleTime') and DOUBLE_TIME_TRAIT or 'TimeStopLastStandBoon')
-	hermes_trait_set(DISTRESS_CALL_TRAIT, boon_edit_on('DistressCall'),
+	hermes_trait_set(DISTRESS_CALL_TRAIT,
+		boon_edit_on('DistressCall') and not boon_edit_hermes_duos_on(),
 		boon_edit_on('FlawlessExecution') and FLAWLESS_EXECUTION_TRAIT
 		or boon_edit_on('DoubleTime') and DOUBLE_TIME_TRAIT or 'TimeStopLastStandBoon')
+
+	boon_edit_mod_sync()
 
 	if config.enabled == false then return end
 	apply_rules(names)

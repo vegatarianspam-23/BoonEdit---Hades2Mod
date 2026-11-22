@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Aspect of Anubis (experimental, `Experimental.Aspects.AspectOfAnubis`): only Ankh Scepter's Dash-Strike creates a damaging field, and its Attack is the normal staff combo. Attack and Omega Attack launch Lone Shades at foes struck, Special and Omega Special draw foes in (swappable via `Experimental.Aspects.AnkhSwapSecondaries`).
+- Pharaoh Etchings (experimental, `Experimental.Hammers.PharaohEtchings`): no longer launches shades from Omega Special; extends the punishing field duration by 50% instead.
+- Added experimental compatiblity with Zerp's MoreDashBoons and Wistiti's HermesDuos (various boon interactions, alternates for redundant boons)
+
+### Fixed
+
+- Double Time, Flawless Execution and Distress Call now show their flavour text
+
 ## [1.1.6] - 2026-11-19
 
 ### Changed

@@ -575,21 +575,27 @@ if boon_edit_on('MidnightOil') then
 	})
 end
 
+local function flawless_execution_text()
+	return {
+		InheritFrom = 'BaseBoonMultiline',
+		DisplayName = 'Flawless Execution',
+		Description = 'You deal more damage and take less damage the longer ' ..
+			'foes are around, up to {#BoldFormatGraft}{$TooltipData.ExtractData.TooltipMaxBonus}%{#Prev}. ' ..
+			'The bonus resets whenever you are hit.',
+	}
+end
+
 if boon_edit_on('FlawlessExecution') then
 	boon_text({
 		Traits = {
-			[FLAWLESS_EXECUTION_TRAIT] = {
-				InheritFrom = 'BaseBoonMultiline',
-				DisplayName = 'Flawless Execution',
-				Description = 'You deal more damage and take less damage the longer ' ..
-					'foes are around. The bonus resets whenever you are hit.',
-			},
+			[FLAWLESS_EXECUTION_TRAIT] = flawless_execution_text(),
+			[FLAWLESS_EXECUTION_DUO_TRAIT] = flawless_execution_text(),
 		},
 		Flavor = {
 			BoonEditFlawlessExecutionFlavorText = 'Ten out of ten.',
 		},
 		StatLines = {
-			BoonEditFlawlessExecutionMaxStatDisplay = { Name = 'Max Bonus Damage & Resistance:', Index = 1 },
+			BoonEditFlawlessExecutionRateStatDisplay = { Name = 'Bonus Damage & Resistance per Second:', Index = 1 },
 		},
 		CombatText = {
 			BoonEditFlawlessExecutionExpired = '{!Icons.DownArrow} {#AltPenaltyFormat}Flawless Execution{#Prev}!',
@@ -597,16 +603,21 @@ if boon_edit_on('FlawlessExecution') then
 	})
 end
 
+local function distress_call_text()
+	return {
+		InheritFrom = 'BaseBoonMultiline',
+		DisplayName = 'Distress Call',
+		Description = mod.tuning.DistressCall.OnEncounterStart
+			and 'At the start of each {$Keywords.EncounterAlt}, summon an ally to the fight for a few seconds.'
+			or 'After you take damage, summon an ally to the fight for a few seconds.',
+	}
+end
+
 if boon_edit_on('DistressCall') then
 	boon_text({
 		Traits = {
-			[DISTRESS_CALL_TRAIT] = {
-				InheritFrom = 'BaseBoonMultiline',
-				DisplayName = 'Distress Call',
-				Description = mod.tuning.DistressCall.OnEncounterStart
-					and 'At the start of each {$Keywords.EncounterAlt}, summon an ally to the fight for a few seconds.'
-					or 'After you take damage, summon an ally to the fight for a few seconds.',
-			},
+			[DISTRESS_CALL_TRAIT] = distress_call_text(),
+			[DISTRESS_CALL_DUO_TRAIT] = distress_call_text(),
 		},
 		Flavor = {
 			BoonEditDistressCallFlavorText = 'Mayday? Mayday!',
@@ -897,6 +908,67 @@ if boon_edit_on('HiddenKnives') then
 				Description = 'Your {$Keywords.SpecialSet} deal {#UpgradeFormat}{$TooltipData.ExtractData.DamageIncrease:P} ' ..
 					'{#Prev}damage and your {$Keywords.SpecialEX} fires {#UpgradeFormat}+{$TooltipData.ExtractData.Amount} ' ..
 					'{#Prev}shots in a ring around you.',
+			},
+		},
+	})
+end
+
+if boon_edit_on('MoreDashBoons') then
+	local function blink(name, description)
+		return { InheritFrom = 'BaseBoonMultiline', DisplayName = name, Description = description }
+	end
+
+	boon_text({
+		Traits = {
+			SWuFlameBlinkBoon = blink('Flame Blink',
+				'Spawns lava pools from your dash trail. Its flames count as fireballs.'),
+			SWuFlutterBlinkBoon = blink('Flutter Blink',
+				'Fires large arrows along targets made by your dash trail, each with a chance to ' ..
+				math.floor(mod.tuning.MoreDashBoons.FlutterCharmChance * 100 + 0.5) ..
+				'to inflict {$Keywords.Charm}.'),
+			SWuThunderBlinkBoon = blink('Thunder Blink',
+				'Creates chain-lightning from your dash trail.'),
+			SWuCrystalBlinkBoon = blink('Crystal Blink',
+				'Create crystal beams along your dash trail that inflict {$Keywords.Root}.'),
+			SWuSwornBlinkBoon = blink('Sworn Blink',
+				'Creates a rift in the shape of your dash trail, which erupts after a short delay.'),
+			SWuBloodyBlinkBoon = blink('Bloody Blink',
+				'Create multiple {$Keywords.BladeRift} from your dash trail which spill {!Icons.BloodDropIcon} on hit.'),
+			SWuWaveBlinkBoon = blink('Wave Blink',
+				'Your {$Keywords.Dash} and {$Keywords.Sprint} send waves ahead of you.'),
+			SWuBlindingBlinkBoon = blink('Blinding Blink',
+				'Completely blind enemies caught in your dash trail for ' ..
+				'{#BoldFormatGraft}{$TooltipData.ExtractData.Duration} Sec{#Prev}, leaving with {$Keywords.Mark} as long.'),
+			SWuVolcanicBlinkBoon = blink('Volcanic Blink',
+				'Drops mines behind your dash trail, which set off a small blast when they go off.'),
+		},
+	})
+end
+
+
+if boon_edit_on('PharaohEtchings') then
+	boon_text({
+		Traits = {
+			StaffLoneShadeRallyTrait = {
+				Description = '{$Keywords.ShadeMerc} deal {#UpgradeFormat}{$TooltipData.ExtractData.TooltipDamageBonus:P} ' ..
+					'{#Prev}damage, and fields from your {$Keywords.DashStrike} last {#UpgradeFormat}' ..
+					math.floor(mod.tuning.AspectOfAnubis.EtchingsFieldDuration * 100 + 0.5) .. '% {#Prev}longer.',
+			},
+		},
+	})
+end
+
+
+if boon_edit_on('AspectOfAnubis') then
+	local swapped = boon_edit_configured('AnkhSwapSecondaries')
+	local launcher = swapped and '{$Keywords.SpecialSet}' or '{$Keywords.AttackSet}'
+	local puller = swapped and '{$Keywords.AttackSet}' or '{$Keywords.SpecialSet}'
+	boon_text({
+		Keywords = {
+			RaiseDeadAspect = {
+				Description = '{#ItalicBoldFormat}{$Keywords.HiddenAspect}: {#Prev}{$Keywords.DashStrike} creates ' ..
+					'damaging fields, ' .. launcher .. ' launch {$Keywords.ShadeMerc} at foes struck, and ' ..
+					puller .. ' draw foes in.',
 			},
 		},
 	})

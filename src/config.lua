@@ -152,6 +152,7 @@ local config = {
       EnduringCoil = false;
       HiddenHelix = false;
       HiddenKnives = false;
+      PharaohEtchings = false;
       ReaperKnives = false;
       RisingHelix = false;
       WhirlingHelix = false;
@@ -166,11 +167,15 @@ local config = {
     };
 
     Aspects = {
+      AnkhSwapSecondaries = false;
+      AspectOfAnubis = false;
       AspectOfSupay = false;
     };
 
     Mods = {
       WrathOfOlympus = false;
+      MoreDashBoons = false;
+      HermesDuos = false;
     };
   };
 }

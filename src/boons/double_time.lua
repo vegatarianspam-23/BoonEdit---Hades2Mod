@@ -15,16 +15,9 @@ DOUBLE_TIME_TRAIT = 'BoonEditSecondWindBoon'
 
 once('DoubleTime', function()
 	if not game.TraitData[DOUBLE_TIME_TRAIT] then
-		local doubleTime = game.DeepCopyTable(game.TraitData.TimeStopLastStandBoon)
-
-		doubleTime.Name = DOUBLE_TIME_TRAIT
-		doubleTime.Icon = mod.tuning.DoubleTime.Icon
-		doubleTime.MoneyShieldData = nil
-		doubleTime.Elements = { mod.tuning.DoubleTime.Element }
-
-		doubleTime.PropertyChanges = {}
+		local propertyChanges = {}
 		for _, weaponName in ipairs(DOUBLE_TIME_CASTS) do
-			table.insert(doubleTime.PropertyChanges, {
+			table.insert(propertyChanges, {
 				WeaponName = weaponName,
 				WeaponProperty = 'ActiveProjectileCap',
 				ChangeValue = mod.tuning.DoubleTime.ExtraCasts,
@@ -33,7 +26,7 @@ once('DoubleTime', function()
 		end
 
 		for weaponName, projectileName in pairs(mod.tuning.DoubleTime.InFlightCasts) do
-			table.insert(doubleTime.PropertyChanges, {
+			table.insert(propertyChanges, {
 				WeaponName = weaponName,
 				WeaponProperty = 'ExcludeInProjectileCap',
 				ChangeValue = projectileName,
@@ -41,7 +34,7 @@ once('DoubleTime', function()
 			})
 		end
 
-		table.insert(doubleTime.PropertyChanges, {
+		table.insert(propertyChanges, {
 			WeaponName = 'WeaponBlink',
 			WeaponProperty = 'ClipSize',
 			ChangeValue = mod.tuning.DoubleTime.ExtraDashes,
@@ -49,7 +42,7 @@ once('DoubleTime', function()
 			ExcludeLinked = true,
 		})
 
-		table.insert(doubleTime.PropertyChanges, {
+		table.insert(propertyChanges, {
 			WeaponName = 'WeaponBlink',
 			WeaponProperty = 'ClipRegenInterval',
 			ChangeValue = mod.tuning.DoubleTime.DashRechargeMultiplier,
@@ -57,7 +50,7 @@ once('DoubleTime', function()
 			ExcludeLinked = true,
 		})
 
-		table.insert(doubleTime.PropertyChanges, {
+		table.insert(propertyChanges, {
 			WeaponName = 'WeaponBlink',
 			WeaponProperty = 'Cooldown',
 			ChangeValue = mod.tuning.DoubleTime.DashCooldownMultiplier,
@@ -65,11 +58,12 @@ once('DoubleTime', function()
 			ExcludeLinked = true,
 		})
 
-		doubleTime.FlavorText = 'BoonEditSecondWindFlavorText'
+		local doubleTime = boon_edit_new_legendary(DOUBLE_TIME_TRAIT, mod.tuning.DoubleTime.Icon, mod.tuning.DoubleTime.Element)
+		doubleTime.PropertyChanges = propertyChanges
+		doubleTime.FlavorText = 'BoonEditDoubleTimeFlavorText'
 		doubleTime.StatLines = {}
 		doubleTime.ExtractValues = {}
 		doubleTime.TraitOrderingValueCache = game.GetTraitOrderingValue(doubleTime)
-
 		game.TraitData[DOUBLE_TIME_TRAIT] = doubleTime
 	end
 

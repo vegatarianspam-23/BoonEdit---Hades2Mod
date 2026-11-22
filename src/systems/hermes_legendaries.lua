@@ -9,6 +9,11 @@ HERMES_LEGENDARY_OWNERS = {
 	[DISTRESS_CALL_TRAIT] = 'DistressCall',
 }
 
+HERMES_LEGENDARY_EXTRA_ELEMENTS = {
+	TimeStopLastStandBoon = { 'Water' },
+	[DOUBLE_TIME_TRAIT] = { 'Air' },
+}
+
 
 local function hermes_listed(traitName)
 	local hermes = game.LootData.HermesUpgrade
@@ -40,14 +45,33 @@ function hermes_legendary_names()
 end
 
 
+function hermes_legendary_elements(traitName)
+	if not hermes_legendary_element(traitName) then return nil end
+	local elements = {}
+	for _, element in ipairs(game.TraitData[traitName].Elements or {}) do
+		table.insert(elements, element)
+	end
+	local extra = boon_edit_hermes_duos_on() and HERMES_LEGENDARY_EXTRA_ELEMENTS[traitName] or {}
+	for _, element in ipairs(extra) do
+		if not game.Contains(elements, element) then table.insert(elements, element) end
+	end
+	return elements
+end
+
+
 function hermes_legendary_requirement(traitName)
-	local element = hermes_legendary_element(traitName)
+	local elements = hermes_legendary_elements(traitName) or {}
 	local oneOf = {}
 	for _, other in ipairs(game.LootData.HermesUpgrade.Traits) do
 		local data = game.TraitData[other]
 		local legendary = data and data.RarityLevels and data.RarityLevels.Legendary
-		if data and not legendary and data.Elements and game.Contains(data.Elements, element) then
-			table.insert(oneOf, other)
+		if data and not legendary and data.Elements then
+			for _, element in ipairs(elements) do
+				if game.Contains(data.Elements, element) then
+					table.insert(oneOf, other)
+					break
+				end
+			end
 		end
 	end
 	return { OneOf = oneOf, PriorityChance = mod.tuning.HermesLegendaries.KeepsakeOfferChance }
@@ -61,9 +85,12 @@ end
 
 local function hermes_legendary_element_met(traitName)
 	local hero = game.CurrentRun and game.CurrentRun.Hero
-	local element = hermes_legendary_element(traitName)
-	if not hero or not hero.Elements or not element then return false end
-	return (hero.Elements[element] or 0) >= mod.tuning.HermesLegendaries.GuaranteeElementCount
+	local elements = hermes_legendary_elements(traitName)
+	if not hero or not hero.Elements or not elements then return false end
+	for _, element in ipairs(elements) do
+		if (hero.Elements[element] or 0) >= mod.tuning.HermesLegendaries.GuaranteeElementCount then return true end
+	end
+	return false
 end
 
 

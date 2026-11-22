@@ -16,6 +16,10 @@ local CONFIG_LABELS = {
 	ScytheSlows = "Chronos' thrown scythes can be slowed",
 	SprintFollowsMoveSpeed = 'Sprint speed follows move speed',
 	WrathOfOlympus = 'Wrath of Olympus support',
+	MoreDashBoons = 'More Dash Boons support',
+	AnkhSwapSecondaries = 'Ankh Scepter: Attack draws foes in, Special launches shades',
+	PharaohEtchings = 'Pharaoh Etchings: longer field instead of Omega Special shades',
+	HermesDuos = 'HermesDuos support',
 }
 
 local CONFIG_DUO_GODS = {

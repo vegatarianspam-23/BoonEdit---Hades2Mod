@@ -3,6 +3,7 @@
 
 
 DISTRESS_CALL_TRAIT = 'BoonEditDistressCallBoon'
+DISTRESS_CALL_DUO_TRAIT = 'BoonEditDistressCallDuoBoon'
 
 
 function distress_call_on()
@@ -12,7 +13,7 @@ end
 
 function distress_call_held()
 	if not distress_call_on() or not game.CurrentRun or not game.CurrentRun.Hero then return false end
-	return game.HeroHasTrait(DISTRESS_CALL_TRAIT) == true
+	return game.HeroHasTrait(DISTRESS_CALL_TRAIT) or game.HeroHasTrait(DISTRESS_CALL_DUO_TRAIT)
 end
 
 
@@ -1358,30 +1359,33 @@ function mod.DistressCallEncounter(_hero, _args)
 end
 
 
+local function distress_call_fill(trait)
+	local tuning = mod.tuning.DistressCall
+	local onStart = distress_call_on_encounter_start()
+
+	trait.FlavorText = 'BoonEditDistressCallFlavorText'
+	trait.BoonEditDistressCallCooldown = tuning.Cooldown
+	trait.BoonEditDistressCallDuration = tuning.Duration
+	trait.OnSelfDamagedFunction = { Name = _PLUGIN.guid .. '.DistressCallDamaged' }
+	trait.OnEncounterStartFunction = { Name = _PLUGIN.guid .. '.DistressCallEncounter' }
+	trait.StatLines = { onStart and 'BoonEditDistressCallDurationStatDisplay' or 'BoonEditDistressCallCooldownStatDisplay' }
+	trait.ExtractValues = {
+		{ Key = onStart and 'BoonEditDistressCallDuration' or 'BoonEditDistressCallCooldown', ExtractAs = 'TooltipCooldown' },
+	}
+	trait.TraitOrderingValueCache = game.GetTraitOrderingValue(trait)
+	game.TraitData[trait.Name] = trait
+end
+
+
 once('DistressCall', function()
+	local tuning = mod.tuning.DistressCall
+
 	if not game.TraitData[DISTRESS_CALL_TRAIT] then
-		local tuning = mod.tuning.DistressCall
-		local onStart = distress_call_on_encounter_start()
-		local trait = game.DeepCopyTable(game.TraitData.TimeStopLastStandBoon)
+		distress_call_fill(boon_edit_new_legendary(DISTRESS_CALL_TRAIT, tuning.Icon, tuning.Element, DISTRESS_CALL_DUO_TRAIT))
+	end
 
-		trait.Name = DISTRESS_CALL_TRAIT
-		trait.Icon = tuning.Icon
-		trait.Elements = { tuning.Element }
-		trait.MoneyShieldData = nil
-		trait.FlavorText = nil
-
-		trait.BoonEditDistressCallCooldown = tuning.Cooldown
-		trait.BoonEditDistressCallDuration = tuning.Duration
-		trait.OnSelfDamagedFunction = { Name = _PLUGIN.guid .. '.DistressCallDamaged' }
-		trait.OnEncounterStartFunction = { Name = _PLUGIN.guid .. '.DistressCallEncounter' }
-
-		trait.StatLines = { onStart and 'BoonEditDistressCallDurationStatDisplay' or 'BoonEditDistressCallCooldownStatDisplay' }
-		trait.ExtractValues = {
-			{ Key = onStart and 'BoonEditDistressCallDuration' or 'BoonEditDistressCallCooldown', ExtractAs = 'TooltipCooldown' },
-		}
-		trait.TraitOrderingValueCache = game.GetTraitOrderingValue(trait)
-
-		game.TraitData[DISTRESS_CALL_TRAIT] = trait
+	if not game.TraitData[DISTRESS_CALL_DUO_TRAIT] then
+		distress_call_fill(boon_edit_new_duo(DISTRESS_CALL_DUO_TRAIT, tuning.Icon, DISTRESS_CALL_TRAIT))
 	end
 
 	modutil.mod.Path.Wrap('DoAttack', function(base, enemy, aiData)
