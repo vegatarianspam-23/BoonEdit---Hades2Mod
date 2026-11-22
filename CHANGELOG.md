@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-22
+
 ### Added
 
 - Aspect of Anubis (experimental, `Experimental.Aspects.AspectOfAnubis`): only Ankh Scepter's Dash-Strike creates a damaging field, and its Attack is the normal staff combo. Attack and Omega Attack launch Lone Shades at foes struck, Special and Omega Special draw foes in (swappable via `Experimental.Aspects.AnkhSwapSecondaries`).
@@ -193,6 +195,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.2.0]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.6...1.2.0
 [1.1.6]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.5...1.1.6
 [1.1.5]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.4...1.1.5
 [1.1.4]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.3...1.1.4
