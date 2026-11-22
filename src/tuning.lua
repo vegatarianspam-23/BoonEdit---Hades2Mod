@@ -1045,6 +1045,5 @@ mod.tuning.MoreDashBoons = {
 
 	VolcanicMine = 'HephMineBlast',
 	VolcanicBlast = 'HephSprintBlast',
-	VolcanicBlastMultiplier = 0.5,
-	VolcanicBlastRadius = 0.6,
+	VolcanicStun = { EffectName = 'OnHitStun', Duration = 0.2 },
 }

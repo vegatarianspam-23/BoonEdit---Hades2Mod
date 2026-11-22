@@ -940,7 +940,7 @@ if boon_edit_on('MoreDashBoons') then
 				'Completely blind enemies caught in your dash trail for ' ..
 				'{#BoldFormatGraft}{$TooltipData.ExtractData.Duration} Sec{#Prev}, leaving with {$Keywords.Mark} as long.'),
 			SWuVolcanicBlinkBoon = blink('Volcanic Blink',
-				'Drops mines behind your dash trail, which set off a small blast when they go off.'),
+				'Drops mines behind your dash trail, which go off in a large blast.'),
 		},
 	})
 end

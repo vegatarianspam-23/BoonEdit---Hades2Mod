@@ -100,6 +100,15 @@ local MORE_DASH_OVERRIDES = {
 		local action = trait.OnEnemyDamagedAction
 		if action then action.FunctionName = _PLUGIN.guid .. '.SWuBlindingBlink' end
 	end,
+
+	SWuVolcanicBlinkBoon = function(trait, tuning)
+		trait.OnEnemyDamagedAction = {
+			ValidProjectiles = { tuning.VolcanicBlast },
+			ValidProjectilesLookup = game.ToLookup({ tuning.VolcanicBlast }),
+			FunctionName = _PLUGIN.guid .. '.SWuVolcanicMineStun',
+			Args = {},
+		}
+	end,
 }
 
 
@@ -357,16 +366,56 @@ local function more_dash_sworn(args, tuning, from, to)
 end
 
 
+local function more_dash_base_ratio(from, to, property)
+	local a = game.GetBaseDataValue({ Type = 'Projectile', Name = from, Property = property })
+	local b = game.GetBaseDataValue({ Type = 'Projectile', Name = to, Property = property })
+	if type(a) ~= 'number' or type(b) ~= 'number' or a <= 0 or b <= 0 then return 1 end
+	return a / b
+end
+
+
 local function more_dash_mine_blast(args, tuning)
 	local hero = game.CurrentRun and game.CurrentRun.Hero
-	if not hero or not args.FireFromId then return end
-	game.CreateProjectileFromUnit({
+	if not hero or not args.FireFromId then return nil end
+	local id = game.CreateProjectileFromUnit({
 		Name = tuning.VolcanicBlast,
 		Id = hero.ObjectId,
 		DestinationId = args.FireFromId,
 		FireFromTarget = true,
-		DamageMultiplier = (args.DamageMultiplier or 1) * tuning.VolcanicBlastMultiplier,
-		BlastRadiusModifier = tuning.VolcanicBlastRadius,
+		DamageMultiplier = (args.DamageMultiplier or 1) * more_dash_base_ratio(tuning.VolcanicMine, tuning.VolcanicBlast, 'Damage'),
+		BlastRadiusModifier = game.GetTotalHeroTraitValue('MassiveAttackSizeModifier', { IsMultiplier = true }),
+	})
+	if id then
+		game.SessionMapState.SWuVolcanicMineBlasts = game.SessionMapState.SWuVolcanicMineBlasts or {}
+		game.SessionMapState.SWuVolcanicMineBlasts[id] = true
+	end
+	return id
+end
+
+
+---@diagnostic disable-next-line: unused-local
+function mod.SWuVolcanicMineStun(enemy, _functionArgs, triggerArgs)
+	if not more_dash_holds('SWuVolcanicBlinkBoon') then return end
+	if not enemy or not enemy.ObjectId or enemy.IsDead or boon_ignores(enemy) then return end
+	local blasts = game.SessionMapState.SWuVolcanicMineBlasts
+	if not blasts or not triggerArgs or not blasts[triggerArgs.ProjectileId] then return end
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	if not hero then return end
+	local stun = mod.tuning.MoreDashBoons.VolcanicStun
+	game.ApplyEffect({
+		DestinationId = enemy.ObjectId,
+		Id = hero.ObjectId,
+		EffectName = stun.EffectName,
+		DataProperties = {
+			Duration = stun.Duration,
+			DisableMove = true,
+			DisableRotate = true,
+			DisableAttack = true,
+			Active = true,
+			CanAffectInvulnerable = false,
+			Cancelable = true,
+		},
 	})
 end
 
@@ -381,10 +430,10 @@ once('MoreDashBoonsProjectiles', function()
 		local tuning = mod.tuning.MoreDashBoons
 		if args.Name == tuning.SwornProjectile and more_dash_holds('SWuSwornBlinkBoon') then return nil end
 
-		local blast = args.Name == tuning.VolcanicMine and more_dash_holds('SWuVolcanicBlinkBoon')
-		local result = base(args)
-		if blast then more_dash_mine_blast(args, tuning) end
-		return result
+		if args.Name == tuning.VolcanicMine and more_dash_holds('SWuVolcanicBlinkBoon') then
+			return more_dash_mine_blast(args, tuning)
+		end
+		return base(args)
 	end)
 end)
 
