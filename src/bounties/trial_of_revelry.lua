@@ -52,7 +52,7 @@ boon_edit_trial({
 			{ Name = 'HermesCastDiscountBoon', Rarity = 'Heroic' },
 			{ Name = 'LuckyBoon', Rarity = 'Heroic' },
 			{ Name = 'MoneyDamageBoon', Rarity = 'Epic' },
-			{ Name = 'TimeStopLastStandBoon', Rarity = 'Legendary' },
+			{ Name = DOUBLE_TIME_TRAIT, Rarity = 'Legendary' },
 			{ Name = 'FogDamageBonusBoon', Rarity = 'Epic' },
 			{ Name = 'HiddenMaxHealthBoon', Rarity = 'Epic' },
 		},
