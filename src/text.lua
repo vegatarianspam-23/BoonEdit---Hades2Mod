@@ -921,24 +921,24 @@ if boon_edit_on('MoreDashBoons') then
 	boon_text({
 		Traits = {
 			SWuFlameBlinkBoon = blink('Flame Blink',
-				'Spawns lava pools from your dash trail. Its flames count as fireballs.'),
+				'Spawns fireballs from your dash trail that leave behind lava pools.'),
 			SWuFlutterBlinkBoon = blink('Flutter Blink',
-				'Fires large arrows along targets made by your dash trail, each with a chance to ' ..
+				'Fires large arrows along targets made by your dash trail, each with a ' ..
 				math.floor(mod.tuning.MoreDashBoons.FlutterCharmChance * 100 + 0.5) ..
-				'to inflict {$Keywords.Charm}.'),
+				'% chance to inflict {$Keywords.Charm}.'),
 			SWuThunderBlinkBoon = blink('Thunder Blink',
 				'Creates chain-lightning from your dash trail.'),
 			SWuCrystalBlinkBoon = blink('Crystal Blink',
-				'Create crystal beams along your dash trail that inflict {$Keywords.Root}.'),
+				'Creates crystal beams along your dash trail that inflict {$Keywords.Root}.'),
 			SWuSwornBlinkBoon = blink('Sworn Blink',
 				'Creates a rift in the shape of your dash trail, which erupts after a short delay.'),
 			SWuBloodyBlinkBoon = blink('Bloody Blink',
-				'Create multiple {$Keywords.BladeRift} from your dash trail which spill {!Icons.BloodDropIcon} on hit.'),
+				'Creates multiple {$Keywords.BladeRift} from your dash trail which spill {!Icons.BloodDropIcon} on hit.'),
 			SWuWaveBlinkBoon = blink('Wave Blink',
 				'Your {$Keywords.Dash} and {$Keywords.Sprint} send waves ahead of you.'),
 			SWuBlindingBlinkBoon = blink('Blinding Blink',
-				'Completely blind enemies caught in your dash trail for ' ..
-				'{#BoldFormatGraft}{$TooltipData.ExtractData.Duration} Sec{#Prev}, leaving with {$Keywords.Mark} as long.'),
+				'Completely blinds foes caught in your dash trail for ' ..
+				'{#BoldFormatGraft}{$TooltipData.ExtractData.Duration} Sec.{#Prev}, leaving them with {$Keywords.Mark} for as long.'),
 			SWuVolcanicBlinkBoon = blink('Volcanic Blink',
 				'Drops mines behind your dash trail, which go off in a large blast.'),
 		},
