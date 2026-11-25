@@ -93,6 +93,7 @@ BOON_EDIT_ROLES = {
 	},
 	{
 		Name = 'HephaestusMassiveTraits',
+		Add = { If('SWuVolcanicBlinkBoon', function() return more_dash_on() and true or false end) },
 		Remove = { If('HephaestusSprintBoon', { 'SmithyRush' }) },
 	},
 }
@@ -241,6 +242,12 @@ for _, traitName in ipairs({ 'MassiveDamageBoon', 'MassiveKnockupBoon', 'DoubleM
 	})
 end
 
+table.insert(BOON_EDIT_REQUIREMENTS, {
+	Trait = 'DoubleMassiveAttackBoon',
+	When = function() return more_dash_on() and true or false end,
+	Patch = function(requirement) boon_edit_with(requirement, 'SWuVolcanicBlinkBoon', 'HephaestusSpecialBoon') end,
+})
+
 
 local function rolls(name, chance)
 	return function()
@@ -350,6 +357,13 @@ end
 function boon_edit_without(requirement, traitName)
 	for _, list in ipairs(explicit_lists(requirement, group_names())) do
 		boon_list_set(list, traitName, false)
+	end
+end
+
+
+function boon_edit_with(requirement, traitName, beside)
+	for _, list in ipairs(explicit_lists(requirement, group_names())) do
+		if game.Contains(list, beside) then boon_list_set(list, traitName, true, beside) end
 	end
 end
 

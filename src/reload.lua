@@ -161,6 +161,7 @@ function prefix_SetupMap()
 	more_dash_sync()
 	ripple_effect_snapshot_wrap()
 	boon_patches_reconcile()
+	more_dash_projectiles()
 	burning_desire_sync()
 end
 
@@ -726,6 +727,21 @@ function boon_text(boon, spec, when)
 	for id, entry in pairs(spec.StatLines or {}) do stat_lines[id] = entry end
 	for id, entry in pairs(spec.Flavor or {}) do flavor_text[id] = entry end
 	for id, entry in pairs(spec.CombatText or {}) do combat_text[id] = entry end
+end
+
+function sjson_PlayerProjectiles(data)
+	if not data or not data.Projectiles then return end
+
+	local existing = {}
+	for _, projectile in ipairs(data.Projectiles) do
+		existing[projectile.Name] = true
+	end
+
+	for _, copy in ipairs(more_dash_projectile_copies()) do
+		if not existing[copy.Name] then
+			table.insert(data.Projectiles, sjson.to_object(copy, { 'Name', 'InheritFrom' }))
+		end
+	end
 end
 
 function sjson_EnemyProjectiles(data)

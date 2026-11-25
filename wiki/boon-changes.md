@@ -124,7 +124,7 @@
 - **Natural Selection** (Demeter × Poseidon) — New Effect: on pickup, gain 3 triple-poms. Every 8 encounters, gain another one.
 - **Ripple Effect** (Hera × Poseidon): Projectile repeat effect has a 50% chance to strike again, and again with 25% / 12.5% / 6.25%, up to 4 times total. Repeatable projectile list is expanded to include Ocean Swell, Fine Line, Easy Shot, Phalanx Shot, Support Fire, Controlled Burn, Glowing Coal, Tipsy Shot and Beach Ball.
 - **Seismic Servo** replaed with **Seismic Hammer** (Hephaestus × Poseidon) — Replaced: your Cast erupts into your Omega Cast after being struck by a Hephaestus blast. Each Omega Cast detonation also takes 2 seconds off your recharging cooldowns.
-- **Sun Worshiper** (Apollo × Hera) — Additional foes have a 30% chance to also be summoned in combat with Hitch after being slain, up to 10 per location.
+- **Sun Worshiper** (Apollo × Hera) — Additional foes have a 10% chance to also be summoned in combat with Hitch after being slain, up to 10 per location.
 - **Scalding Vapor** (Hestia × Poseidon) — Reworked: Steam no longer consumes Froth when activated, and steam damage can stack up to 5 times per foe + proc Froth. Steam can now only be created by Fireballs instead of any fire source.
 - **Thermal Dynamics** (Hestia × Zeus) — Inflict Scorch equal to 30% of all lightning bolts from Zeus.
 

@@ -336,6 +336,92 @@ function more_dash_glow_cleanup()
 end
 
 
+MORE_DASH_METER = {
+	SWuFlameBlinkBoon = { 'BlinkTrailProjectileHestia', 'BlinkTrailProjectileFireHestia' },
+	SWuFlutterBlinkBoon = { 'BlinkTrailProjectileAphrodite' },
+	SWuThunderBlinkBoon = { 'BlinkTrailZeusSpark' },
+	SWuCrystalBlinkBoon = { 'BlinkTrailDemeterProjectile', 'BlinkTrailDemeterProjectileTracking' },
+	SWuSwornBlinkBoon = { 'BlinkTrailProjectileHeraOmega', 'SWuSwornBlinkRift' },
+	SWuBloodyBlinkBoon = { 'BlinkTrailProjectileAres' },
+	SWuWaveBlinkBoon = { 'PoseidonBlinkWave' },
+	SWuBlindingBlinkBoon = { 'BlinkTrailProjectileApollo' },
+	SWuVolcanicBlinkBoon = { 'HephMineBlast', 'SWuVolcanicBlinkBlast' },
+}
+
+
+function more_dash_projectile_copies()
+	local tuning = mod.tuning.MoreDashBoons
+	return {
+		{ Name = tuning.SwornRift, InheritFrom = tuning.SwornRiftBase },
+		{ Name = tuning.VolcanicBlast, InheritFrom = tuning.VolcanicBlastBase },
+	}
+end
+
+
+local function more_dash_alias_in(node, original, copy, depth, seen)
+	if type(node) ~= 'table' or depth > 6 or seen[node] then return end
+	seen[node] = true
+
+	local list = rawget(node, 'ValidProjectiles')
+	if type(list) == 'table' and game.Contains(list, original) and not game.Contains(list, copy) then
+		table.insert(list, copy)
+		local lookup = rawget(node, 'ValidProjectilesLookup')
+		if type(lookup) == 'table' then lookup[copy] = true end
+	end
+
+	for key, value in pairs(node) do
+		if type(value) == 'table' and key ~= 'ValidProjectilesLookup' then
+			more_dash_alias_in(value, original, copy, depth + 1, seen)
+		end
+	end
+end
+
+
+local function more_dash_meter(wanted)
+	local map = game.ScreenData and game.ScreenData.RunClear and game.ScreenData.RunClear.DamageSourceMap
+	if not map then return end
+	game.SWuMoreDashMeterBase = game.SWuMoreDashMeterBase or {}
+	local base = game.SWuMoreDashMeterBase
+
+	for traitName, sources in pairs(MORE_DASH_METER) do
+		for _, source in ipairs(sources) do
+			if base[source] == nil then base[source] = map[source] or false end
+			if wanted and game.TraitData[traitName] then
+				map[source] = traitName
+			else
+				map[source] = base[source] or nil
+			end
+		end
+	end
+end
+
+
+function more_dash_projectiles()
+	if not boon_edit_mod_present(MORE_DASH_GUID) then return end
+
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	for _, copy in ipairs(more_dash_projectile_copies()) do
+		local original, name = copy.InheritFrom, copy.Name
+		if game.ProjectileData[original] and not game.ProjectileData[name] then
+			game.ProjectileData[name] = game.DeepCopyTable(game.ProjectileData[original])
+		end
+		if game.ProjectileData[name] then game.ProjectileData[name].Name = name end
+
+		for _, set in pairs(game.WeaponSets or {}) do
+			if type(set) == 'table' and game.Contains(set, original) and not game.Contains(set, name) then
+				table.insert(set, name)
+			end
+		end
+
+		local seen = {}
+		for _, trait in pairs(game.TraitData or {}) do more_dash_alias_in(trait, original, name, 0, seen) end
+		for _, trait in ipairs(hero and hero.Traits or {}) do more_dash_alias_in(trait, original, name, 0, seen) end
+	end
+
+	more_dash_meter(more_dash_live())
+end
+
+
 function more_dash_ripple(name)
 	local tuning = mod.tuning.MoreDashBoons
 	return (name == tuning.WaveProjectile or name == tuning.FlutterProjectile)
@@ -385,20 +471,12 @@ local function more_dash_mine_blast(args, tuning)
 		DamageMultiplier = (args.DamageMultiplier or 1) * more_dash_base_ratio(tuning.VolcanicMine, tuning.VolcanicBlast, 'Damage'),
 		BlastRadiusModifier = game.GetTotalHeroTraitValue('MassiveAttackSizeModifier', { IsMultiplier = true }),
 	})
-	if id then
-		game.SessionMapState.SWuVolcanicMineBlasts = game.SessionMapState.SWuVolcanicMineBlasts or {}
-		game.SessionMapState.SWuVolcanicMineBlasts[id] = true
-	end
-	return id
 end
 
 
----@diagnostic disable-next-line: unused-local
-function mod.SWuVolcanicMineStun(enemy, _functionArgs, triggerArgs)
+function mod.SWuVolcanicMineStun(enemy)
 	if not more_dash_holds('SWuVolcanicBlinkBoon') then return end
 	if not enemy or not enemy.ObjectId or enemy.IsDead or boon_ignores(enemy) then return end
-	local blasts = game.SessionMapState.SWuVolcanicMineBlasts
-	if not blasts or not triggerArgs or not blasts[triggerArgs.ProjectileId] then return end
 
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero then return end

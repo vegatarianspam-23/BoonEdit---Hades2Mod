@@ -193,7 +193,7 @@ mod.tuning.SeismicHammer = {
 }
 
 mod.tuning.SunWorshiper = {
-	RepeatChance = 0.30,
+	RepeatChance = 0.10,
 
 	MaxRepeats = 10,
 
@@ -1027,7 +1027,8 @@ mod.tuning.MoreDashBoons = {
 	CrystalEffect = 'ChillEffect',
 
 	SwornProjectile = 'BlinkTrailProjectileHeraOmega',
-	SwornRift = 'ProjectileHeraOmega',
+	SwornRift = 'SWuSwornBlinkRift',
+	SwornRiftBase = 'ProjectileHeraOmega',
 	SwornPower = 0.5,
 	SwornStartDelay = 0.5,
 	SwornFirstDelay = 0.75,
@@ -1044,6 +1045,7 @@ mod.tuning.MoreDashBoons = {
 	BlindingEffect = 'ArtemisBoonHuntersMark',
 
 	VolcanicMine = 'HephMineBlast',
-	VolcanicBlast = 'HephSprintBlast',
+	VolcanicBlast = 'SWuVolcanicBlinkBlast',
+	VolcanicBlastBase = 'HephSprintBlast',
 	VolcanicStun = { EffectName = 'OnHitStun', Duration = 0.2 },
 }

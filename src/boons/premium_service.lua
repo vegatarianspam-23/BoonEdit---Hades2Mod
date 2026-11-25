@@ -124,6 +124,9 @@ function anvil_open_sacrifice_menu()
 	local source = anvil_menu_source()
 	source.UpgradeOptions = options
 	source.BoonEditAnvilSacrifice = true
+	source.MenuTitle = 'BoonEditAnvilRemoveTitle'
+	source.FlavorTextIds = { 'BoonEditAnvilRemoveFlavor' }
+	source.ChoiceTextOverride = 'BoonEditAnvilRemoveSelect'
 
 	mod.AnvilSacrificed = nil
 	defer_screen_open(game.OpenUpgradeChoiceMenu, source)
@@ -145,9 +148,11 @@ function anvil_sacrifice_selected(screen, button)
 	game.CloseUpgradeChoiceScreen(screen, button)
 end
 
-function anvil_open_discover_menu()
+function anvil_open_discover_menu(step)
 	local source = anvil_menu_source()
 	source.UpgradeOptions = nil
+	source.MenuTitle = 'BoonEditAnvilAddTitle'
+	source.FlavorTextIds = { 'BoonEditAnvilAddFlavor' .. step }
 	defer_screen_open(game.OpenUpgradeChoiceMenu, source)
 end
 
@@ -173,8 +178,8 @@ function mod.AnvilOfFates(args)
 		game.waitUnmodified(0.1)
 	end
 
-	for _ = 1, mod.tuning.AnvilOfFates.Discoveries do
-		anvil_open_discover_menu()
+	for step = 1, mod.tuning.AnvilOfFates.Discoveries do
+		anvil_open_discover_menu(step)
 		game.waitUnmodified(0.1)
 	end
 

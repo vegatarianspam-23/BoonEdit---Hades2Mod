@@ -16,6 +16,11 @@ sjson.hook(enemyProjectiles, function(data)
 	return sjson_EnemyProjectiles(data)
 end)
 
+local playerProjectiles = rom.path.combine(rom.paths.Content, 'Game/Projectiles/PlayerProjectiles.sjson')
+sjson.hook(playerProjectiles, function(data)
+	return sjson_PlayerProjectiles(data)
+end)
+
 local castVfx = rom.path.combine(rom.paths.Content, 'Game/Animations/Melinoe_Cast_VFX.sjson')
 sjson.hook(castVfx, function(data)
 	return sjson_CastVfx(data)

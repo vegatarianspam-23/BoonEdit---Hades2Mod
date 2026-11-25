@@ -368,6 +368,20 @@ if boon_edit_on('MoltenTouch') then
 	})
 end
 
+local function anvil_of_fates_menu_text()
+	local discoveries = mod.tuning.AnvilOfFates.Discoveries
+	local text = {
+		BoonEditAnvilRemoveTitle = 'Anvil of Fates: Sacrifice an Upgrade',
+		BoonEditAnvilRemoveFlavor = 'Sacrifice one upgrade, then choose ' .. discoveries .. ' new ones.',
+		BoonEditAnvilRemoveSelect = '{SL} SACRIFICE',
+		BoonEditAnvilAddTitle = 'Anvil of Fates: Gain an Upgrade',
+	}
+	for step = 1, discoveries do
+		text['BoonEditAnvilAddFlavor' .. step] = 'New upgrade ' .. step .. ' of ' .. discoveries .. '.'
+	end
+	return text
+end
+
 if boon_edit_on('PremiumService') then
 	boon_text({
 		Traits = {
@@ -377,6 +391,7 @@ if boon_edit_on('PremiumService') then
 					.. 'Gain an {#BoldFormatGraft}Anvil of Fates {#Prev}now.',
 			},
 		},
+		Flavor = anvil_of_fates_menu_text(),
 	})
 end
 

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Sun Worshiper: additional foes have a 10% chance to be summoned after being slain (was 30%)
+- Premium Service: the Anvil of Fates menus are now titled "Remove" and "Add", and say which upgrade you are giving up or choosing
+- MoreDashBoons compatibility (experimental): Volcanic Blink counts as a Hephaestus blast boon for offer requirements, and the damage meter credits each dash boon with its own damage
+
+### Fixed
+
+- Fixed the game dropping to a few frames per second while the Hell2Modding menu (Insert) was open
+
 ## [1.2.0] - 2026-11-22
 
 ### Added

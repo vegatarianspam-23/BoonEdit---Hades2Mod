@@ -77,12 +77,35 @@ local function config_label(key)
 end
 
 
-local function config_keys(section, kind)
-	local keys = {}
-	for key, value in pairs(section) do
-		if type(key) == 'string' and type(value) == kind then table.insert(keys, key) end
+local function config_node()
+	return { Cells = {}, Sections = {} }
+end
+
+
+local function config_read()
+	local root = config_node()
+	for definition, entry in pairs(chalk.original(config).entries) do
+		local value = entry:get()
+		if type(value) == 'boolean' then
+			local node = root
+			for name in definition.section:gmatch('[^.]+') do
+				node.Sections[name] = node.Sections[name] or config_node()
+				node = node.Sections[name]
+			end
+			node.Cells[definition.key] = { Entry = entry, Value = value }
+		end
 	end
-	table.sort(keys, function(a, b) return config_label(a) < config_label(b) end)
+	return root.Sections.config or config_node()
+end
+
+
+local function config_sorted(map)
+	local labels, keys = {}, {}
+	for key in pairs(map) do
+		labels[key] = config_label(key)
+		table.insert(keys, key)
+	end
+	table.sort(keys, function(a, b) return labels[a] < labels[b] end)
 	return keys
 end
 
@@ -93,108 +116,149 @@ local function config_save()
 end
 
 
-local function config_checkbox(label, id, section, key)
-	local value, pressed = rom.ImGui.Checkbox(label .. '##' .. id, section[key] == true)
+local function config_entry(cell, label, id)
+	return { Cell = cell, Label = label .. '##' .. id }
+end
+
+
+local function config_checkbox(entry)
+	local cell = entry.Cell
+	local value, pressed = rom.ImGui.Checkbox(entry.Label, cell.Value)
 	if pressed then
-		section[key] = value
+		cell.Value = value
+		cell.Entry:set(value)
 		boon_edit_config_changed()
 		config_save()
 	end
 end
 
 
-local function config_draw_entries(section, path)
-	for _, key in ipairs(config_keys(section, 'boolean')) do
-		config_checkbox(config_label(key), path .. '.' .. key, section, key)
+local function config_tree(node, path)
+	local tree = { Entries = {}, Children = {} }
+	for _, key in ipairs(config_sorted(node.Cells)) do
+		table.insert(tree.Entries, config_entry(node.Cells[key], config_label(key), path .. '.' .. key))
 	end
-	for _, key in ipairs(config_keys(section, 'table')) do
-		if rom.ImGui.TreeNode(config_label(key) .. '##' .. path .. '.' .. key) then
-			config_draw_entries(section[key], path .. '.' .. key)
+	for _, key in ipairs(config_sorted(node.Sections)) do
+		local child = config_tree(node.Sections[key], path .. '.' .. key)
+		child.Label = config_label(key) .. '##' .. path .. '.' .. key
+		table.insert(tree.Children, child)
+	end
+	return tree
+end
+
+
+local function config_draw_tree(tree)
+	for _, entry in ipairs(tree.Entries) do config_checkbox(entry) end
+	for _, child in ipairs(tree.Children) do
+		if rom.ImGui.TreeNode(child.Label) then
+			config_draw_tree(child)
 			rom.ImGui.TreePop()
 		end
 	end
 end
 
 
-local function config_add(byGod, godNames, god, entry)
+local function config_add(byGod, godNames, god, kind, entry)
 	if not byGod[god] then
 		byGod[god] = { Boons = {}, Legendaries = {}, Duos = {} }
 		table.insert(godNames, god)
 	end
-	table.insert(byGod[god][entry.Kind], entry)
+	table.insert(byGod[god][kind], entry)
 end
 
 
-local function config_draw_boons()
-	local boons = config.Boons
-	if not boons then return end
-
+local function config_boons(boons)
 	local byGod, godNames, other = {}, {}, {}
 
-	for _, god in ipairs(config_keys(boons, 'table')) do
+	for god, section in pairs(boons.Sections) do
 		if god ~= 'Duos' and god ~= 'Legendaries' then
-			for _, key in ipairs(config_keys(boons[god], 'boolean')) do
-				config_add(byGod, godNames, god, { Kind = 'Boons', Section = boons[god], Key = key, Label = config_label(key) })
+			for _, key in ipairs(config_sorted(section.Cells)) do
+				config_add(byGod, godNames, god, 'Boons', config_entry(section.Cells[key], config_label(key), 'Boons.' .. god .. '.' .. key))
 			end
 		end
 	end
 
-	local legendaries = boons.Legendaries
-	for _, key in ipairs(legendaries and config_keys(legendaries, 'boolean') or {}) do
-		local entry = { Kind = 'Legendaries', Section = legendaries, Key = key, Label = config_label(key) .. ' (Legendary)' }
+	local legendaries = boons.Sections.Legendaries
+	for _, key in ipairs(legendaries and config_sorted(legendaries.Cells) or {}) do
+		local cell, label = legendaries.Cells[key], config_label(key) .. ' (Legendary)'
 		local god = CONFIG_LEGENDARY_GODS[key]
-		if god then config_add(byGod, godNames, god, entry) else table.insert(other, entry) end
+		if god then
+			config_add(byGod, godNames, god, 'Legendaries', config_entry(cell, label, 'Boons.' .. god .. '.' .. key))
+		else
+			table.insert(other, config_entry(cell, label, 'Boons.Other.' .. key))
+		end
 	end
 
-	local duos = boons.Duos
-	for _, key in ipairs(duos and config_keys(duos, 'boolean') or {}) do
+	local duos = boons.Sections.Duos
+	for _, key in ipairs(duos and config_sorted(duos.Cells) or {}) do
+		local cell, label = duos.Cells[key], config_label(key)
 		local gods = CONFIG_DUO_GODS[key]
 		if gods then
 			for i, god in ipairs(gods) do
-				config_add(byGod, godNames, god, {
-					Kind = 'Duos', Section = duos, Key = key,
-					Label = config_label(key) .. ' (with ' .. gods[3 - i] .. ')',
-				})
+				config_add(byGod, godNames, god, 'Duos', config_entry(cell, label .. ' (with ' .. gods[3 - i] .. ')', 'Boons.' .. god .. '.' .. key))
 			end
 		else
-			table.insert(other, { Kind = 'Duos', Section = duos, Key = key, Label = config_label(key) })
+			table.insert(other, config_entry(cell, label, 'Boons.Other.' .. key))
 		end
 	end
 
 	table.sort(godNames)
+	local groups = {}
 	for _, god in ipairs(godNames) do
-		if rom.ImGui.TreeNode(god .. '##Boons.' .. god) then
-			for _, kind in ipairs({ 'Boons', 'Legendaries', 'Duos' }) do
-				for _, entry in ipairs(byGod[god][kind]) do
-					config_checkbox(entry.Label, 'Boons.' .. god .. '.' .. entry.Key, entry.Section, entry.Key)
-				end
-			end
-			rom.ImGui.TreePop()
+		local group = { Label = god .. '##Boons.' .. god, Entries = {} }
+		for _, kind in ipairs({ 'Boons', 'Legendaries', 'Duos' }) do
+			for _, entry in ipairs(byGod[god][kind]) do table.insert(group.Entries, entry) end
+		end
+		table.insert(groups, group)
+	end
+	if #other > 0 then table.insert(groups, { Label = 'Other##Boons.Other', Entries = other }) end
+	return groups
+end
+
+
+local configLayout
+
+local function config_layout()
+	if configLayout and configLayout.Source == config then return configLayout end
+
+	local root = config_read()
+	local layout = { Source = config, Boons = {}, Sections = {} }
+
+	if root.Cells.enabled then layout.Enabled = config_entry(root.Cells.enabled, 'Enable BoonEdits', 'enabled') end
+	if root.Sections.Boons then layout.Boons = config_boons(root.Sections.Boons) end
+
+	for _, spec in ipairs(CONFIG_SECTIONS) do
+		local node = root.Sections[spec.Key]
+		if node then
+			local tree = config_tree(node, spec.Key)
+			tree.Label = spec.Name .. '##' .. spec.Key
+			table.insert(layout.Sections, tree)
 		end
 	end
 
-	if #other > 0 and rom.ImGui.TreeNode('Other##Boons.Other') then
-		for _, entry in ipairs(other) do
-			config_checkbox(entry.Label, 'Boons.Other.' .. entry.Key, entry.Section, entry.Key)
-		end
-		rom.ImGui.TreePop()
-	end
+	configLayout = layout
+	return layout
 end
 
 
 function boon_edits_draw_config()
 	if not config then return end
+	local layout = config_layout()
 
 	rom.ImGui.TextWrapped('Changes are saved right away. Most boon changes only fully apply after restarting the game.')
-	config_checkbox('Enable BoonEdits', 'enabled', config, 'enabled')
+	if layout.Enabled then config_checkbox(layout.Enabled) end
 	rom.ImGui.Separator()
 
-	if rom.ImGui.CollapsingHeader('Boons##Boons', rom.ImGuiTreeNodeFlags.DefaultOpen) then config_draw_boons() end
-
-	for _, spec in ipairs(CONFIG_SECTIONS) do
-		local section = config[spec.Key]
-		if section and rom.ImGui.CollapsingHeader(spec.Name .. '##' .. spec.Key) then
-			config_draw_entries(section, spec.Key)
+	if rom.ImGui.CollapsingHeader('Boons##Boons', rom.ImGuiTreeNodeFlags.DefaultOpen) then
+		for _, group in ipairs(layout.Boons) do
+			if rom.ImGui.TreeNode(group.Label) then
+				for _, entry in ipairs(group.Entries) do config_checkbox(entry) end
+				rom.ImGui.TreePop()
+			end
 		end
+	end
+
+	for _, tree in ipairs(layout.Sections) do
+		if rom.ImGui.CollapsingHeader(tree.Label) then config_draw_tree(tree) end
 	end
 end
