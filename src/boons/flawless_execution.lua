@@ -175,6 +175,7 @@ local function flawless_execution_attack(victim, triggerArgs)
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or victim ~= hero or not triggerArgs then return false end
 	if triggerArgs.ManuallyTriggered or triggerArgs.PureDamage or triggerArgs.EffectName then return false end
+	if mod.tuning.FlawlessExecution.IgnoredProjectiles[triggerArgs.SourceProjectile] then return false end
 
 	local attacker = triggerArgs.AttackerTable
 	if attacker == hero then return false end

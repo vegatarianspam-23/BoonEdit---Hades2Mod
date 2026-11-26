@@ -117,6 +117,7 @@ local config = {
       ScaldingVapor = true;
       SeismicHammer = true;
       SmolderingForge = true;
+      SturdyInvestment = true;
       SunWorshiper = true;
       ThermalDynamics = true;
     };
@@ -170,6 +171,10 @@ local config = {
       AnkhSwapSecondaries = false;
       AspectOfAnubis = false;
       AspectOfSupay = false;
+    };
+
+    Other = {
+      ArachneDresses = false;
     };
 
     Mods = {

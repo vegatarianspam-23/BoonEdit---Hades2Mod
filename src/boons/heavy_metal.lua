@@ -7,17 +7,13 @@ local HEAVY_METAL_FLAG = 'BoonEditHeavyMetal'
 
 
 once('HeavyMetalKnockback', function()
-	modutil.mod.Path.Wrap("HeavyArmorInitialPresentation", function(base, ...)
-		local result = base(...)
-		heavy_metal_sync()
-		return result
-	end)
-
-	modutil.mod.Path.Wrap("SetupHeroObject", function(base, ...)
-		local result = base(...)
-		heavy_metal_sync()
-		return result
-	end)
+	for _, name in ipairs({ 'HeavyArmorInitialPresentation', 'SetupHeroObject', 'AddHealthBuffer', 'RemoveHealthBufferSource', 'OnHealthBufferDamage' }) do
+		modutil.mod.Path.Wrap(name, function(base, ...)
+			local result = base(...)
+			heavy_metal_sync()
+			return result
+		end)
+	end
 end)
 
 
@@ -27,7 +23,8 @@ function heavy_metal_sync()
 	local hero = game.CurrentRun and game.CurrentRun.Hero
 	if not hero or not hero.ObjectId or not hero.ImmuneToForceFlags then return end
 
-	if game.HeroHasTrait(HEAVY_METAL_TRAIT) then
+	local armored = (hero.HealthBuffer or 0) > 0
+	if game.HeroHasTrait(HEAVY_METAL_TRAIT) and armored then
 		game.AddPlayerImmuneToForce(HEAVY_METAL_FLAG)
 	elseif hero.ImmuneToForceFlags[HEAVY_METAL_FLAG] then
 		game.RemovePlayerImmuneToForce(HEAVY_METAL_FLAG)

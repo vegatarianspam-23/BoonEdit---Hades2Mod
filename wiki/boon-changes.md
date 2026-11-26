@@ -49,7 +49,7 @@
 ## Hephaestus
 
 - **Anvil Ring** — Additionally, inflicts Glow on each hit. Slightly decreased power.
-- **Heavy Metal** — Additionally, prevents foes attacks from knocking you back.
+- **Heavy Metal** — Additionally, prevents foes attacks from knocking you back while you have Armor.
 - **Molten Touch** — Additionally, deals bonus damage to foes with Glow (15%/20%/25%/30% more).
 - **Smithy Rush** — New Effect: During your dash, a hammer strikes in your trail, dealing damage and inflicting Glow.
 - **Tough Gain** — Can now be upgraded with Poms: each adds 1 damage reduction, up to 10. Also compatible with Heinous Affront.
@@ -70,7 +70,7 @@
 - **Midnight Oil** (new, Water): Your Hex needs 20%/30%/40%/50% less Magick to charge up. Only offered while you hold a Hex.
 - **Paid Dues** (Legendary) — Costs 1 Gold per point of damage blocked (was 3). Now a Fire boon (was Air).
 - **Double Time** (new Legendary, Earth, was Second Wind): You can cast and dash an additional time.
-- **Flawless Execution** (new Legendary, Air): For every 0.6 seconds that foes are present, you deal 1% more damage and you take 1% less damage, both up to 100%. The bonus resets whenever you are hit with an attack, and can't reset again for 5 seconds.
+- **Flawless Execution** (new Legendary, Air): For every second that foes are present, you deal 1% more damage and you take 1% less damage, both up to 100%. The bonus resets whenever you are hit with an attack, and can't reset again for 5 seconds.
 - **Distress Call** (new Legendary, Water, moved from MoreDuos): At the start of each encounter, summon an ally to fight for you for 8 seconds. With Zagreus' Journey installed, Thanatos, Megaera and Bouldy can answer too.
 
 ## Hestia
@@ -103,7 +103,7 @@
 - **Arc Flash** — Extra Blitz damage is flatly applied to all Blitz instead of only ones triggered by omega attacks.
 - **Power Surge** — Additionally fires on magic restoration.
 - **Thunder Rush** — Strikes 50% more often while you Dash or Sprint. Stacks with Stutter Step.
-- **Shocking Loss** (Legendary) — 2.5% chance to destroy foes outright when your lightning bolts strike them; the first strike on each has a 25% chance instead. Now deals 9999 damage to guardians instead of destroying them (40 second internal cooldown).
+- **Shocking Loss** (Legendary) — 1% chance to destroy foes outright when your lightning bolts strike them; the first strike on each has a 25% chance instead. Now deals 9999 damage to guardians instead of destroying them (40 second internal cooldown).
 
 ## Duo Boons
 

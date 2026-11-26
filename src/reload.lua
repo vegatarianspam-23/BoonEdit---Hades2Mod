@@ -35,6 +35,7 @@ BOON_EDIT_GROUPS = {
 	{ 'Experimental', 'Hammers' },
 	{ 'Experimental', 'Keepsakes' },
 	{ 'Experimental', 'Aspects' },
+	{ 'Experimental', 'Other' },
 	{ 'Experimental', 'Mods' },
 }
 
@@ -166,16 +167,15 @@ function prefix_SetupMap()
 end
 
 function reload_config()
-	local ok, reloaded = pcall(function()
-		local loaded = chalk.auto('config.lua')
-		return loaded
+	local ok, err = pcall(function()
+		local path = rom.path.combine(rom.paths.config(), _PLUGIN.guid .. '.cfg')
+		local _, loaded = next(rom.toml.decodeFromFile(path))
+		if type(loaded) == 'table' then chalk.merge(config, loaded) end
 	end)
-	if ok and reloaded then
-		config = reloaded
-		public.config = config
+	if ok then
 		boon_edit_config_changed()
 	else
-		print('[' .. _PLUGIN.guid .. '] config reload failed: ' .. tostring(reloaded))
+		print('[' .. _PLUGIN.guid .. '] config reload failed: ' .. tostring(err))
 	end
 end
 
@@ -1049,6 +1049,7 @@ import 'boons/tough_gain.lua'
 import 'boons/premium_service.lua'
 import 'boons/chain_reaction.lua'
 import 'boons/seismic_hammer.lua'
+import 'boons/sturdy_investment.lua'
 import 'boons/brave_face.lua'
 
 import 'boons/rousing_reception.lua'
@@ -1106,6 +1107,8 @@ import 'keepsakes/metallic_droplet.lua'
 
 import 'aspects/aspect_of_anubis.lua'
 import 'aspects/aspect_of_supay.lua'
+
+import 'boons/arachne_dresses.lua'
 
 import 'hammeredit/dual_moonshot.lua'
 import 'hammeredit/reaper_knives.lua'

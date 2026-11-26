@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Arachne's Dresses (experimental, `Experimental.Other.ArachneDresses`): a dress whose Armor breaks comes back whenever you have Armor again, without Armor of its own, and comes off again while you have none
+
+### Changed
+
+- Heavy Metal: foes' blows only stop knocking you back while you have Armor
+- Flawless Execution: the bonus grows by 1% every second (was every 0.6 seconds)
+- Shocking Loss: 1% chance to destroy a foe per lightning strike (was 2.5%); the first strike on each foe still has a 25% chance
+
+### Fixed
+
+- The Hell2Modding Config tab no longer fills with a new copy of BoonEdits' settings on every room load
+- MoreDashBoons compatibility: Boon Info no longer lists each dash boon twice in requirements
+
 ## [1.2.1] - 2026-11-24
 
 ### Changed

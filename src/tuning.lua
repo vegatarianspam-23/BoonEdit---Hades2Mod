@@ -738,7 +738,7 @@ mod.tuning.DistressCall = {
 mod.tuning.FlawlessExecution = {
 	Icon = 'Boon_Hermes_29',
 	Element = 'Air',
-	StepInterval = 0.6,
+	StepInterval = 1,
 	PercentPerStep = 0.01,
 	MaxPercent = 1.00,
 	DefensePerStep = 0.01,
@@ -746,6 +746,7 @@ mod.tuning.FlawlessExecution = {
 	IncludeTraps = true,
 	ExpireSound = '/SFX/WrathOver',
 	ResetGrace = 5,
+	IgnoredProjectiles = { ProjectileZeusSpark = true, BlinkTrailZeusSpark = true },
 }
 
 mod.tuning.HermesLegendaries = {
@@ -908,8 +909,8 @@ mod.tuning.RippleEffect = {
 }
 
 mod.tuning.ShockingLoss = {
-	HitChance = 0.025,
-	FirstHitMultiplier = 10,
+	HitChance = 0.01,
+	FirstHitMultiplier = 25,
 
 	RollInterval = 0.01,
 
@@ -1003,6 +1004,10 @@ mod.tuning.ScytheSlows = {
 mod.tuning.WhiteAntler = {
 	HeirloomOnly = true,
 	MaxHealth = 30,
+}
+
+mod.tuning.ArachneDresses = {
+	SyncDelay = 0.1,
 }
 
 mod.tuning.AromaticPhial = {

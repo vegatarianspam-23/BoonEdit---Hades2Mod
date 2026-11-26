@@ -20,6 +20,10 @@ Each entry can be switched on in the config, under `Experimental`.
 - **Aspect of Anubis** (Witch's Staff) — Ankh Scepter's Dash-Strike still creates its damaging field, but its regular Attack is the normal staff combo. Attack and Omega Attack launch Lone Shades at foes struck; Special and Omega Special draw foes in. `AnkhSwapSecondaries` swaps the two.
 - **Aspect of Supay** (Umbral Flames) — Rush-boon damage bonus restored to EA levels.
 
+## Other
+
+- **Arachne's Dresses** (`Experimental.Other.ArachneDresses`) — A dress whose Armor breaks comes back whenever you have Armor again from any other source, without Armor of its own, and comes off again while you have none.
+
 ## Other Mods
 
 - **HermesDuos** (`Experimental.Mods.HermesDuos`, needs Wistiti-HermesDuos installed)

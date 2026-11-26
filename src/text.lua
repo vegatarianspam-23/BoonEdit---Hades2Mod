@@ -345,7 +345,7 @@ if boon_edit_on('HeavyMetal') then
 			HeavyArmorBoon = {
 				Description = 'Your {$Keywords.WeaponSet} deals more damage based on ' ..
 					'{$TooltipData.ExtractData.TooltipBonus:F} of your {!Icons.ArmorTotal}, and you gain ' ..
-					'some now. Foes\' blows cannot knock you back.',
+					'some now. While you have {!Icons.ArmorTotal}, foes\' blows cannot knock you back.',
 			},
 		},
 	})
@@ -640,6 +640,18 @@ if boon_edit_on('DistressCall') then
 		StatLines = {
 			BoonEditDistressCallCooldownStatDisplay = { Name = 'Distress Call Cooldown:', Index = 1, Suffix = ' Sec.' },
 			BoonEditDistressCallDurationStatDisplay = { Name = 'Ally Duration:', Index = 1, Suffix = ' Sec.' },
+		},
+	})
+end
+
+if boon_edit_on('SturdyInvestment') then
+	boon_text({
+		Traits = {
+			[STURDY_INVESTMENT_TRAIT] = {
+				InheritFrom = 'BaseBoonMultiline',
+				DisplayName = 'Sturdy Investment',
+				Description = 'You gain {!Icons.ArmorTotal} upon gaining, spending or losing {!Icons.Currency}.',
+			},
 		},
 	})
 end

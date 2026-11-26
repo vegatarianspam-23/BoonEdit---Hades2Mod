@@ -15,6 +15,11 @@ BOON_EDIT_HERMES_DUO_REPLACEMENTS = {
 		Partner = 'Apollo',
 		External = 'Wistiti-HermesDuos-CastWarZoneBoon',
 	},
+	SturdyInvestment = {
+		Trait = STURDY_INVESTMENT_TRAIT,
+		Partner = 'Hephaestus',
+		External = STURDY_INVESTMENT_SOURCE,
+	},
 }
 
 
@@ -73,6 +78,7 @@ end
 
 
 function boon_edit_mod_sync()
+	if boon_edit_hermes_duos_on() then sturdy_investment_define() end
 	for key, spec in pairs(BOON_EDIT_HERMES_DUO_REPLACEMENTS) do
 		local wanted = boon_edit_hermes_duo_on(key)
 		boon_edit_cross_list(spec.Trait, 'HermesUpgrade', wanted)
@@ -89,6 +95,7 @@ end
 
 
 function boon_edit_hermes_duos_list()
+	if boon_edit_hermes_duos_on() then sturdy_investment_define() end
 	for key, spec in pairs(BOON_EDIT_HERMES_DUO_REPLACEMENTS) do
 		if boon_edit_hermes_duo_on(key) then
 			boon_edit_cross_list(spec.Trait, 'HermesUpgrade', true)

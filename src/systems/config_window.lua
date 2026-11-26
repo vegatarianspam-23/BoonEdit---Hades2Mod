@@ -20,6 +20,7 @@ local CONFIG_LABELS = {
 	AnkhSwapSecondaries = 'Ankh Scepter: Attack draws foes in, Special launches shades',
 	PharaohEtchings = 'Pharaoh Etchings: longer field instead of Omega Special shades',
 	HermesDuos = 'HermesDuos support',
+	ArachneDresses = "Arachne's dresses return while you have Armor",
 }
 
 local CONFIG_DUO_GODS = {
@@ -42,6 +43,7 @@ local CONFIG_DUO_GODS = {
 	ScaldingVapor = { 'Hestia', 'Poseidon' },
 	SeismicHammer = { 'Hephaestus', 'Poseidon' },
 	SmolderingForge = { 'Aphrodite', 'Hephaestus' },
+	SturdyInvestment = { 'Hephaestus', 'Hermes' },
 	SunWorshiper = { 'Apollo', 'Hera' },
 	ThermalDynamics = { 'Hestia', 'Zeus' },
 }

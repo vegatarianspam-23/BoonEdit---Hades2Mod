@@ -265,6 +265,66 @@ function more_dash_sync()
 end
 
 
+function more_dash_shown(traitList)
+	if type(traitList) ~= 'table' then return traitList end
+	local hidden = {}
+	if boon_edit_mod_present(MORE_DASH_GUID) then
+		local live = more_dash_live()
+		for _, copy in ipairs(MORE_DASH_COPIES) do
+			hidden[live and more_dash_source(copy) or copy.Name] = true
+		end
+	end
+
+	local shown, seen = {}, {}
+	for _, name in ipairs(traitList) do
+		if not hidden[name] and not seen[name] and game.TraitData[name] then
+			seen[name] = true
+			table.insert(shown, name)
+		end
+	end
+	return shown
+end
+
+
+once('MoreDashBoonsRequirementList', function()
+	modutil.mod.Path.Wrap('CreateTraitRequirementList', function(base, screen, headerTextArgs, traitList, startY, metRequirement)
+		if type(traitList) ~= 'table' then return base(screen, headerTextArgs, traitList, startY, metRequirement) end
+		if metRequirement == nil then
+			for _, name in ipairs(traitList) do
+				if game.HeroHasTrait(name) then metRequirement = true end
+			end
+		end
+		local shown = more_dash_shown(traitList)
+		if #shown == 0 then return startY end
+		return base(screen, headerTextArgs, shown, startY, metRequirement)
+	end)
+end)
+
+
+local function more_dash_self_spark(victim, triggerArgs)
+	local hero = game.CurrentRun and game.CurrentRun.Hero
+	return hero ~= nil and victim == hero and type(triggerArgs) == 'table' and triggerArgs.SourceProjectile == 'BlinkTrailZeusSpark'
+end
+
+once('MoreDashBoonsSelfSpark', function()
+	modutil.mod.Path.Wrap('CheckImpactReaction', function(base, attackerWeaponData, sourceProjectileData, victim, triggerArgs)
+		if more_dash_self_spark(victim, triggerArgs) then
+			triggerArgs.SourceProjectile = 'ProjectileZeusSpark'
+		end
+		return base(attackerWeaponData, sourceProjectileData, victim, triggerArgs)
+	end)
+
+	modutil.mod.Path.Wrap('DamageHero', function(base, victim, triggerArgs)
+		if more_dash_self_spark(victim, triggerArgs) then
+			triggerArgs.SourceProjectile = 'ProjectileZeusSpark'
+			triggerArgs.SkipOnDamagedPowers = true
+			triggerArgs.DamageAmount = 0
+		end
+		return base(victim, triggerArgs)
+	end)
+end)
+
+
 function more_dash_cap(hero)
 	local tuning = mod.tuning.MoreDashBoons
 	for _, trait in ipairs(hero.Traits or {}) do
