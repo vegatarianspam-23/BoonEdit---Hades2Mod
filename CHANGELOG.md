@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-11-25
+
 ### Added
 
 - Arachne's Dresses (experimental, `Experimental.Other.ArachneDresses`): a dress whose Armor breaks comes back whenever you have Armor again, without Armor of its own, and comes off again while you have none
@@ -222,6 +224,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
+[1.2.2]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.6...1.2.0
 [1.1.6]: https://github.com/vegatarianspam-23/BoonEdit---Hades2Mod/compare/1.1.5...1.1.6
